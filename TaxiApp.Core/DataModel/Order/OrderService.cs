@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace TaxiApp.Core.DataModel.Order
 {
-    public class OrderService
+
+    public class ServiceItem
     {
         public byte id { get; set; }
         public string Name { get; set; }

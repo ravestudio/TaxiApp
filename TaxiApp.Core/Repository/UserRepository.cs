@@ -34,6 +34,8 @@ namespace TaxiApp.Core.Repository
                 data = await this._apiClient.GetData(url, postData);
             }
 
+            //data = await this._apiClient.GetData(url, postData);
+
             return data;
 
         }
@@ -47,6 +49,7 @@ namespace TaxiApp.Core.Repository
             postData.Add(new KeyValuePair<string, string>("phone", PhoneNumber));
             postData.Add(new KeyValuePair<string, string>("pin", PIN));
             postData.Add(new KeyValuePair<string, string>("idcompany", "1"));
+            postData.Add(new KeyValuePair<string, string>("appversion", "10"));
 
             //string data = string.Format("phone={0}&pin={1}&idcompany={2}", model.PhoneNumber, model.PIN, 1);
 

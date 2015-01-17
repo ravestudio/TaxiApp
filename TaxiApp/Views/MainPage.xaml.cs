@@ -33,6 +33,8 @@ namespace TaxiApp.Views
         {
             this.InitializeComponent();
 
+            orderController.Init(this);
+
             this.navigationHelper = new NavigationHelper(this);
             this.navigationHelper.LoadState += this.NavigationHelper_LoadState;
             this.navigationHelper.SaveState += this.NavigationHelper_SaveState;
@@ -113,5 +115,6 @@ namespace TaxiApp.Views
         {
             this.Frame.Navigate(typeof(SocketPage)); 
         }
+
     }
 }

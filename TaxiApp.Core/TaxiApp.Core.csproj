@@ -9,8 +9,8 @@
     <ProjectGuid>{F659A79D-4B33-4686-8969-A971AEF0E350}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>TaxyApp.Core</RootNamespace>
-    <AssemblyName>TaxyApp.Core</AssemblyName>
+    <RootNamespace>TaxiApp.Core</RootNamespace>
+    <AssemblyName>TaxiApp.Core</AssemblyName>
     <DefaultLanguage>ru-RU</DefaultLanguage>
     <TargetPlatformVersion>8.1</TargetPlatformVersion>
     <MinimumVisualStudioVersion>12</MinimumVisualStudioVersion>
@@ -85,6 +85,8 @@
     <Compile Include="Class1.cs" />
     <Compile Include="Common\DateTimeToDateTimeOffsetConverter.cs" />
     <Compile Include="DataModel\Order\OrderDetail.cs" />
+    <Compile Include="DataModel\Order\OrderItem.cs" />
+    <Compile Include="DataModel\Order\OrderItemTemplateSelector .cs" />
     <Compile Include="DataModel\Order\OrderPoint.cs" />
     <Compile Include="DataModel\Order\OrderService.cs" />
     <Compile Include="DataModel\SearchModel.cs" />
@@ -99,6 +101,7 @@
     <Compile Include="Repository\OrderRepository.cs" />
     <Compile Include="Repository\Repository.cs" />
     <Compile Include="Repository\UserRepository.cs" />
+    <Compile Include="ServiceDS.cs" />
     <Compile Include="Session.cs" />
     <Compile Include="Singleton.cs" />
     <Compile Include="SocketClient.cs" />

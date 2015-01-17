@@ -11,20 +11,63 @@ using Windows.UI.Xaml.Controls;
 
 namespace TaxiApp.Controller
 {
-    public class OrderController
+    public class OrderController : Controller
     {
         public OrderDetail OrderModel { get; set; }
         public SearchModel SearchModel { get; set; }
-        public SetLocationCommand SetLocation { get; set; }
+        public ClickOrderItemCommand ClickOrderItem { get; set; }
         public SelectItemCommand SelectItem { get; set; }
+
+        public Windows.UI.Xaml.Controls.Page Page { get; set; }
+        public ListPickerFlyout ServicePicker { get; set; }
+
+        public Dictionary<string, Action<Controller, TaxiApp.Core.DataModel.Order.OrderItem>> Actions = null;
 
         public OrderController()
         {
             this.OrderModel = new OrderDetail();
             this.SearchModel = new SearchModel();
 
-            this.SetLocation = new SetLocationCommand(this);
+            this.ClickOrderItem = new ClickOrderItemCommand(this);
             this.SelectItem = new SelectItemCommand(this);
+
+            this.Actions = new Dictionary<string, Action<Controller, TaxiApp.Core.DataModel.Order.OrderItem>>();
+
+            this.Actions.Add("Point", (contrl, item) => {
+                TaxiApp.Core.DataModel.Order.OrderPoint orderPoint = (TaxiApp.Core.DataModel.Order.OrderPoint)item;
+
+                Frame rootFrame = Window.Current.Content as Frame;
+
+                OrderController controller = (OrderController)contrl;
+
+                controller.SearchModel.SelectedPoint = orderPoint;
+                rootFrame.Navigate(typeof(AddPointPage));
+            });
+
+            this.Actions.Add("Services", (contrl, item) =>
+            {
+                OrderController controller = (OrderController)contrl;
+
+                controller.ServicePicker.ShowAt(controller.Page);
+
+            });
+
+            this.Actions.Add("Now", (contrl, item) =>
+            {
+                OrderController controller = (OrderController)contrl;
+
+                controller.OrderModel.ShowDateTime();
+
+            });
+        }
+
+        public override void Init(Page page)
+        {
+            this.Page = page;
+
+            this.ServicePicker = (ListPickerFlyout)page.Resources["ServiceFlyout"];
+
+            base.Init(page);
         }
 
         public async void CreateOrder()
@@ -62,11 +105,11 @@ namespace TaxiApp.Controller
         }
     }
 
-    public class SetLocationCommand : System.Windows.Input.ICommand
+    public class ClickOrderItemCommand : System.Windows.Input.ICommand
     {
         private OrderController _controller = null;
 
-        public SetLocationCommand(OrderController controller)
+        public ClickOrderItemCommand(OrderController controller)
         {
             this._controller = controller;
         }
@@ -81,35 +124,9 @@ namespace TaxiApp.Controller
         {
             Windows.UI.Xaml.Controls.ItemClickEventArgs e = (Windows.UI.Xaml.Controls.ItemClickEventArgs)parameter;
 
+            TaxiApp.Core.DataModel.Order.OrderItem orderItem = (TaxiApp.Core.DataModel.Order.OrderItem)e.ClickedItem;
 
-            if (e.ClickedItem as TaxiApp.Core.DataModel.Order.OrderPoint != null)
-            {
-                TaxiApp.Core.DataModel.Order.OrderPoint orderPoint = (TaxiApp.Core.DataModel.Order.OrderPoint)e.ClickedItem;
-
-
-                Frame rootFrame = Window.Current.Content as Frame;
-
-                _controller.SearchModel.SelectedPoint = orderPoint;
-
-                rootFrame.Navigate(typeof(AddPointPage));
-
-            }
-            else
-            {
-                TaxiApp.Core.DataModel.Order.OrderItem item = (TaxiApp.Core.DataModel.Order.OrderItem)e.ClickedItem;
-
-                if (item.Cmd == "Services")
-                {
-                    _controller.OrderModel.ShowServices();
-                }
-
-                if (item.Cmd == "Now")
-                {
-                    _controller.OrderModel.ShowDateTime();
-                }
-
-            }
-
+            _controller.Actions[orderItem.Cmd].Invoke(_controller, orderItem);
         }
     }
 

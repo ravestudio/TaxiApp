@@ -9,7 +9,7 @@ using Windows.UI.Xaml.Controls;
 
 namespace TaxiApp.Controller
 {
-    public class AuthenticationController
+    public class AuthenticationController : Controller
     {
         public DataModel.LoginModel LoginModel { get; set; }
         public DataModel.RegistrationModel RegistrationModel { get; set; }

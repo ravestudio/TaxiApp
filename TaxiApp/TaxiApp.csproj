@@ -7,8 +7,8 @@
     <ProjectGuid>{78488D59-0711-47E2-93A3-535C81C3B8E0}</ProjectGuid>
     <OutputType>AppContainerExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>TaxyApp</RootNamespace>
-    <AssemblyName>TaxyApp</AssemblyName>
+    <RootNamespace>TaxiApp</RootNamespace>
+    <AssemblyName>TaxiApp</AssemblyName>
     <DefaultLanguage>ru-RU</DefaultLanguage>
     <TargetPlatformVersion>8.1</TargetPlatformVersion>
     <MinimumVisualStudioVersion>12</MinimumVisualStudioVersion>
@@ -132,6 +132,7 @@
     <Compile Include="Common\RelayCommand.cs" />
     <Compile Include="Common\SuspensionManager.cs" />
     <Compile Include="Controller\AuthenticationController.cs" />
+    <Compile Include="Controller\Controller.cs" />
     <Compile Include="Controller\ControllerFactory.cs" />
     <Compile Include="Controller\OrderController.cs" />
     <Compile Include="CreateOrderPage.xaml.cs">

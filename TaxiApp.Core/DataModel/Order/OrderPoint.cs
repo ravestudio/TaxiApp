@@ -6,30 +6,6 @@ using System.Threading.Tasks;
 
 namespace TaxiApp.Core.DataModel.Order
 {
-    public class OrderItem
-    {
-        public int Priority { get; set; }
-        public string Cmd { get; set; }
-
-        protected string _title = string.Empty;
-
-        public string Title {
-            get
-            {
-                return this.GetTitle();
-            }
-
-            set
-            {
-                this._title = value;
-            }
-        }
-
-        protected virtual string GetTitle()
-        {
-            return this._title;
-        }
-    }
 
     public class OrderPoint : OrderItem
     {
@@ -39,6 +15,8 @@ namespace TaxiApp.Core.DataModel.Order
 
         public OrderPoint()
         {
+            this.Cmd = "Point";
+
             orderString = new Dictionary<int, string>();
             orderString.Add(0, "From");
             orderString.Add(1, "Second");

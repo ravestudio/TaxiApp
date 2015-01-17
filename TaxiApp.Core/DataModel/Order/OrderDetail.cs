@@ -13,7 +13,7 @@ namespace TaxiApp.Core.DataModel.Order
     public class OrderDetail
     {
         private ObservableCollection<OrderItem> _orderItemList = null;
-        private ObservableCollection<OrderService> _orderServiceList = null;
+        private IList<ServiceItem> _orderServiceList = null;
 
         public Windows.UI.Core.CoreDispatcher Dispatcher { get; set; }
 
@@ -64,13 +64,14 @@ namespace TaxiApp.Core.DataModel.Order
 
         private void InitServiceList()
         {
-            this._orderServiceList = new ObservableCollection<OrderService>();
-            this._orderServiceList.Add(new OrderService() { id = 1, Name = "Багаж", Checked = false });
-            this._orderServiceList.Add(new OrderService() { id = 2, Name = "Можно курить", Checked = false });
-            this._orderServiceList.Add(new OrderService() { id = 4, Name = "Водитель не курит", Checked = false });
-            this._orderServiceList.Add(new OrderService() { id = 8, Name = "Детское кресло", Checked = false });
-            this._orderServiceList.Add(new OrderService() { id = 16, Name = "Удобства для инвалидов", Checked = false });
-            this._orderServiceList.Add(new OrderService() { id = 32, Name = "Перевозка животных ", Checked = false });
+            this._orderServiceList = new List<ServiceItem>();
+
+            this._orderServiceList.Add(new ServiceItem() { id = 1, Name = "Багаж", Checked = false });
+            this._orderServiceList.Add(new ServiceItem() { id = 2, Name = "Можно курить", Checked = false });
+            this._orderServiceList.Add(new ServiceItem() { id = 4, Name = "Водитель не курит", Checked = false });
+            this._orderServiceList.Add(new ServiceItem() { id = 8, Name = "Детское кресло", Checked = false });
+            this._orderServiceList.Add(new ServiceItem() { id = 16, Name = "Удобства для инвалидов", Checked = false });
+            this._orderServiceList.Add(new ServiceItem() { id = 32, Name = "Перевозка животных ", Checked = false });
         }
 
         void OrderModel_MapRouteChanged(object sender, EventArgs e)
@@ -128,7 +129,7 @@ namespace TaxiApp.Core.DataModel.Order
             }
         }
 
-        public ObservableCollection<OrderService> OrderServiceList
+        public IList<ServiceItem> OrderServiceList
         {
             get
             {
@@ -250,7 +251,7 @@ namespace TaxiApp.Core.DataModel.Order
 
             byte servieces = 0;
 
-            foreach(OrderService service in this.OrderServiceList)
+            foreach(ServiceItem service in this.OrderServiceList)
             {
                 if (service.Checked)
                 {
