@@ -10,6 +10,7 @@ namespace TaxiApp.Core.DataModel.Order
     {
         public int Priority { get; set; }
         public string Cmd { get; set; }
+        public Windows.UI.Xaml.Media.ImageSource IconSource { get; set; }
 
         protected string _title = string.Empty;
 

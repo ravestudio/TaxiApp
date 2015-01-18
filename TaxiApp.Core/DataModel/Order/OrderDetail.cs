@@ -56,7 +56,8 @@ namespace TaxiApp.Core.DataModel.Order
             {
                 Priority = 11,
                 Title = "Services",
-                Cmd = "Services"
+                Cmd = "Services",
+                IconSource = new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///Assets/service.png"))
             });
 
             this.MapRouteChanged += OrderModel_MapRouteChanged;

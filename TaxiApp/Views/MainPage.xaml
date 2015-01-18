@@ -42,8 +42,9 @@
             x:Key="DateTimeToDateTimeOffsetConverter"/>
 
         <DataTemplate x:Key="OrderItemTemplate">
-            <StackPanel Margin="0,2,0,0">
-                <TextBlock Text="{Binding Title}" Style="{ThemeResource SubheaderTextBlockStyle}" Margin="0,0,0,5"/>
+            <StackPanel Margin="0,3,0,0" Orientation="Horizontal">
+                <Image Source="{Binding IconSource}" Width="30"/>
+                <TextBlock Text="{Binding Title}" Style="{ThemeResource SubheaderTextBlockStyle}" Margin="15,0,0,0"/>
             </StackPanel>
         </DataTemplate>
 

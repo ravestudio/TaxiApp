@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
+    <item>
+        <shape >
+            <solid android:color="#cacaca" />
+        </shape>
+    </item>
+
+    <item android:bottom="1dp"
+          android:top="1dp"
+            >
+        <shape>
+            <solid android:color="#ffffff" />
+        </shape>
+    </item>
+
+    <!-- main color -->
+    <item android:bottom="1dp"
+            android:top="1dp"
+            >
+        <shape>
+            <gradient android:startColor="#2b69d4d4" android:endColor="#2b9ccc66" android:angle="45"  />
+        </shape>
+    </item>
+    <!-- draw another block to cut-off the left and right bars -->
+
+</layer-list>
