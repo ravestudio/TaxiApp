@@ -15,8 +15,8 @@ namespace TaxiApp.Controller
     {
         public OrderDetail OrderModel { get; set; }
         public SearchModel SearchModel { get; set; }
-        public ClickOrderItemCommand ClickOrderItem { get; set; }
-        public SelectItemCommand SelectItem { get; set; }
+        public Command.ClickOrderItemCommand ClickOrderItem { get; set; }
+        public Command.SelectPointLocationCommand SelectItem { get; set; }
 
         public Windows.UI.Xaml.Controls.Page Page { get; set; }
         public ListPickerFlyout ServicePicker { get; set; }
@@ -28,8 +28,8 @@ namespace TaxiApp.Controller
             this.OrderModel = new OrderDetail();
             this.SearchModel = new SearchModel();
 
-            this.ClickOrderItem = new ClickOrderItemCommand(this);
-            this.SelectItem = new SelectItemCommand(this);
+            this.ClickOrderItem = new Command.ClickOrderItemCommand(this);
+            this.SelectItem = new Command.SelectPointLocationCommand(this);
 
             this.Actions = new Dictionary<string, Action<Controller, TaxiApp.Core.DataModel.Order.OrderItem>>();
 
@@ -102,63 +102,6 @@ namespace TaxiApp.Controller
             IList<TaxiApp.Core.Entities.Order> orderList = await orderRepository.GetUserOrders(user);
 
             return orderList;
-        }
-    }
-
-    public class ClickOrderItemCommand : System.Windows.Input.ICommand
-    {
-        private OrderController _controller = null;
-
-        public ClickOrderItemCommand(OrderController controller)
-        {
-            this._controller = controller;
-        }
-        public bool CanExecute(object parameter)
-        {
-            return true;
-        }
-
-        public event EventHandler CanExecuteChanged;
-
-        public void Execute(object parameter)
-        {
-            Windows.UI.Xaml.Controls.ItemClickEventArgs e = (Windows.UI.Xaml.Controls.ItemClickEventArgs)parameter;
-
-            TaxiApp.Core.DataModel.Order.OrderItem orderItem = (TaxiApp.Core.DataModel.Order.OrderItem)e.ClickedItem;
-
-            _controller.Actions[orderItem.Cmd].Invoke(_controller, orderItem);
-        }
-    }
-
-    public class SelectItemCommand : System.Windows.Input.ICommand
-    {
-        private OrderController _controller = null;
-
-        public SelectItemCommand(OrderController controller)
-        {
-            this._controller = controller;
-        }
-
-        public bool CanExecute(object parameter)
-        {
-            return true;
-        }
-
-        public event EventHandler CanExecuteChanged;
-
-        public void Execute(object parameter)
-        {
-            Windows.UI.Xaml.Controls.ItemClickEventArgs e = (Windows.UI.Xaml.Controls.ItemClickEventArgs)parameter;
-
-            LocationItem location = (LocationItem)e.ClickedItem;
-
-            _controller.SearchModel.SelectedPoint.Location = location;
-
-            Frame rootFrame = Window.Current.Content as Frame;
-
-            this._controller.OrderModel.UpdatePoints();
-
-            rootFrame.GoBack();
         }
     }
 }
