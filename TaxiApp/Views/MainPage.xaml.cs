@@ -70,6 +70,7 @@ namespace TaxiApp.Views
         /// сеанса.  Это состояние будет равно NULL при первом посещении страницы.</param>
         private void NavigationHelper_LoadState(object sender, LoadStateEventArgs e)
         {
+            this.orderController.LoadMyOrders();
         }
 
         /// <summary>
@@ -114,6 +115,11 @@ namespace TaxiApp.Views
         private void SocketPgBtn_Click(object sender, RoutedEventArgs e)
         {
             this.Frame.Navigate(typeof(SocketPage)); 
+        }
+
+        private void CreateBtnClick(object sender, RoutedEventArgs e)
+        {
+            this.orderController.CreateOrder();
         }
 
     }

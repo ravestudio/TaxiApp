@@ -18,7 +18,7 @@ using Windows.UI.Xaml.Navigation;
 
 // Документацию по шаблону элемента "Основная страница" см. по адресу http://go.microsoft.com/fwlink/?LinkID=390556
 
-namespace TaxiApp
+namespace TaxiApp.Views
 {
     /// <summary>
     /// Пустая страница, которую можно использовать саму по себе или для перехода внутри фрейма.
@@ -32,13 +32,14 @@ namespace TaxiApp
         {
             this.InitializeComponent();
 
+            orderController.Init(this);
+
             this.orderController.OrderModel.RouteMapControl = this.RouteMapControl;
 
             this.navigationHelper = new NavigationHelper(this);
             this.navigationHelper.LoadState += this.NavigationHelper_LoadState;
             this.navigationHelper.SaveState += this.NavigationHelper_SaveState;
 
-            this.orderController.SearchModel.Dispatcher = this.Dispatcher;
         }
 
         /// <summary>
@@ -53,7 +54,7 @@ namespace TaxiApp
         /// Получает модель представлений для данного объекта <see cref="Page"/>.
         /// Эту настройку можно изменить на модель строго типизированных представлений.
         /// </summary>
-        public TaxiApp.Controller.OrderController DefaultViewModel
+        public TaxiApp.Controller.OrderController OrderViewModel
         {
             get { return this.orderController; }
         }
@@ -103,7 +104,7 @@ namespace TaxiApp
         /// событий, которые не могут отменить запрос навигации.</param>
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            this.DefaultViewModel.OrderModel.ShowMyPossitionAsync().
+            this.OrderViewModel.OrderModel.ShowMyPossitionAsync().
                 ContinueWith(
                 t =>
                 {

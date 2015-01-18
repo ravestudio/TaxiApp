@@ -12,7 +12,7 @@ using Windows.UI.Xaml.Controls;
 
 namespace TaxiApp.Controller.Command
 {
-    public class SelectPointLocationCommand
+    public class SelectPointLocationCommand : System.Windows.Input.ICommand
     {
         private OrderController _controller = null;
 

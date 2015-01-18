@@ -13,7 +13,10 @@ namespace TaxiApp.Core.DataModel.Order
     public class OrderDetail
     {
         private ObservableCollection<OrderItem> _orderItemList = null;
-        private IList<ServiceItem> _orderServiceList = null;
+        private IList<OrderOption> _orderServiceList = null;
+        private IList<OrderOption> _orderCarList = null;
+
+        public IList<OrderOption> SelectedServices = null;
 
         public Windows.UI.Core.CoreDispatcher Dispatcher { get; set; }
 
@@ -23,12 +26,19 @@ namespace TaxiApp.Core.DataModel.Order
         public DateTime EndDate { get; set; }
         public DateTime EndTime { get; set; }
 
+        public OrderPriceInfo PriceInfo { get; set; }
+
         public OrderDetail()
         {
-            InitServiceList();
+            InitOptions();
 
             this.EndDate = DateTime.Now;
             this.EndTime = DateTime.Now;
+
+            this.PriceInfo = new OrderPriceInfo();
+            this.PriceInfo.Time = "40min";
+            this.PriceInfo.Price = "$7.5";
+            this.PriceInfo.Destination = "7.3km";
 
             this._orderItemList = new ObservableCollection<OrderItem>();
 
@@ -60,19 +70,38 @@ namespace TaxiApp.Core.DataModel.Order
                 IconSource = new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///Assets/service.png"))
             });
 
+            this._orderItemList.Add(new OrderItem()
+            {
+                Priority = 12,
+                Title = "Car",
+                Cmd = "Car",
+                IconSource = new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///Assets/carclass.png"))
+            });
+
             this.MapRouteChanged += OrderModel_MapRouteChanged;
         }
 
-        private void InitServiceList()
+        private void InitOptions()
         {
-            this._orderServiceList = new List<ServiceItem>();
+            this._orderServiceList = new List<OrderOption>();
+            this._orderServiceList.Add(new OrderOption() { id = 1, Name = "Багаж"});
+            this._orderServiceList.Add(new OrderOption() { id = 2, Name = "Можно курить"});
+            this._orderServiceList.Add(new OrderOption() { id = 4, Name = "Водитель не курит"});
+            this._orderServiceList.Add(new OrderOption() { id = 8, Name = "Детское кресло"});
+            this._orderServiceList.Add(new OrderOption() { id = 16, Name = "Удобства для инвалидов"});
+            this._orderServiceList.Add(new OrderOption() { id = 32, Name = "Перевозка животных "});
 
-            this._orderServiceList.Add(new ServiceItem() { id = 1, Name = "Багаж", Checked = false });
-            this._orderServiceList.Add(new ServiceItem() { id = 2, Name = "Можно курить", Checked = false });
-            this._orderServiceList.Add(new ServiceItem() { id = 4, Name = "Водитель не курит", Checked = false });
-            this._orderServiceList.Add(new ServiceItem() { id = 8, Name = "Детское кресло", Checked = false });
-            this._orderServiceList.Add(new ServiceItem() { id = 16, Name = "Удобства для инвалидов", Checked = false });
-            this._orderServiceList.Add(new ServiceItem() { id = 32, Name = "Перевозка животных ", Checked = false });
+            this._orderCarList = new List<OrderOption>();
+            this._orderCarList.Add(new OrderOption() { id = 0, Name = "Любой" });
+            this._orderCarList.Add(new OrderOption() { id = 1, Name = "Sedan" });
+            this._orderCarList.Add(new OrderOption() { id = 2, Name = "Universal" });
+            this._orderCarList.Add(new OrderOption() { id = 3, Name = "Minivan" });
+            this._orderCarList.Add(new OrderOption() { id = 4, Name = "Offroad" });
+            this._orderCarList.Add(new OrderOption() { id = 5, Name = "Pickup" });
+            this._orderCarList.Add(new OrderOption() { id = 6, Name = "Limousine" });
+            this._orderCarList.Add(new OrderOption() { id = 7, Name = "Cabriolet" });
+            this._orderCarList.Add(new OrderOption() { id = 8, Name = "Sport car" });
+            this._orderCarList.Add(new OrderOption() { id = 9, Name = "Rickshaw" });
         }
 
         void OrderModel_MapRouteChanged(object sender, EventArgs e)
@@ -130,11 +159,19 @@ namespace TaxiApp.Core.DataModel.Order
             }
         }
 
-        public IList<ServiceItem> OrderServiceList
+        public IList<OrderOption> OrderServiceList
         {
             get
             {
                 return this._orderServiceList;
+            }
+        }
+
+        public IList<OrderOption> OrderCarList
+        {
+            get
+            {
+                return this._orderCarList;
             }
         }
 
@@ -154,6 +191,8 @@ namespace TaxiApp.Core.DataModel.Order
                     {
                         var dlg = new Windows.UI.Popups.MessageDialog("Маршрут найден");
                         dlg.ShowAsync();
+
+                        this.GetPriceInfo();
                     });
                 }
                 else
@@ -185,6 +224,8 @@ namespace TaxiApp.Core.DataModel.Order
                 {
                     this.OrderItemList.Add(item);
                 }
+
+                
             }
         }
 
@@ -252,12 +293,9 @@ namespace TaxiApp.Core.DataModel.Order
 
             byte servieces = 0;
 
-            foreach(ServiceItem service in this.OrderServiceList)
+            foreach(OrderOption service in this.SelectedServices)
             {
-                if (service.Checked)
-                {
-                    servieces = (byte)((byte)servieces | (byte)service.id);
-                }
+                servieces = (byte)((byte)servieces | (byte)service.id);
             }
 
             int i = 0;
@@ -306,6 +344,39 @@ namespace TaxiApp.Core.DataModel.Order
             keyValueData.Add(new KeyValuePair<string, string>("enddate", enddate));
 
             return keyValueData;
+        }
+
+        private async void GetPriceInfo()
+        {
+            TaxiApp.Core.Entities.User user = TaxiApp.Core.Session.Instance.GetUser();
+
+            List<KeyValuePair<string, string>> postData = new List<KeyValuePair<string, string>>();
+
+            if (this.MapRoute != null)
+            {
+                postData.Add(new KeyValuePair<string, string>("distance", this.MapRoute.LengthInMeters.ToString()));
+                postData.Add(new KeyValuePair<string, string>("minutes", this.MapRoute.EstimatedDuration.Minutes.ToString()));
+            }
+
+            //YYYY-MM-DD HH:II
+            string enddate = string.Format("{0}-{1}-{2} {3}:{4}", this.EndDate.Year, this.EndDate.Month, this.EndDate.Day, this.EndTime.Hour, this.EndTime.Minute);
+
+            postData.Add(new KeyValuePair<string, string>("enddate", enddate));
+
+            postData.Add(new KeyValuePair<string, string>("carclass", "0"));
+            //var postData = new List<KeyValuePair<string, string>>();
+
+            postData.Add(new KeyValuePair<string, string>("idpassenger", user.Id.ToString()));
+            postData.Add(new KeyValuePair<string, string>("token", user.token));
+            //postData.Add(new KeyValuePair<string, string>("idcompany", "1"));
+
+
+
+            TaxiApp.Core.WebApiClient client = new TaxiApp.Core.WebApiClient();
+
+            string url = "http://serv.giddix.ru/api/passenger_getprice/";
+
+            string data = await client.GetData(url, postData);
         }
     }
 }

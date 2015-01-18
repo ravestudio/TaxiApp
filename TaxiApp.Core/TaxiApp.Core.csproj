@@ -88,7 +88,8 @@
     <Compile Include="DataModel\Order\OrderItem.cs" />
     <Compile Include="DataModel\Order\OrderItemTemplateSelector .cs" />
     <Compile Include="DataModel\Order\OrderPoint.cs" />
-    <Compile Include="DataModel\Order\OrderService.cs" />
+    <Compile Include="DataModel\Order\OrderOption.cs" />
+    <Compile Include="DataModel\Order\OrderPriceInfo.cs" />
     <Compile Include="DataModel\SearchModel.cs" />
     <Compile Include="Entities\Entity.cs" />
     <Compile Include="Entities\Order.cs" />

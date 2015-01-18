@@ -6,11 +6,10 @@ using System.Threading.Tasks;
 
 namespace TaxiApp.Core.DataModel.Order
 {
-
-    public class ServiceItem
+    public class OrderPriceInfo
     {
-        public byte id { get; set; }
-        public string Name { get; set; }
-        public bool Checked { get; set; }
+        public string Price { get; set; }
+        public string Destination { get; set; }
+        public string Time { get; set; }
     }
 }

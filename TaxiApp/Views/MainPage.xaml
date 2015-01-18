@@ -8,6 +8,7 @@
     xmlns:controller="using:TaxiApp.Controller"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:entity="using:TaxiApp.Core.Entities"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:core="using:Microsoft.Xaml.Interactions.Core"
     xmlns:System="using:System"
@@ -24,9 +25,16 @@
     <Page.Resources>
         
         <ListPickerFlyout x:Key="ServiceFlyout" SelectionMode="Multiple"
-                                          PickerFlyoutBase.Title="SELECT SERVICE"
-                                          
-                                          ItemsSource="{Binding ElementName=mainPage, Path=DataContext.OrderModel.OrderServiceList}">
+                          PickerFlyoutBase.Title="SET SERVICES"             
+                          ItemsSource="{Binding ElementName=mainPage, Path=DataContext.OrderModel.OrderServiceList}"
+                          >
+
+            <i:Interaction.Behaviors>
+                <core:EventTriggerBehavior EventName="ItemsPicked">
+                    <core:InvokeCommandAction Command="{Binding SelectServicesCmd}"/>
+                </core:EventTriggerBehavior>
+            </i:Interaction.Behaviors>
+
             <ListPickerFlyout.ItemTemplate>
                 <DataTemplate>
                     <StackPanel>
@@ -36,14 +44,28 @@
             </ListPickerFlyout.ItemTemplate>
 
         </ListPickerFlyout>
-        
+
+        <ListPickerFlyout x:Key="CarFlyout" SelectionMode="Single"
+                          PickerFlyoutBase.Title="SET CAR CLASS"
+                          ItemsSource="{Binding ElementName=mainPage, Path=DataContext.OrderModel.OrderCarList}"
+                          
+                          >
+            
+            <ListPickerFlyout.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Path=Name}"/>
+                </DataTemplate>
+            </ListPickerFlyout.ItemTemplate>
+
+        </ListPickerFlyout>
+
 
         <Converters:DateTimeToDateTimeOffsetConverter
             x:Key="DateTimeToDateTimeOffsetConverter"/>
 
         <DataTemplate x:Key="OrderItemTemplate">
-            <StackPanel Margin="0,3,0,0" Orientation="Horizontal">
-                <Image Source="{Binding IconSource}" Width="30"/>
+            <StackPanel Margin="10,3,0,0" Orientation="Horizontal">
+                <Image Source="{Binding IconSource}" Width="30" Margin="0,5,0,0"/>
                 <TextBlock Text="{Binding Title}" Style="{ThemeResource SubheaderTextBlockStyle}" Margin="15,0,0,0"/>
             </StackPanel>
         </DataTemplate>
@@ -69,31 +91,15 @@
 
         <Pivot x:Uid="Pivot" Title="MY APPLICATION" x:Name="pivot" CommonNavigationTransitionInfo.IsStaggerElement="True" Style="{StaticResource taxyPivotStyle}" HeaderTemplate="{StaticResource TaxyPivotHeader}">
 
-            <PivotItem
+            <!--<PivotItem
 				x:Uid="PivotMenu"
 				Header="МЕНЮ">
                 
                 <Grid>
-
-                    <Button VerticalAlignment="Top" Margin="0,70,0,0">
-                        <Button.Flyout>
-                            <ListPickerFlyout SelectionMode="Multiple" PickerFlyoutBase.Title="SELECT CITY" ItemsSource="{Binding OrderModel.serviceDS.Items}">
-                                <ListPickerFlyout.ItemTemplate>
-                                    <DataTemplate>
-                                        <StackPanel>
-                                            <TextBlock Text="{Binding}" FontSize="{StaticResource TextStyleExtraLargeFontSize}"/>
-                                        </StackPanel>
-                                    </DataTemplate>
-                                </ListPickerFlyout.ItemTemplate>
-                                    
-                            </ListPickerFlyout>
-                        </Button.Flyout>
-                    </Button>
-
                     <Button x:Uid="SocketPgBtn" x:Name="SocketPgBtn" Content="Socket" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Top" Click="SocketPgBtn_Click"/>
                 </Grid>
 
-            </PivotItem>
+            </PivotItem>-->
 
             <PivotItem
 				x:Uid="PivotOrder"
@@ -101,7 +107,7 @@
 				Margin="0,0,0,0">
                 <!--TODO: Содержимое должно размещаться в следующей сетке-->
                 <Grid Grid.Row="1" x:Name="ContentRoot" Margin="10,9.5,10,0">
-                    <StackPanel>
+
                         <ListView
 							ItemsSource="{Binding OrderModel.OrderItemList}"
 							IsItemClickEnabled="True"
@@ -134,9 +140,80 @@
 
                         <!--<DatePicker Date="{Binding Path=OrderModel.EndDate, Converter={StaticResource DateTimeToDateTimeOffsetConverter}, Mode=TwoWay}"></DatePicker>
                 <TimePicker Time="{Binding Path=OrderModel.EndTime, Mode=TwoWay}"></TimePicker>-->
-                    </StackPanel>
-                    <Button Content="Make an order" Style="{StaticResource TaxyButtonGreenStyle}" HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
+
+
+
+
+
+                    <Grid Height="50" VerticalAlignment="Bottom" Margin="0,0,0,60" Background="#FF2A64C9">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Text="{Binding OrderModel.PriceInfo.Price}" Style="{StaticResource SubheaderTextBlockStyle}" Foreground="White" Grid.Row="0" Grid.Column="0" Margin="10,0,0,0"></TextBlock>
+                        <TextBlock Text="{Binding OrderModel.PriceInfo.Destination}" Style="{StaticResource SubheaderTextBlockStyle}" Foreground="White" Grid.Row="0" Grid.Column="1" Margin="10,0,0,0"></TextBlock>
+                        <TextBlock Text="{Binding OrderModel.PriceInfo.Time}" Style="{StaticResource SubheaderTextBlockStyle}" Foreground="White" Grid.Row="0" Grid.Column="2" Margin="10,0,0,0"></TextBlock>
+                    </Grid>
+                    
+                    <Button Content="Make an order" Style="{StaticResource TaxyButtonGreenStyle}" HorizontalAlignment="Center" VerticalAlignment="Bottom" Click="CreateBtnClick"/>
+                    
                 </Grid>
+
+            </PivotItem>
+            
+            <PivotItem
+                x:Uid="PivotOrderList"
+                Header="МОИ ЗАКАЗЫ"
+                DataContext="{Binding OrderList}"
+                d:DataContext="{Binding Source={d:DesignData Source=../../TaxiApp.Core/DataModel/OrderList.json, Type=entity:OrderDS}}">
+
+                <ListView
+                     ItemsSource="{Binding}">
+
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Margin="0,0,0,10">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="110"/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                
+                                <StackPanel Grid.Row="0" Grid.Column="0">
+                                    <Image Source="ms-appx:///Assets/price.png"></Image>
+                                    <TextBlock
+                                        Text="{Binding Ordersumm}"
+                                        TextWrapping="Wrap"
+                                        Style="{ThemeResource MessageDialogTitleStyle}"
+                                        Foreground="White"
+                                        Margin="28,-50,0,0"/>
+                                    
+                                    <TextBlock HorizontalAlignment="Center" Text="In driving"></TextBlock>
+                                    
+                                    <Button Foreground="White" Background="#FFCB4A4A" BorderBrush="#FF971E1E">Отменить</Button>
+                                </StackPanel>
+                                
+                                <ListView
+                                    ItemsSource="{Binding Route}"
+                                    Grid.Row="0"
+                                    Grid.Column="1"
+                                    Margin="10,20,0,0">
+                                    <ListView.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock
+                                                Text="{Binding Address}"
+                                                Style="{ThemeResource ListViewItemContentTextBlockStyle}"
+                                                Margin="0,5,19,0"/>
+                                        </DataTemplate>
+                                    </ListView.ItemTemplate>
+                                </ListView>
+
+                            </Grid>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+
+                </ListView>
 
             </PivotItem>
 

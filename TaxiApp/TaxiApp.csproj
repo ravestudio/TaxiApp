@@ -80,10 +80,6 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .Net Framework and Windows SDK are automatically included -->
-    <Page Include="AddPointPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="AuthenticationPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -112,15 +108,16 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\AddPointPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\MainPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AddPointPage.xaml.cs">
-      <DependentUpon>AddPointPage.xaml</DependentUpon>
-    </Compile>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
@@ -134,6 +131,7 @@
     <Compile Include="Controller\AuthenticationController.cs" />
     <Compile Include="Controller\Command\ClickOrderItemCommand.cs" />
     <Compile Include="Controller\Command\SelectPointLocationCommand.cs" />
+    <Compile Include="Controller\Command\SelectServicesCommand.cs" />
     <Compile Include="Controller\Controller.cs" />
     <Compile Include="Controller\ControllerFactory.cs" />
     <Compile Include="Controller\OrderController.cs" />
@@ -160,6 +158,9 @@
     <Compile Include="SocketPage.xaml.cs">
       <DependentUpon>SocketPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\AddPointPage.xaml.cs">
+      <DependentUpon>AddPointPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
@@ -170,8 +171,10 @@
     </AppxManifest>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assets\carclass.png" />
     <Content Include="Assets\Logo.scale-240.png" />
     <Content Include="Assets\point.png" />
+    <Content Include="Assets\price.png" />
     <Content Include="Assets\service.png" />
     <Content Include="Assets\SmallLogo.scale-240.png" />
     <Content Include="Assets\SplashScreen.scale-240.png" />
