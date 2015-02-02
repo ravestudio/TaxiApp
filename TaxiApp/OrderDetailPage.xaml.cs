@@ -26,7 +26,7 @@ namespace TaxiApp
     public sealed partial class OrderDetailPage : Page
     {
         private NavigationHelper navigationHelper;
-        private TaxiApp.Controller.OrderController orderController = Controller.ControllerFactory.Instance.GetOrderController();
+        private TaxiApp.ViewModel.OrderViewModel viewOrderModel = ViewModel.ViewModelFactory.Instance.GetViewOrderModel();
 
         public OrderDetailPage()
         {
@@ -38,10 +38,10 @@ namespace TaxiApp
             this.navigationHelper.LoadState += this.NavigationHelper_LoadState;
             this.navigationHelper.SaveState += this.NavigationHelper_SaveState;
 
-            orderController.OrderModel.ServicePopup = ServicePopup;
-            orderController.OrderModel.DateTimePopup = DateTimePopup;
+            viewOrderModel.OrderModel.ServicePopup = ServicePopup;
+            viewOrderModel.OrderModel.DateTimePopup = DateTimePopup;
 
-            this.orderController.OrderModel.Dispatcher = this.Dispatcher;
+            this.viewOrderModel.OrderModel.Dispatcher = this.Dispatcher;
         }
 
         /// <summary>
@@ -56,9 +56,9 @@ namespace TaxiApp
         /// Получает модель представлений для данного объекта <see cref="Page"/>.
         /// Эту настройку можно изменить на модель строго типизированных представлений.
         /// </summary>
-        public TaxiApp.Controller.OrderController DefaultViewModel
+        public TaxiApp.ViewModel.OrderViewModel DefaultViewModel
         {
-            get { return this.orderController; }
+            get { return this.viewOrderModel; }
         }
 
         /// <summary>
@@ -127,7 +127,7 @@ namespace TaxiApp
 
         private void createBtnClick(object sender, RoutedEventArgs e)
         {
-            this.orderController.CreateOrder();
+            this.viewOrderModel.CreateOrder();
         }
     }
 }

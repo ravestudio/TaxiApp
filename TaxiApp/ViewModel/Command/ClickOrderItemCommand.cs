@@ -4,15 +4,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TaxiApp.Controller.Command
+namespace TaxiApp.ViewModel.Command
 {
     public class ClickOrderItemCommand : System.Windows.Input.ICommand
     {
-        private OrderController _controller = null;
+        private OrderViewModel _viewModel = null;
 
-        public ClickOrderItemCommand(OrderController controller)
+        public ClickOrderItemCommand(OrderViewModel model)
         {
-            this._controller = controller;
+            this._viewModel = model;
         }
         public bool CanExecute(object parameter)
         {
@@ -27,7 +27,7 @@ namespace TaxiApp.Controller.Command
 
             TaxiApp.Core.DataModel.Order.OrderItem orderItem = (TaxiApp.Core.DataModel.Order.OrderItem)e.ClickedItem;
 
-            _controller.Actions[orderItem.Cmd].Invoke(_controller, orderItem);
+            _viewModel.Actions[orderItem.Cmd].Invoke(_viewModel, orderItem);
         }
     }
 }

@@ -53,5 +53,27 @@ namespace TaxiApp.Core.Repository
 
             return orderList;
         }
+
+        public async Task<bool> DeleteOrder(int OrderId)
+        {
+
+            bool ret = false;
+
+            TaxiApp.Core.Entities.User user = TaxiApp.Core.Session.Instance.GetUser();
+
+            string url = "http://serv.giddix.ru/api/passenger_cancelorder/";
+
+            var postData = new List<KeyValuePair<string, string>>();
+
+            postData.Add(new KeyValuePair<string, string>("idpassenger", user.Id.ToString()));
+            postData.Add(new KeyValuePair<string, string>("token", user.token));
+            postData.Add(new KeyValuePair<string, string>("idorder", OrderId.ToString()));
+
+            string data = await this._apiClient.GetData(url, postData);
+
+            ret = data == "{\"error\":0}";
+
+            return ret;
+        }
     }
 }

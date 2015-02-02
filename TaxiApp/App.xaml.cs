@@ -104,6 +104,10 @@ namespace TaxiApp
                 // Если стек навигации не восстанавливается для перехода к первой странице,
                 // настройка новой страницы путем передачи необходимой информации в качестве параметра
                 // навигации.
+
+                System.Threading.Tasks.Task waitTask = System.Threading.Tasks.Task.Delay(3000);
+                await waitTask;
+
                 if (!rootFrame.Navigate(typeof(RegistrationPage), e.Arguments))
                 {
                     throw new Exception("Failed to create initial page");

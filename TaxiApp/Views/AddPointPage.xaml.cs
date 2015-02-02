@@ -26,15 +26,15 @@ namespace TaxiApp.Views
     public sealed partial class AddPointPage : Page
     {
         private NavigationHelper navigationHelper;
-        private TaxiApp.Controller.OrderController orderController = Controller.ControllerFactory.Instance.GetOrderController();
+        private TaxiApp.ViewModel.OrderViewModel viewOrderModel = ViewModel.ViewModelFactory.Instance.GetViewOrderModel();
 
         public AddPointPage()
         {
             this.InitializeComponent();
 
-            orderController.Init(this);
+            viewOrderModel.Init(this);
 
-            this.orderController.OrderModel.RouteMapControl = this.RouteMapControl;
+            this.viewOrderModel.OrderModel.RouteMapControl = this.RouteMapControl;
 
             this.navigationHelper = new NavigationHelper(this);
             this.navigationHelper.LoadState += this.NavigationHelper_LoadState;
@@ -54,9 +54,9 @@ namespace TaxiApp.Views
         /// Получает модель представлений для данного объекта <see cref="Page"/>.
         /// Эту настройку можно изменить на модель строго типизированных представлений.
         /// </summary>
-        public TaxiApp.Controller.OrderController OrderViewModel
+        public TaxiApp.ViewModel.OrderViewModel OrderViewModel
         {
-            get { return this.orderController; }
+            get { return this.viewOrderModel; }
         }
 
         /// <summary>
@@ -111,7 +111,7 @@ namespace TaxiApp.Views
                     string status = "showed";
                 });
 
-            this.orderController.OrderModel.ShowRoute();
+            this.viewOrderModel.OrderModel.ShowRoute();
 
 
             this.navigationHelper.OnNavigatedTo(e);

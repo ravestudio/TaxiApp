@@ -4,15 +4,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TaxiApp.Controller.Command
+namespace TaxiApp.ViewModel.Command
 {
     public class SelectServicesCommand : System.Windows.Input.ICommand
     {
-        private OrderController _controller = null;
+        private OrderViewModel _viewModel = null;
 
-        public SelectServicesCommand(OrderController controller)
+        public SelectServicesCommand(OrderViewModel model)
         {
-            this._controller = controller;
+            this._viewModel = model;
         }
 
         public bool CanExecute(object parameter)
@@ -24,8 +24,8 @@ namespace TaxiApp.Controller.Command
 
         public void Execute(object parameter)
         {
-            this._controller.OrderModel.SelectedServices =
-                this._controller.ServicePicker.SelectedItems.Cast<Core.DataModel.Order.OrderOption>().ToList();
+            this._viewModel.OrderModel.SelectedServices =
+                this._viewModel.ServicePicker.SelectedItems.Cast<Core.DataModel.Order.OrderOption>().ToList();
         }
     }
 }

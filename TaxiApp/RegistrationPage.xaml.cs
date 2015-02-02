@@ -26,7 +26,7 @@ namespace TaxiApp
     public sealed partial class RegistrationPage : Page
     {
         private NavigationHelper navigationHelper;
-        private Controller.AuthenticationController defaultViewModel = Controller.ControllerFactory.Instance.GetAuthenticationController();
+        private ViewModel.AuthenticationViewModel defaultViewModel = ViewModel.ViewModelFactory.Instance.GetViewAuthenticationModel();
 
         public RegistrationPage()
         {
@@ -51,7 +51,7 @@ namespace TaxiApp
         /// Получает модель представлений для данного объекта <see cref="Page"/>.
         /// Эту настройку можно изменить на модель строго типизированных представлений.
         /// </summary>
-        public Controller.AuthenticationController DefaultViewModel
+        public ViewModel.AuthenticationViewModel DefaultViewModel
         {
             get { return this.defaultViewModel; }
         }

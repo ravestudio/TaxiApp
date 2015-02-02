@@ -10,15 +10,15 @@ using TaxiApp.Core.DataModel.Order;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
-namespace TaxiApp.Controller.Command
+namespace TaxiApp.ViewModel.Command
 {
     public class SelectPointLocationCommand : System.Windows.Input.ICommand
     {
-        private OrderController _controller = null;
+        private OrderViewModel _viewModel = null;
 
-        public SelectPointLocationCommand(OrderController controller)
+        public SelectPointLocationCommand(OrderViewModel model)
         {
-            this._controller = controller;
+            this._viewModel = model;
         }
 
         public bool CanExecute(object parameter)
@@ -34,11 +34,11 @@ namespace TaxiApp.Controller.Command
 
             LocationItem location = (LocationItem)e.ClickedItem;
 
-            _controller.SearchModel.SelectedPoint.Location = location;
+            _viewModel.SearchModel.SelectedPoint.Location = location;
 
             Frame rootFrame = Window.Current.Content as Frame;
 
-            this._controller.OrderModel.UpdatePoints();
+            this._viewModel.OrderModel.UpdatePoints();
 
             rootFrame.GoBack();
         }

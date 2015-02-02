@@ -27,13 +27,13 @@ namespace TaxiApp.Views
     {
         private NavigationHelper navigationHelper;
 
-        private TaxiApp.Controller.OrderController orderController = Controller.ControllerFactory.Instance.GetOrderController();
+        private TaxiApp.ViewModel.OrderViewModel viewOrderModel = ViewModel.ViewModelFactory.Instance.GetViewOrderModel();
 
         public MainPage()
         {
             this.InitializeComponent();
 
-            orderController.Init(this);
+            viewOrderModel.Init(this);
 
             this.navigationHelper = new NavigationHelper(this);
             this.navigationHelper.LoadState += this.NavigationHelper_LoadState;
@@ -52,9 +52,9 @@ namespace TaxiApp.Views
         /// Получает модель представлений для данного объекта <see cref="Page"/>.
         /// Эту настройку можно изменить на модель строго типизированных представлений.
         /// </summary>
-        public TaxiApp.Controller.OrderController OrderViewModel
+        public TaxiApp.ViewModel.OrderViewModel OrderViewModel
         {
-            get { return this.orderController; }
+            get { return this.viewOrderModel; }
         }
 
         /// <summary>
@@ -70,7 +70,7 @@ namespace TaxiApp.Views
         /// сеанса.  Это состояние будет равно NULL при первом посещении страницы.</param>
         private void NavigationHelper_LoadState(object sender, LoadStateEventArgs e)
         {
-            this.orderController.LoadMyOrders();
+            this.viewOrderModel.LoadMyOrders();
         }
 
         /// <summary>
@@ -119,7 +119,7 @@ namespace TaxiApp.Views
 
         private void CreateBtnClick(object sender, RoutedEventArgs e)
         {
-            this.orderController.CreateOrder();
+            this.viewOrderModel.CreateOrder();
         }
 
     }

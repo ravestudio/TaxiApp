@@ -77,7 +77,7 @@ namespace TaxiApp
             var sampleDataGroup = await SampleDataSource.GetGroupAsync("Group-1");
             this.DefaultViewModel[FirstGroupName] = sampleDataGroup;
 
-            IList<Core.Entities.Order> orderList = await Controller.ControllerFactory.Instance.GetOrderController().GetUserOrders();
+            IList<Core.Entities.Order> orderList = await ViewModel.ViewModelFactory.Instance.GetViewOrderModel().GetUserOrders();
             this.DefaultViewModel["OrderList"] = orderList;
         }
 
@@ -188,7 +188,7 @@ namespace TaxiApp
 
         private async void myOrderListBtn_Click(object sender, RoutedEventArgs e)
         {
-            IList<Core.Entities.Order> orderList = await Controller.ControllerFactory.Instance.GetOrderController().GetUserOrders();
+            IList<Core.Entities.Order> orderList = await ViewModel.ViewModelFactory.Instance.GetViewOrderModel().GetUserOrders();
 
             this.DefaultViewModel["OrderList"] = orderList;
         }

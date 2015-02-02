@@ -30,19 +30,19 @@ namespace TaxiApp
     public sealed partial class CreateOrderPage : Page
     {
         private NavigationHelper navigationHelper;
-        private TaxiApp.Controller.OrderController orderController = Controller.ControllerFactory.Instance.GetOrderController();
+        private TaxiApp.ViewModel.OrderViewModel viewOrderModel = ViewModel.ViewModelFactory.Instance.GetViewOrderModel();
 
         public CreateOrderPage()
         {
             this.InitializeComponent();
 
-            this.orderController.OrderModel.RouteMapControl = this.RouteMapControl;
+            this.viewOrderModel.OrderModel.RouteMapControl = this.RouteMapControl;
 
             this.navigationHelper = new NavigationHelper(this);
             this.navigationHelper.LoadState += this.NavigationHelper_LoadState;
             this.navigationHelper.SaveState += this.NavigationHelper_SaveState;
 
-            this.orderController.OrderModel.Dispatcher = this.Dispatcher;
+            this.viewOrderModel.OrderModel.Dispatcher = this.Dispatcher;
         }
 
         /// <summary>
@@ -57,9 +57,9 @@ namespace TaxiApp
         /// Получает модель представлений для данного объекта <see cref="Page"/>.
         /// Эту настройку можно изменить на модель строго типизированных представлений.
         /// </summary>
-        public TaxiApp.Controller.OrderController DefaultViewModel
+        public TaxiApp.ViewModel.OrderViewModel DefaultViewModel
         {
-            get { return this.orderController; }
+            get { return this.viewOrderModel; }
         }
 
         /// <summary>
@@ -124,7 +124,7 @@ namespace TaxiApp
 
         private void CreateAppBarButton_Click(object sender, RoutedEventArgs e)
         {
-            this.orderController.CreateOrder();
+            this.viewOrderModel.CreateOrder();
         }
 
     }

@@ -23,10 +23,15 @@
     >
 
     <Page.Resources>
-        
+
+        <DataTemplate x:Key="ListPickerTemplate">
+            <TextBlock Text="{Binding Path=Name}" FontWeight="Bold" Margin="10,0,0,0"/>
+        </DataTemplate>
+
         <ListPickerFlyout x:Key="ServiceFlyout" SelectionMode="Multiple"
                           PickerFlyoutBase.Title="SET SERVICES"             
                           ItemsSource="{Binding ElementName=mainPage, Path=DataContext.OrderModel.OrderServiceList}"
+                          ItemTemplate="{StaticResource ListPickerTemplate}"
                           >
 
             <i:Interaction.Behaviors>
@@ -35,29 +40,18 @@
                 </core:EventTriggerBehavior>
             </i:Interaction.Behaviors>
 
-            <ListPickerFlyout.ItemTemplate>
-                <DataTemplate>
-                    <StackPanel>
-                        <TextBlock Text="{Binding Path=Name}" FontSize="{StaticResource TextStyleExtraLargeFontSize}"/>
-                    </StackPanel>
-                </DataTemplate>
-            </ListPickerFlyout.ItemTemplate>
-
         </ListPickerFlyout>
 
         <ListPickerFlyout x:Key="CarFlyout" SelectionMode="Single"
                           PickerFlyoutBase.Title="SET CAR CLASS"
                           ItemsSource="{Binding ElementName=mainPage, Path=DataContext.OrderModel.OrderCarList}"
-                          
+                          ItemTemplate="{StaticResource ListPickerTemplate}"
                           >
-            
-            <ListPickerFlyout.ItemTemplate>
-                <DataTemplate>
-                    <TextBlock Text="{Binding Path=Name}"/>
-                </DataTemplate>
-            </ListPickerFlyout.ItemTemplate>
 
         </ListPickerFlyout>
+        
+        <TimePickerFlyout x:Key="TimeFlyout">
+        </TimePickerFlyout>
 
 
         <Converters:DateTimeToDateTimeOffsetConverter
@@ -166,11 +160,10 @@
             <PivotItem
                 x:Uid="PivotOrderList"
                 Header="МОИ ЗАКАЗЫ"
-                DataContext="{Binding OrderList}"
                 d:DataContext="{Binding Source={d:DesignData Source=../../TaxiApp.Core/DataModel/OrderList.json, Type=entity:OrderDS}}">
 
                 <ListView
-                     ItemsSource="{Binding}">
+                     ItemsSource="{Binding OrderList}">
 
                     <ListView.ItemTemplate>
                         <DataTemplate>
@@ -190,8 +183,10 @@
                                         Margin="28,-50,0,0"/>
                                     
                                     <TextBlock HorizontalAlignment="Center" Text="In driving"></TextBlock>
-                                    
-                                    <Button Foreground="White" Background="#FFCB4A4A" BorderBrush="#FF971E1E">Отменить</Button>
+
+                                    <Button Foreground="White" Background="#FFCB4A4A" BorderBrush="#FF971E1E"
+                                            Command="{Binding ElementName=mainPage, Path=DataContext.CancelOrderCmd}"
+                                            CommandParameter="{Binding}" >Отменить</Button>
                                 </StackPanel>
                                 
                                 <ListView

@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TaxiApp.Controller
+namespace TaxiApp.ViewModel
 {
-    public class Controller
+    public class ViewModel
     {
         public virtual void Init(Windows.UI.Xaml.Controls.Page Page)
         {

@@ -10,9 +10,9 @@ using TaxiApp.Core.DataModel.Order;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
-namespace TaxiApp.Controller
+namespace TaxiApp.ViewModel
 {
-    public class OrderController : Controller
+    public class OrderViewModel : ViewModel
     {
         public OrderDetail OrderModel { get; set; }
         public SearchModel SearchModel { get; set; }
@@ -20,17 +20,19 @@ namespace TaxiApp.Controller
         public Command.ClickOrderItemCommand ClickOrderItem { get; set; }
         public Command.SelectPointLocationCommand SelectLocationItem { get; set; }
         public Command.SelectServicesCommand SelectServicesCmd { get; set; }
+        public Command.CancelOrderCommand CancelOrderCmd { get; set; }
 
         public Windows.UI.Xaml.Controls.Page Page { get; set; }
 
         public ListPickerFlyout ServicePicker { get; set; }
         public ListPickerFlyout CarPicker { get; set; }
+        public TimePickerFlyout TimePicker { get; set; }
 
-        public Dictionary<string, Action<Controller, TaxiApp.Core.DataModel.Order.OrderItem>> Actions = null;
+        public Dictionary<string, Action<ViewModel, TaxiApp.Core.DataModel.Order.OrderItem>> Actions = null;
 
         public ObservableCollection<Core.Entities.Order> OrderList { get; set; }
 
-        public OrderController()
+        public OrderViewModel()
         {
             this.OrderList = new ObservableCollection<Core.Entities.Order>();
 
@@ -40,39 +42,40 @@ namespace TaxiApp.Controller
             this.ClickOrderItem = new Command.ClickOrderItemCommand(this);
             this.SelectLocationItem = new Command.SelectPointLocationCommand(this);
             this.SelectServicesCmd = new Command.SelectServicesCommand(this);
+            this.CancelOrderCmd = new Command.CancelOrderCommand(this);
 
-            this.Actions = new Dictionary<string, Action<Controller, TaxiApp.Core.DataModel.Order.OrderItem>>();
+            this.Actions = new Dictionary<string, Action<ViewModel, TaxiApp.Core.DataModel.Order.OrderItem>>();
 
-            this.Actions.Add("Point", (contrl, item) => {
+            this.Actions.Add("Point", (viewModel, item) => {
                 TaxiApp.Core.DataModel.Order.OrderPoint orderPoint = (TaxiApp.Core.DataModel.Order.OrderPoint)item;
 
                 Frame rootFrame = Window.Current.Content as Frame;
 
-                OrderController controller = (OrderController)contrl;
+                OrderViewModel controller = (OrderViewModel)viewModel;
 
                 controller.SearchModel.SelectedPoint = orderPoint;
                 rootFrame.Navigate(typeof(Views.AddPointPage));
             });
 
-            this.Actions.Add("Services", (contrl, item) =>
+            this.Actions.Add("Services", (viewModel, item) =>
             {
-                OrderController controller = (OrderController)contrl;
+                OrderViewModel controller = (OrderViewModel)viewModel;
 
                 controller.ServicePicker.ShowAt(controller.Page);
 
             });
 
-            this.Actions.Add("Now", (contrl, item) =>
+            this.Actions.Add("Now", (viewModel, item) =>
             {
-                OrderController controller = (OrderController)contrl;
+                OrderViewModel controller = (OrderViewModel)viewModel;
 
-                controller.OrderModel.ShowDateTime();
+                controller.TimePicker.ShowAt(controller.Page);
 
             });
 
-            this.Actions.Add("Car", (contrl, item) =>
+            this.Actions.Add("Car", (viewModel, item) =>
             {
-                OrderController controller = (OrderController)contrl;
+                OrderViewModel controller = (OrderViewModel)viewModel;
 
                 controller.CarPicker.ShowAt(controller.Page);
 
@@ -87,6 +90,7 @@ namespace TaxiApp.Controller
             {
                 this.ServicePicker = (ListPickerFlyout)page.Resources["ServiceFlyout"];
                 this.CarPicker = (ListPickerFlyout)page.Resources["CarFlyout"];
+                this.TimePicker = (TimePickerFlyout)page.Resources["TimeFlyout"];
             }
             else
             {

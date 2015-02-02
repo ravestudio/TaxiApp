@@ -59,7 +59,8 @@ namespace TaxiApp.Core.DataModel.Order
                 {
                     Priority = 10,
                     Title = "Now",
-                    Cmd = "Now"
+                    Cmd = "Now",
+                    IconSource = new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///Assets/time.png"))
                 });
 
             this._orderItemList.Add(new OrderItem()

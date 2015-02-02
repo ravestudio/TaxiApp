@@ -46,9 +46,20 @@ namespace TaxiApp.Core.Entities
             this.Id = (int)jsonObj["idorder"].GetNumber();
 
             this.StartDate = DateTime.Parse(jsonObj["startdate"].GetString(), System.Globalization.CultureInfo.InvariantCulture);
-
             this.Ordersumm = decimal.Parse(jsonObj["ordersumm"].GetString(), System.Globalization.CultureInfo.InvariantCulture);
-            this.Routemeters = int.Parse(jsonObj["routemeters"].GetString());
+
+
+            var routemetersType = jsonObj["routemeters"].ValueType;
+
+            if (routemetersType == Windows.Data.Json.JsonValueType.Number)
+            {
+                this.Routemeters = (int)jsonObj["routemeters"].GetNumber();
+            }
+
+            if (routemetersType == Windows.Data.Json.JsonValueType.String)
+            {
+                this.Routemeters = int.Parse(jsonObj["routemeters"].GetString(), System.Globalization.CultureInfo.InvariantCulture);
+            }
 
             var routeArray = jsonObj["routes"].GetArray();
 

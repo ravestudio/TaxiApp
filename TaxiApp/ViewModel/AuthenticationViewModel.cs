@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
-namespace TaxiApp.Controller
+namespace TaxiApp.ViewModel
 {
-    public class AuthenticationController : Controller
+    public class AuthenticationViewModel : ViewModel
     {
         public DataModel.LoginModel LoginModel { get; set; }
         public DataModel.RegistrationModel RegistrationModel { get; set; }
@@ -19,7 +19,7 @@ namespace TaxiApp.Controller
 
         public Windows.UI.Xaml.Controls.Page Page { get; set; }
 
-        public AuthenticationController()
+        public AuthenticationViewModel()
         {
             this.LoginModel = new DataModel.LoginModel();
             this.RegistrationModel = new DataModel.RegistrationModel();
@@ -31,9 +31,9 @@ namespace TaxiApp.Controller
 
     public class RegisterCommand : System.Windows.Input.ICommand
     {
-        private AuthenticationController _controller = null;
+        private AuthenticationViewModel _controller = null;
 
-        public RegisterCommand(AuthenticationController controller)
+        public RegisterCommand(AuthenticationViewModel controller)
         {
             this._controller = controller;
         }
@@ -75,9 +75,9 @@ namespace TaxiApp.Controller
 
     public class LoginCommand : System.Windows.Input.ICommand
     {
-        private AuthenticationController _controller = null;
+        private AuthenticationViewModel _controller = null;
 
-        public LoginCommand(AuthenticationController controller)
+        public LoginCommand(AuthenticationViewModel controller)
         {
             this._controller = controller;
         }
