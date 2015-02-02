@@ -5,7 +5,7 @@
     xmlns:Converters ="using:TaxiApp.Core.Common"
     xmlns:viewModel="using:TaxiApp.Core.DataModel"
     xmlns:OrderTemplates="using:TaxiApp.Core.DataModel.Order"
-    xmlns:controller="using:TaxiApp.Controller"
+    xmlns:controller="using:TaxiApp.ViewModel"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:entity="using:TaxiApp.Core.Entities"
@@ -15,7 +15,7 @@
     x:Class="TaxiApp.Views.MainPage"
     mc:Ignorable="d"
     DataContext="{Binding OrderViewModel, RelativeSource={RelativeSource Mode=Self}}"
-    d:DataContext="{d:DesignInstance IsDesignTimeCreatable=True, Type=controller:OrderController}"
+    d:DataContext="{d:DesignInstance IsDesignTimeCreatable=True, Type=controller:OrderViewModel}"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
     
     Name="mainPage"
@@ -181,8 +181,8 @@
                                         Style="{ThemeResource MessageDialogTitleStyle}"
                                         Foreground="White"
                                         Margin="28,-50,0,0"/>
-                                    
-                                    <TextBlock HorizontalAlignment="Center" Text="In driving"></TextBlock>
+
+                                    <TextBlock HorizontalAlignment="Center" Text="{Binding StatusText, Mode=TwoWay}" FontSize="20" ></TextBlock>
 
                                     <Button Foreground="White" Background="#FFCB4A4A" BorderBrush="#FF971E1E"
                                             Command="{Binding ElementName=mainPage, Path=DataContext.CancelOrderCmd}"

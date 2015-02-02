@@ -23,6 +23,7 @@ namespace TaxiApp.ViewModel
         public Command.CancelOrderCommand CancelOrderCmd { get; set; }
 
         public Windows.UI.Xaml.Controls.Page Page { get; set; }
+        public Windows.UI.Xaml.Controls.Pivot Pivot { get; set; }
 
         public ListPickerFlyout ServicePicker { get; set; }
         public ListPickerFlyout CarPicker { get; set; }
@@ -80,6 +81,24 @@ namespace TaxiApp.ViewModel
                 controller.CarPicker.ShowAt(controller.Page);
 
             });
+
+            OrderModel.SocketOnMessage = new OrderDetail.SocketHandler((resp) =>
+            {
+                if (resp.request == "neworderstatus")
+                {
+                    var order = this.OrderList.SingleOrDefault(o => o.Id == resp.idorder);
+
+                    if (order!= null)
+                    {
+
+                        this.Page.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+                        {
+                            order.Status = resp.orderstatus;
+                        });
+                    }
+                }
+            });
+            
         }
 
         public override void Init(Page page)
@@ -121,6 +140,12 @@ namespace TaxiApp.ViewModel
             string url = "http://serv.giddix.ru/api/passenger_setorder/";
 
             string data = await client.GetData(url, postData);
+
+            Pivot.SelectedIndex = 1;
+
+            LoadMyOrders();
+
+            
         }
 
         public async Task<IList<TaxiApp.Core.Entities.Order>> GetUserOrders()

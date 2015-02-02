@@ -108,6 +108,7 @@
     <Compile Include="SocketClient.cs" />
     <Compile Include="Socket\SocketManager.cs" />
     <Compile Include="Socket\SocketRequest.cs" />
+    <Compile Include="Socket\SocketResponse.cs" />
     <Compile Include="WebApiClient.cs" />
   </ItemGroup>
   <ItemGroup>

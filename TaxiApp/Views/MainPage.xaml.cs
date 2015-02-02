@@ -34,6 +34,7 @@ namespace TaxiApp.Views
             this.InitializeComponent();
 
             viewOrderModel.Init(this);
+            viewOrderModel.Pivot = this.pivot;
 
             this.navigationHelper = new NavigationHelper(this);
             this.navigationHelper.LoadState += this.NavigationHelper_LoadState;

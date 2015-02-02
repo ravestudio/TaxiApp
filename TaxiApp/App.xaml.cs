@@ -105,7 +105,7 @@ namespace TaxiApp
                 // настройка новой страницы путем передачи необходимой информации в качестве параметра
                 // навигации.
 
-                System.Threading.Tasks.Task waitTask = System.Threading.Tasks.Task.Delay(3000);
+                System.Threading.Tasks.Task waitTask = System.Threading.Tasks.Task.Delay(1000);
                 await waitTask;
 
                 if (!rootFrame.Navigate(typeof(RegistrationPage), e.Arguments))

@@ -138,7 +138,7 @@ namespace TaxiApp.Core.DataModel
 
         public LocationItem(MapLocation location)
         {
-            this.Address = string.Format("{0}, {1} {2} {3}", location.Address.Town, location.Address.Street, location.Address.StreetNumber, location.Address.BuildingName);
+            this.Address = string.Format("{0} {1}, {2}", location.Address.Street, location.Address.StreetNumber, location.Address.Town);
 
             this.Latitude = location.Point.Position.Latitude;
             this.Longitude = location.Point.Position.Longitude;

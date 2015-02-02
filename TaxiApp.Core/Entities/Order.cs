@@ -3,17 +3,57 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.ComponentModel;
 
 namespace TaxiApp.Core.Entities
 {
-    public class Order: Entity<int>
+    public class Order: Entity<int>, INotifyPropertyChanged
     {
+        private Dictionary<int, string> _statusValue = new Dictionary<int, string>();
+
         public DateTime StartDate { get; set; }
 
         public decimal Ordersumm { get; set; }
         public int Routemeters { get; set; }
 
         public IList<OrderRouteItem> route = new List<OrderRouteItem>();
+
+        public Order()
+        {
+            this.Status = 0;
+
+            this._statusValue.Add(0, "Created");
+            this._statusValue.Add(1, "Booked");
+            this._statusValue.Add(2, "In Driving");
+            this._statusValue.Add(3, "Arrived");
+            this._statusValue.Add(4, "Performed");
+            this._statusValue.Add(99, "Canceled");
+            this._statusValue.Add(100, "Complete");
+        }
+
+        private int _status = 0;
+
+        public int Status {
+            get
+            {
+                return this._status;
+            }
+
+            set
+            {
+                this._status = value;
+                NotifyPropertyChanged("Status");
+                NotifyPropertyChanged("StatusText");
+            }
+        }
+
+        public string StatusText
+        {
+            get
+            {
+                return this._statusValue[Status];
+            }
+        }
 
         public IList<OrderRouteItem> Route
         {
@@ -47,6 +87,18 @@ namespace TaxiApp.Core.Entities
 
             this.StartDate = DateTime.Parse(jsonObj["startdate"].GetString(), System.Globalization.CultureInfo.InvariantCulture);
             this.Ordersumm = decimal.Parse(jsonObj["ordersumm"].GetString(), System.Globalization.CultureInfo.InvariantCulture);
+
+            var statusType = jsonObj["status"].ValueType;
+
+            if (statusType == Windows.Data.Json.JsonValueType.Number)
+            {
+                this.Status = (int)jsonObj["status"].GetNumber();
+            }
+
+            if (statusType == Windows.Data.Json.JsonValueType.String)
+            {
+                this.Status = int.Parse(jsonObj["status"].GetString(), System.Globalization.CultureInfo.InvariantCulture);
+            }
 
 
             var routemetersType = jsonObj["routemeters"].ValueType;
@@ -83,6 +135,16 @@ namespace TaxiApp.Core.Entities
             }
 
             base.ReadData(jsonObj);
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private void NotifyPropertyChanged(String propertyName = "")
+        {
+            if (PropertyChanged != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            }
         }
     }
 

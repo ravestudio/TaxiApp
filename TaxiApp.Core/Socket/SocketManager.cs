@@ -47,5 +47,57 @@ namespace TaxiApp.Core.Socket
             return read;
         }
 
+        public SocketResponse ProcSocketResp(string msg)
+        {
+
+            string auth_exampl = "{\"error\":\"0\", \"request\":\"auth\"}";
+            string changeStatus_example = "{\"error\":\"0\", \"request\":\"neworderstatus\", \"params\":{\"idorder\": \"641\", \"status\":\"3\"}}";
+
+            SocketResponse resp = null;
+
+            if (msg.StartsWith("42"))
+            {
+                resp = new SocketResponse();
+
+                msg = msg.Remove(0, 2);
+                var ObjArray = Windows.Data.Json.JsonValue.Parse(msg).GetArray();
+
+                string message = ObjArray[1].GetString();
+                //string message = changeStatus_example;
+
+                var RespObj = Windows.Data.Json.JsonValue.Parse(message).GetObject();
+
+                resp.request = RespObj["request"].GetString();
+
+                if (resp.request == "neworderstatus")
+                {
+                    var paramsObj = RespObj["params"].GetObject();
+
+                    if (paramsObj["idorder"].ValueType == Windows.Data.Json.JsonValueType.Number)
+                    {
+                        resp.idorder = (int)paramsObj["idorder"].GetNumber();
+                    }
+
+                    if (paramsObj["idorder"].ValueType == Windows.Data.Json.JsonValueType.String)
+                    {
+                        resp.idorder = int.Parse(paramsObj["idorder"].GetString(), System.Globalization.CultureInfo.InvariantCulture);
+                    }
+
+                    if (paramsObj["status"].ValueType == Windows.Data.Json.JsonValueType.Number)
+                    {
+                        resp.orderstatus = (int)paramsObj["status"].GetNumber();
+                    }
+
+                    if (paramsObj["status"].ValueType == Windows.Data.Json.JsonValueType.String)
+                    {
+                        resp.orderstatus = int.Parse(paramsObj["status"].GetString(), System.Globalization.CultureInfo.InvariantCulture);
+                    }
+
+                }
+            }
+
+            return resp;
+        }
+
     }
 }

@@ -12,9 +12,17 @@ namespace TaxiApp.Core.DataModel.Order
 {
     public class OrderDetail
     {
+
+        public delegate void SocketHandler(Socket.SocketResponse resp);
+
+        public SocketHandler SocketOnMessage;
+
         private ObservableCollection<OrderItem> _orderItemList = null;
         private IList<OrderOption> _orderServiceList = null;
         private IList<OrderOption> _orderCarList = null;
+
+        private TaxiApp.Core.SocketClient SocketClient = new Core.SocketClient();
+        private TaxiApp.Core.Socket.SocketManager socketMG = null;
 
         public IList<OrderOption> SelectedServices = null;
 
@@ -30,15 +38,18 @@ namespace TaxiApp.Core.DataModel.Order
 
         public OrderDetail()
         {
+            socketMG = new Core.Socket.SocketManager(this.SocketClient);
+
             InitOptions();
 
             this.EndDate = DateTime.Now;
             this.EndTime = DateTime.Now;
 
             this.PriceInfo = new OrderPriceInfo();
-            this.PriceInfo.Time = "40min";
-            this.PriceInfo.Price = "$7.5";
-            this.PriceInfo.Destination = "7.3km";
+            this.PriceInfo.Visible = false;
+            //this.PriceInfo.Time = "40min";
+            //this.PriceInfo.Price = "$7.5";
+            //this.PriceInfo.Destination = "7.3km";
 
             this._orderItemList = new ObservableCollection<OrderItem>();
 
@@ -80,6 +91,56 @@ namespace TaxiApp.Core.DataModel.Order
             });
 
             this.MapRouteChanged += OrderModel_MapRouteChanged;
+
+            string Host = "194.58.102.129";
+            string Port = "9090";
+
+            SocketClient.ConnectAsync(Host, Port).ContinueWith(t =>
+            {
+                string res = "ok";
+
+                socketMG.Start();
+
+            });
+
+            SocketClient.OnMessage += SocketClient_OnMessage;
+        }
+
+        void SocketClient_OnMessage(object sender, EventArgs e)
+        {
+            TaxiApp.Core.SocketClient client = (TaxiApp.Core.SocketClient)sender;
+            string msg = client.Message;
+
+            Task.Delay(2000).ContinueWith((task) =>
+                {
+                    ProcSocketResp(msg);
+                });
+        }
+
+        void ProcSocketResp(string msg)
+        {
+            if (msg == "40")
+            {
+                SocketAuth();
+            }
+
+            if (msg.StartsWith("42"))
+            {
+                Socket.SocketResponse resp = socketMG.ProcSocketResp(msg);
+
+                if (this.SocketOnMessage != null)
+                {
+                    this.SocketOnMessage(resp);
+                }
+            }
+        }
+
+        void SocketAuth()
+        {
+            socketMG.Auth().ContinueWith(w =>
+            {
+                string res = "ok";
+            });
         }
 
         private void InitOptions()
@@ -304,10 +365,10 @@ namespace TaxiApp.Core.DataModel.Order
             {
                 string addr = 
                         string.Format("{0}, {1}, {2} {3}",
-                        orderPoint.Location.MapLocation.Address.Country,
-                        orderPoint.Location.MapLocation.Address.Town,
                         orderPoint.Location.MapLocation.Address.Street,
-                        orderPoint.Location.MapLocation.Address.StreetNumber
+                        orderPoint.Location.MapLocation.Address.StreetNumber,
+                        orderPoint.Location.MapLocation.Address.Town,
+                        orderPoint.Location.MapLocation.Address.Country
                         );
 
                 //var utf8 = System.Text.Encoding.UTF8;
@@ -340,7 +401,8 @@ namespace TaxiApp.Core.DataModel.Order
             }
 
             //YYYY-MM-DD HH:II
-            string enddate = string.Format("{0}-{1}-{2} {3}:{4}", this.EndDate.Year, this.EndDate.Month,this.EndDate.Day, this.EndTime.Hour, this.EndTime.Minute);
+            //string enddate = string.Format("{0}-{1}-{2} {3}:{4}", this.EndDate.Year, this.EndDate.Month,this.EndDate.Day, this.EndTime.Hour, this.EndTime.Minute);
+            string enddate = string.Format("{0:yyyy}-{0:MM}-{0:dd} {1:HH}:{1:mm}", this.EndDate, this.EndTime);
 
             keyValueData.Add(new KeyValuePair<string, string>("enddate", enddate));
 
@@ -353,19 +415,33 @@ namespace TaxiApp.Core.DataModel.Order
 
             List<KeyValuePair<string, string>> postData = new List<KeyValuePair<string, string>>();
 
+            string distance = "0";
+            string minutes = "0";
+
+            this.PriceInfo.Destination = string.Empty;
+            this.PriceInfo.Time = string.Empty;
+
             if (this.MapRoute != null)
             {
-                postData.Add(new KeyValuePair<string, string>("distance", this.MapRoute.LengthInMeters.ToString()));
-                postData.Add(new KeyValuePair<string, string>("minutes", this.MapRoute.EstimatedDuration.Minutes.ToString()));
+                distance = this.MapRoute.LengthInMeters.ToString();
+                minutes = this.MapRoute.EstimatedDuration.Minutes.ToString();
+
+                this.PriceInfo.Destination = string.Format("{0}km", this.MapRoute.LengthInMeters/1000);
+                this.PriceInfo.Time = string.Format("{0}min", this.MapRoute.EstimatedDuration.Minutes);
             }
 
-            //YYYY-MM-DD HH:II
-            string enddate = string.Format("{0}-{1}-{2} {3}:{4}", this.EndDate.Year, this.EndDate.Month, this.EndDate.Day, this.EndTime.Hour, this.EndTime.Minute);
+            postData.Add(new KeyValuePair<string, string>("distance", distance));
+            postData.Add(new KeyValuePair<string, string>("minutes", minutes));
 
-            postData.Add(new KeyValuePair<string, string>("enddate", enddate));
+            //YYYY-MM-DD HH:II
+            string enddate = string.Format("{0:yyyy}-{0:MM}-{0:dd} {0:HH}:{0:mm}", this.EndDate);
+
+            postData.Add(new KeyValuePair<string, string>("orderenddate", enddate));
 
             postData.Add(new KeyValuePair<string, string>("carclass", "0"));
             //var postData = new List<KeyValuePair<string, string>>();
+            postData.Add(new KeyValuePair<string, string>("passengersnum", "1"));
+            
 
             postData.Add(new KeyValuePair<string, string>("idpassenger", user.Id.ToString()));
             postData.Add(new KeyValuePair<string, string>("token", user.token));
@@ -378,6 +454,16 @@ namespace TaxiApp.Core.DataModel.Order
             string url = "http://serv.giddix.ru/api/passenger_getprice/";
 
             string data = await client.GetData(url, postData);
+
+            var Obj = Windows.Data.Json.JsonValue.Parse(data).GetObject();
+
+            var Resp = Obj["response"].GetObject();
+
+            int price = (int)Resp["price"].GetNumber();
+
+            this.PriceInfo.Price = string.Format("${0}", price);
+
+            this.PriceInfo.Visible = true;
         }
     }
 }
