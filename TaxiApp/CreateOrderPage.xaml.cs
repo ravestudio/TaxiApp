@@ -30,7 +30,7 @@ namespace TaxiApp
     public sealed partial class CreateOrderPage : Page
     {
         private NavigationHelper navigationHelper;
-        private TaxiApp.ViewModel.OrderViewModel viewOrderModel = ViewModel.ViewModelFactory.Instance.GetViewOrderModel();
+        private TaxiApp.ViewModel.EditOrderViewModel viewOrderModel = ViewModel.ViewModelFactory.Instance.GetViewOrderModel();
 
         public CreateOrderPage()
         {
@@ -57,7 +57,7 @@ namespace TaxiApp
         /// Получает модель представлений для данного объекта <see cref="Page"/>.
         /// Эту настройку можно изменить на модель строго типизированных представлений.
         /// </summary>
-        public TaxiApp.ViewModel.OrderViewModel DefaultViewModel
+        public TaxiApp.ViewModel.EditOrderViewModel DefaultViewModel
         {
             get { return this.viewOrderModel; }
         }

@@ -14,9 +14,9 @@ namespace TaxiApp.ViewModel.Command
 {
     public class SelectPointLocationCommand : System.Windows.Input.ICommand
     {
-        private OrderViewModel _viewModel = null;
+        private EditOrderViewModel _viewModel = null;
 
-        public SelectPointLocationCommand(OrderViewModel model)
+        public SelectPointLocationCommand(EditOrderViewModel model)
         {
             this._viewModel = model;
         }

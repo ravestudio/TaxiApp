@@ -8,9 +8,9 @@ namespace TaxiApp.ViewModel.Command
 {
     public class SelectServicesCommand : System.Windows.Input.ICommand
     {
-        private OrderViewModel _viewModel = null;
+        private EditOrderViewModel _viewModel = null;
 
-        public SelectServicesCommand(OrderViewModel model)
+        public SelectServicesCommand(EditOrderViewModel model)
         {
             this._viewModel = model;
         }

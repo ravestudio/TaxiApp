@@ -8,9 +8,9 @@ namespace TaxiApp.ViewModel.Command
 {
     public class CancelOrderCommand : System.Windows.Input.ICommand
     {
-        private OrderViewModel _viewOrderModel = null;
+        private EditOrderViewModel _viewOrderModel = null;
 
-        public CancelOrderCommand(OrderViewModel model)
+        public CancelOrderCommand(EditOrderViewModel model)
         {
             this._viewOrderModel = model;
         }

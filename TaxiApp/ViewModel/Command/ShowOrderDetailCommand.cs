@@ -4,16 +4,20 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
+
 namespace TaxiApp.ViewModel.Command
 {
-    public class ClickOrderItemCommand : System.Windows.Input.ICommand
+    public class ShowOrderDetailCommand : System.Windows.Input.ICommand
     {
         private EditOrderViewModel _viewModel = null;
 
-        public ClickOrderItemCommand(EditOrderViewModel model)
+        public ShowOrderDetailCommand(EditOrderViewModel viewModel)
         {
-            this._viewModel = model;
+            this._viewModel = viewModel;
         }
+
         public bool CanExecute(object parameter)
         {
             return true;
@@ -25,9 +29,13 @@ namespace TaxiApp.ViewModel.Command
         {
             Windows.UI.Xaml.Controls.ItemClickEventArgs e = (Windows.UI.Xaml.Controls.ItemClickEventArgs)parameter;
 
-            TaxiApp.Core.DataModel.Order.OrderItem orderItem = (TaxiApp.Core.DataModel.Order.OrderItem)e.ClickedItem;
+            Core.Entities.Order order = (Core.Entities.Order)e.ClickedItem;
 
-            _viewModel.Actions[orderItem.Cmd].Invoke(_viewModel, orderItem);
+
+            Frame rootFrame = Window.Current.Content as Frame;
+
+
+            rootFrame.Navigate(typeof(Views.OrderDetailPage));
         }
     }
 }

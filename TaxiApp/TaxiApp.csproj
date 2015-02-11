@@ -116,6 +116,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\OrderDetailPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App.xaml.cs">
@@ -133,9 +137,10 @@
     <Compile Include="ViewModel\Command\ClickOrderItemCommand.cs" />
     <Compile Include="ViewModel\Command\SelectPointLocationCommand.cs" />
     <Compile Include="ViewModel\Command\SelectServicesCommand.cs" />
+    <Compile Include="ViewModel\Command\ShowOrderDetailCommand.cs" />
     <Compile Include="ViewModel\ViewModel.cs" />
     <Compile Include="ViewModel\ViewModelFactory.cs" />
-    <Compile Include="ViewModel\OrderViewModel.cs" />
+    <Compile Include="ViewModel\EditOrderViewModel.cs" />
     <Compile Include="CreateOrderPage.xaml.cs">
       <DependentUpon>CreateOrderPage.xaml</DependentUpon>
     </Compile>
@@ -164,6 +169,9 @@
     </Compile>
     <Compile Include="Views\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\OrderDetailPage.xaml.cs">
+      <DependentUpon>OrderDetailPage.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>

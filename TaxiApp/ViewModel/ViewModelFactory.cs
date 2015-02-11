@@ -8,14 +8,14 @@ namespace TaxiApp.ViewModel
 {
     public class ViewModelFactory : TaxiApp.Core.Singleton<ViewModelFactory>
     {
-        private OrderViewModel viewOrderModel = null;
+        private EditOrderViewModel viewOrderModel = null;
         private AuthenticationViewModel viewAuthenticationModel = null;
 
-        public OrderViewModel GetViewOrderModel()
+        public EditOrderViewModel GetViewOrderModel()
         {
             if (this.viewOrderModel == null)
             {
-                this.viewOrderModel = new OrderViewModel();
+                this.viewOrderModel = new EditOrderViewModel();
             }
 
             return this.viewOrderModel;

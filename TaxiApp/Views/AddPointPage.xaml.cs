@@ -26,7 +26,7 @@ namespace TaxiApp.Views
     public sealed partial class AddPointPage : Page
     {
         private NavigationHelper navigationHelper;
-        private TaxiApp.ViewModel.OrderViewModel viewOrderModel = ViewModel.ViewModelFactory.Instance.GetViewOrderModel();
+        private TaxiApp.ViewModel.EditOrderViewModel viewOrderModel = ViewModel.ViewModelFactory.Instance.GetViewOrderModel();
 
         public AddPointPage()
         {
@@ -54,7 +54,7 @@ namespace TaxiApp.Views
         /// Получает модель представлений для данного объекта <see cref="Page"/>.
         /// Эту настройку можно изменить на модель строго типизированных представлений.
         /// </summary>
-        public TaxiApp.ViewModel.OrderViewModel OrderViewModel
+        public TaxiApp.ViewModel.EditOrderViewModel OrderViewModel
         {
             get { return this.viewOrderModel; }
         }

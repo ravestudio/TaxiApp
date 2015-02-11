@@ -12,15 +12,16 @@ using Windows.UI.Xaml.Controls;
 
 namespace TaxiApp.ViewModel
 {
-    public class OrderViewModel : ViewModel
+    public class EditOrderViewModel : ViewModel
     {
-        public OrderDetail OrderModel { get; set; }
+        public OrderModel OrderModel { get; set; }
         public SearchModel SearchModel { get; set; }
 
         public Command.ClickOrderItemCommand ClickOrderItem { get; set; }
         public Command.SelectPointLocationCommand SelectLocationItem { get; set; }
         public Command.SelectServicesCommand SelectServicesCmd { get; set; }
         public Command.CancelOrderCommand CancelOrderCmd { get; set; }
+        public Command.ShowOrderDetailCommand ShowOrderDetailCmd { get; set; }
 
         public Windows.UI.Xaml.Controls.Page Page { get; set; }
         public Windows.UI.Xaml.Controls.Pivot Pivot { get; set; }
@@ -33,17 +34,67 @@ namespace TaxiApp.ViewModel
 
         public ObservableCollection<Core.Entities.Order> OrderList { get; set; }
 
-        public OrderViewModel()
+        private ObservableCollection<OrderItem> _orderItemList = null;
+
+        public ObservableCollection<OrderItem> OrderItemList
+        {
+            get
+            {
+                return this._orderItemList;
+            }
+        }
+
+        public EditOrderViewModel()
         {
             this.OrderList = new ObservableCollection<Core.Entities.Order>();
 
-            this.OrderModel = new OrderDetail();
-            this.SearchModel = new SearchModel();
+            this.OrderModel = TaxiApp.Core.DataModel.ModelFactory.Instance.GetOrderModel();
+            this.SearchModel = TaxiApp.Core.DataModel.ModelFactory.Instance.GetSearchModel();
 
             this.ClickOrderItem = new Command.ClickOrderItemCommand(this);
             this.SelectLocationItem = new Command.SelectPointLocationCommand(this);
             this.SelectServicesCmd = new Command.SelectServicesCommand(this);
             this.CancelOrderCmd = new Command.CancelOrderCommand(this);
+            this.ShowOrderDetailCmd = new Command.ShowOrderDetailCommand(this);
+
+            this._orderItemList = new ObservableCollection<OrderItem>();
+
+            OrderPoint pointfrom = new OrderPoint();
+            pointfrom.Priority = 0;
+            pointfrom.Title = "Address from";
+            pointfrom.Location = new LocationItem() { Address = "Input address" };
+
+            OrderPoint pointSecond = new OrderPoint();
+            pointSecond.Priority = 1;
+            pointSecond.Title = "Address";
+            pointSecond.Location = new LocationItem() { Address = "Input address" };
+
+            this._orderItemList.Add(pointfrom);
+            this._orderItemList.Add(pointSecond);
+
+            this._orderItemList.Add(new OrderItem()
+            {
+                Priority = 10,
+                Title = "Now",
+                Cmd = "Now",
+                IconSource = new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///Assets/time.png"))
+            });
+
+            this._orderItemList.Add(new OrderItem()
+            {
+                Priority = 11,
+                Title = "Services",
+                Cmd = "Services",
+                IconSource = new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///Assets/service.png"))
+            });
+
+            this._orderItemList.Add(new OrderItem()
+            {
+                Priority = 12,
+                Title = "Car",
+                Cmd = "Car",
+                IconSource = new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///Assets/carclass.png"))
+            });
 
             this.Actions = new Dictionary<string, Action<ViewModel, TaxiApp.Core.DataModel.Order.OrderItem>>();
 
@@ -52,7 +103,7 @@ namespace TaxiApp.ViewModel
 
                 Frame rootFrame = Window.Current.Content as Frame;
 
-                OrderViewModel controller = (OrderViewModel)viewModel;
+                EditOrderViewModel controller = (EditOrderViewModel)viewModel;
 
                 controller.SearchModel.SelectedPoint = orderPoint;
                 rootFrame.Navigate(typeof(Views.AddPointPage));
@@ -60,7 +111,7 @@ namespace TaxiApp.ViewModel
 
             this.Actions.Add("Services", (viewModel, item) =>
             {
-                OrderViewModel controller = (OrderViewModel)viewModel;
+                EditOrderViewModel controller = (EditOrderViewModel)viewModel;
 
                 controller.ServicePicker.ShowAt(controller.Page);
 
@@ -68,7 +119,7 @@ namespace TaxiApp.ViewModel
 
             this.Actions.Add("Now", (viewModel, item) =>
             {
-                OrderViewModel controller = (OrderViewModel)viewModel;
+                EditOrderViewModel controller = (EditOrderViewModel)viewModel;
 
                 controller.TimePicker.ShowAt(controller.Page);
 
@@ -76,13 +127,13 @@ namespace TaxiApp.ViewModel
 
             this.Actions.Add("Car", (viewModel, item) =>
             {
-                OrderViewModel controller = (OrderViewModel)viewModel;
+                EditOrderViewModel controller = (EditOrderViewModel)viewModel;
 
                 controller.CarPicker.ShowAt(controller.Page);
 
             });
 
-            OrderModel.SocketOnMessage = new OrderDetail.SocketHandler((resp) =>
+            OrderModel.SocketOnMessage = new OrderModel.SocketHandler((resp) =>
             {
                 if (resp.request == "neworderstatus")
                 {
@@ -181,6 +232,60 @@ namespace TaxiApp.ViewModel
                 this.OrderList.Add(order);
             }
 
+        }
+
+        public void UpdatePoints()
+        {
+            Task<Windows.Services.Maps.MapRoute> FindRouteTask = this.OrderModel.FindRoute();
+
+            FindRouteTask.ContinueWith(t =>
+            {
+                if (t.Status == TaskStatus.RanToCompletion)
+                {
+
+                    this.OrderModel.MapRoute = t.Result;
+
+                    Windows.Foundation.IAsyncAction action =
+                    this.Page.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+                    {
+                        var dlg = new Windows.UI.Popups.MessageDialog("Маршрут найден");
+                        dlg.ShowAsync();
+
+                        this.GetPriceInfo();
+                    });
+                }
+                else
+                {
+
+                    Windows.Foundation.IAsyncAction action =
+                    this.Page.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+                    {
+                        var dlg = new Windows.UI.Popups.MessageDialog("Ошибка при поиске маршрута");
+                        dlg.ShowAsync();
+                    });
+                }
+            });
+
+            if (this._orderItemList.OfType<OrderPoint>().Count() == this._orderItemList.OfType<OrderPoint>().Where(p => p.IsDataReady()).Count())
+            {
+                OrderPoint newPoint = new OrderPoint();
+                newPoint.Priority = this._orderItemList.OfType<OrderPoint>().Count();
+                newPoint.Title = string.Format("Address {0}", newPoint.Priority);
+                newPoint.Location = new LocationItem() { Address = string.Empty };
+
+                this._orderItemList.Add(newPoint);
+
+                List<OrderItem> sortedList = this.OrderItemList.OrderBy(i => i.Priority).ToList();
+
+                this.OrderItemList.Clear();
+
+                foreach (OrderItem item in sortedList)
+                {
+                    this.OrderItemList.Add(item);
+                }
+
+
+            }
         }
     }
 }

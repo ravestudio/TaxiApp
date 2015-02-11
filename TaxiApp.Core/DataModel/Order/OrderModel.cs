@@ -10,14 +10,13 @@ using Windows.Devices.Geolocation;
 
 namespace TaxiApp.Core.DataModel.Order
 {
-    public class OrderDetail
+    public class OrderModel
     {
 
         public delegate void SocketHandler(Socket.SocketResponse resp);
 
         public SocketHandler SocketOnMessage;
 
-        private ObservableCollection<OrderItem> _orderItemList = null;
         private IList<OrderOption> _orderServiceList = null;
         private IList<OrderOption> _orderCarList = null;
 
@@ -36,7 +35,7 @@ namespace TaxiApp.Core.DataModel.Order
 
         public OrderPriceInfo PriceInfo { get; set; }
 
-        public OrderDetail()
+        public OrderModel()
         {
             socketMG = new Core.Socket.SocketManager(this.SocketClient);
 
@@ -50,45 +49,6 @@ namespace TaxiApp.Core.DataModel.Order
             //this.PriceInfo.Time = "40min";
             //this.PriceInfo.Price = "$7.5";
             //this.PriceInfo.Destination = "7.3km";
-
-            this._orderItemList = new ObservableCollection<OrderItem>();
-
-            OrderPoint pointfrom = new OrderPoint();
-            pointfrom.Priority = 0;
-            pointfrom.Title = "Address from";
-            pointfrom.Location = new LocationItem() {  Address = "Input address"};
-
-            OrderPoint pointSecond = new OrderPoint();
-            pointSecond.Priority = 1;
-            pointSecond.Title = "Address";
-            pointSecond.Location = new LocationItem() { Address = "Input address" };
-
-            this._orderItemList.Add(pointfrom);
-            this._orderItemList.Add(pointSecond);
-
-            this._orderItemList.Add(new OrderItem()
-                {
-                    Priority = 10,
-                    Title = "Now",
-                    Cmd = "Now",
-                    IconSource = new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///Assets/time.png"))
-                });
-
-            this._orderItemList.Add(new OrderItem()
-            {
-                Priority = 11,
-                Title = "Services",
-                Cmd = "Services",
-                IconSource = new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///Assets/service.png"))
-            });
-
-            this._orderItemList.Add(new OrderItem()
-            {
-                Priority = 12,
-                Title = "Car",
-                Cmd = "Car",
-                IconSource = new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///Assets/carclass.png"))
-            });
 
             this.MapRouteChanged += OrderModel_MapRouteChanged;
 
@@ -213,14 +173,6 @@ namespace TaxiApp.Core.DataModel.Order
             }
         }
 
-        public ObservableCollection<OrderItem> OrderItemList
-        {
-            get
-            {
-                return this._orderItemList;
-            }
-        }
-
         public IList<OrderOption> OrderServiceList
         {
             get
@@ -234,60 +186,6 @@ namespace TaxiApp.Core.DataModel.Order
             get
             {
                 return this._orderCarList;
-            }
-        }
-
-        public void UpdatePoints()
-        {
-            Task<Windows.Services.Maps.MapRoute> FindRouteTask = this.FindRoute();
-
-            FindRouteTask.ContinueWith(t =>
-            {
-                if (t.Status == TaskStatus.RanToCompletion)
-                {
-                    
-                    this.MapRoute = t.Result;
-
-                    Windows.Foundation.IAsyncAction action =
-                    this.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
-                    {
-                        var dlg = new Windows.UI.Popups.MessageDialog("Маршрут найден");
-                        dlg.ShowAsync();
-
-                        this.GetPriceInfo();
-                    });
-                }
-                else
-                {
-
-                    Windows.Foundation.IAsyncAction action =
-                    this.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
-                    {
-                        var dlg = new Windows.UI.Popups.MessageDialog("Ошибка при поиске маршрута");
-                        dlg.ShowAsync();
-                    });
-                }
-            });
-
-            if (this._orderItemList.OfType<OrderPoint>().Count() == this._orderItemList.OfType<OrderPoint>().Where(p => p.IsDataReady()).Count())
-            {
-                OrderPoint newPoint = new OrderPoint();
-                newPoint.Priority = this._orderItemList.OfType<OrderPoint>().Count();
-                newPoint.Title = string.Format("Address {0}", newPoint.Priority);
-                newPoint.Location = new LocationItem() {  Address = string.Empty};
-
-                this._orderItemList.Add(newPoint);
-
-                List<OrderItem> sortedList = this.OrderItemList.OrderBy(i => i.Priority).ToList();
-
-                this.OrderItemList.Clear();
-
-                foreach (OrderItem item in sortedList)
-                {
-                    this.OrderItemList.Add(item);
-                }
-
-                
             }
         }
 

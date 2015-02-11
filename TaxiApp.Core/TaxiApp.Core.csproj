@@ -84,7 +84,8 @@
   <ItemGroup>
     <Compile Include="Class1.cs" />
     <Compile Include="Common\DateTimeToDateTimeOffsetConverter.cs" />
-    <Compile Include="DataModel\Order\OrderDetail.cs" />
+    <Compile Include="DataModel\ModelFactory.cs" />
+    <Compile Include="DataModel\Order\OrderModel.cs" />
     <Compile Include="DataModel\Order\OrderItem.cs" />
     <Compile Include="DataModel\Order\OrderItemTemplateSelector .cs" />
     <Compile Include="DataModel\Order\OrderPoint.cs" />

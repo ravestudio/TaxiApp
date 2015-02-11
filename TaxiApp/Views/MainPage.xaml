@@ -15,7 +15,7 @@
     x:Class="TaxiApp.Views.MainPage"
     mc:Ignorable="d"
     DataContext="{Binding OrderViewModel, RelativeSource={RelativeSource Mode=Self}}"
-    d:DataContext="{d:DesignInstance IsDesignTimeCreatable=True, Type=controller:OrderViewModel}"
+    d:DataContext="{d:DesignInstance IsDesignTimeCreatable=True, Type=controller:EditOrderViewModel}"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
     
     Name="mainPage"
@@ -163,7 +163,14 @@
                 d:DataContext="{Binding Source={d:DesignData Source=../../TaxiApp.Core/DataModel/OrderList.json, Type=entity:OrderDS}}">
 
                 <ListView
-                     ItemsSource="{Binding OrderList}">
+                    ItemsSource="{Binding OrderList}"
+                    IsItemClickEnabled="True">
+
+                    <i:Interaction.Behaviors>
+                        <core:EventTriggerBehavior EventName="ItemClick">
+                            <core:InvokeCommandAction Command="{Binding ShowOrderDetailCmd}"/>
+                        </core:EventTriggerBehavior>
+                    </i:Interaction.Behaviors>
 
                     <ListView.ItemTemplate>
                         <DataTemplate>
@@ -193,7 +200,8 @@
                                     ItemsSource="{Binding Route}"
                                     Grid.Row="0"
                                     Grid.Column="1"
-                                    Margin="10,20,0,0">
+                                    Margin="10,20,0,0"
+                                    >
                                     <ListView.ItemTemplate>
                                         <DataTemplate>
                                             <TextBlock
