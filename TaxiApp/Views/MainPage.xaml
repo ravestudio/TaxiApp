@@ -146,12 +146,12 @@
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
 
-                        <TextBlock Text="{Binding OrderModel.PriceInfo.Price}" Style="{StaticResource SubheaderTextBlockStyle}" Foreground="White" Grid.Row="0" Grid.Column="0" Margin="10,0,0,0"></TextBlock>
-                        <TextBlock Text="{Binding OrderModel.PriceInfo.Destination}" Style="{StaticResource SubheaderTextBlockStyle}" Foreground="White" Grid.Row="0" Grid.Column="1" Margin="10,0,0,0"></TextBlock>
-                        <TextBlock Text="{Binding OrderModel.PriceInfo.Time}" Style="{StaticResource SubheaderTextBlockStyle}" Foreground="White" Grid.Row="0" Grid.Column="2" Margin="10,0,0,0"></TextBlock>
+                        <TextBlock Text="{Binding PriceInfo.Price}" Style="{StaticResource SubheaderTextBlockStyle}" Foreground="White" Grid.Row="0" Grid.Column="0" Margin="10,0,0,0"></TextBlock>
+                        <TextBlock Text="{Binding PriceInfo.Destination}" Style="{StaticResource SubheaderTextBlockStyle}" Foreground="White" Grid.Row="0" Grid.Column="1" Margin="10,0,0,0"></TextBlock>
+                        <TextBlock Text="{Binding PriceInfo.Time}" Style="{StaticResource SubheaderTextBlockStyle}" Foreground="White" Grid.Row="0" Grid.Column="2" Margin="10,0,0,0"></TextBlock>
                     </Grid>
-                    
-                    <Button Content="Make an order" Style="{StaticResource TaxyButtonGreenStyle}" HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
+
+                    <Button Content="Make an order" Style="{StaticResource TaxyButtonGreenStyle}" HorizontalAlignment="Center" VerticalAlignment="Bottom" Command="{Binding CreateOrderCmd}"/>
                     
                 </Grid>
 

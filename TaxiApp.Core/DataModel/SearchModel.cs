@@ -9,17 +9,20 @@ using Windows.Services.Maps;
 
 namespace TaxiApp.Core.DataModel
 {
-    public class SearchModel : System.ComponentModel.INotifyPropertyChanged
+    public class SearchModel
     {
         private TaxiApp.Core.Managers.LocationManager locationMg = null;
         private SearchCommand search_cmd = null;
         private string _searchText = null;
 
-        private Object thisLock = new Object();
+        //private Object thisLock = new Object();
 
         public Order.OrderPoint SelectedPoint { get; set; }
 
-        public Windows.UI.Core.CoreDispatcher Dispatcher { get; set; }
+        //public Windows.UI.Core.CoreDispatcher Dispatcher { get; set; }
+
+        public delegate void LocationReadyDelegate(bool ready);
+        public LocationReadyDelegate LocationReadyChanged;
 
         public bool LocationReady
         {
@@ -42,7 +45,7 @@ namespace TaxiApp.Core.DataModel
                 {
                     if (task.Exception == null)
                     {
-                        this.NotifyPropertyChanged("LocationReady");
+                        this.NotifyLocationReadyChanged();
                     }
 
                 });
@@ -113,18 +116,12 @@ namespace TaxiApp.Core.DataModel
             }
         }
 
-
-        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-
-        public void NotifyPropertyChanged(string propertyName)
+        public void NotifyLocationReadyChanged()
         {
-            if (PropertyChanged != null)
+            if (LocationReadyChanged != null)
             {
-                Windows.Foundation.IAsyncAction action =
-                this.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
-                {
-                    PropertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
-                });
+                LocationReadyChanged(this.locationMg.LocationReady);
+
             }
         }
     }

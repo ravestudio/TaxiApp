@@ -26,7 +26,6 @@ namespace TaxiApp.ViewModel
         public Command.CreateOrderCommand CreateOrderCmd { get; set; }
         public Command.ShowOrderDetailCommand ShowOrderDetailCmd { get; set; }
 
-        public Windows.UI.Xaml.Controls.Page Page { get; set; }
         public Windows.UI.Xaml.Controls.Pivot Pivot { get; set; }
 
         public DateTime EndDate { get; set; }
@@ -38,6 +37,12 @@ namespace TaxiApp.ViewModel
         public TimePickerFlyout TimePicker { get; set; }
 
         public OrderPriceInfo PriceInfo { get; set; }
+        public bool LocationReady {
+            get
+            {
+                return this.SearchModel.LocationReady;
+            }
+        }
 
         public Dictionary<string, Action<EditOrderViewModel, TaxiApp.Core.DataModel.Order.OrderItem>> Actions = null;
 
@@ -66,6 +71,8 @@ namespace TaxiApp.ViewModel
             this.EndDate = DateTime.Now;
             this.EndTime = DateTime.Now;
 
+            this.SelectedServices = new List<OrderOption>();
+
             this.OrderList = new ObservableCollection<Core.Entities.Order>();
 
             this.OrderModel = TaxiApp.Core.DataModel.ModelFactory.Instance.GetOrderModel();
@@ -77,6 +84,11 @@ namespace TaxiApp.ViewModel
             this.CancelOrderCmd = new Command.CancelOrderCommand(this);
             this.CreateOrderCmd = new Command.CreateOrderCommand(this);
             this.ShowOrderDetailCmd = new Command.ShowOrderDetailCommand(this);
+
+            this.SearchModel.LocationReadyChanged = new SearchModel.LocationReadyDelegate((ready) =>
+            {
+                this.NotifyPropertyChanged("LocationReady");
+            });
 
             this._orderItemList = new ObservableCollection<OrderItem>();
 
@@ -175,9 +187,10 @@ namespace TaxiApp.ViewModel
 
                 this.Pivot = (Windows.UI.Xaml.Controls.Pivot)page.FindName("pivot");
             }
-            else
+
+            if (page is TaxiApp.Views.AddPointPage)
             {
-                //this.OrderModel.RouteMapControl = ((Views.AddPointPage)page).RouteMapControl;
+                this.Map.RouteMapControl = (Windows.UI.Xaml.Controls.Maps.MapControl)page.FindName("RouteMapControl");
             }
 
             //this.OrderModel.Dispatcher = page.Dispatcher;
@@ -292,6 +305,7 @@ namespace TaxiApp.ViewModel
 
             byte servieces = 0;
                 
+            
             foreach (OrderOption service in this.SelectedServices)
             {
                 servieces = (byte)((byte)servieces | (byte)service.id);
@@ -314,8 +328,11 @@ namespace TaxiApp.ViewModel
                 _order.Route.Add(routeItem);
             }
 
-            _order.Routemeters = (int)this.Map.MapRoute.LengthInMeters;
-            _order.Routetime = this.Map.MapRoute.EstimatedDuration.Minutes;
+            if (this.Map.MapRoute != null)
+            {
+                _order.Routemeters = (int)this.Map.MapRoute.LengthInMeters;
+                _order.Routetime = this.Map.MapRoute.EstimatedDuration.Minutes;
+            }
 
             _order.StartDate = new DateTime(EndDate.Year, EndDate.Month, EndDate.Day, EndTime.Hour, EndTime.Minute, EndTime.Second);
 

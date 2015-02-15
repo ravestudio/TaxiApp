@@ -41,7 +41,7 @@
             <StackPanel>
                 <TextBox x:Name="SearchText"
                          Text="{Binding SearchModel.SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                         IsEnabled="{Binding SearchModel.LocationReady, Mode=TwoWay}">
+                         IsEnabled="{Binding LocationReady, Mode=TwoWay}">
                     <!--<i:Interaction.Behaviors>
                         <core:EventTriggerBehavior EventName="TextChanged">
                             <core:InvokeCommandAction Command="{Binding SearchChanged}">
