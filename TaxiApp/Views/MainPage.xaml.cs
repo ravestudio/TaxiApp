@@ -34,7 +34,7 @@ namespace TaxiApp.Views
             this.InitializeComponent();
 
             editOrderViewModel.Init(this);
-            editOrderViewModel.Pivot = this.pivot;
+            //editOrderViewModel.Pivot = this.pivot;
 
             this.navigationHelper = new NavigationHelper(this);
             this.navigationHelper.LoadState += this.NavigationHelper_LoadState;
@@ -116,11 +116,6 @@ namespace TaxiApp.Views
         private void SocketPgBtn_Click(object sender, RoutedEventArgs e)
         {
             this.Frame.Navigate(typeof(SocketPage)); 
-        }
-
-        private void CreateBtnClick(object sender, RoutedEventArgs e)
-        {
-            this.editOrderViewModel.CreateOrder();
         }
 
     }

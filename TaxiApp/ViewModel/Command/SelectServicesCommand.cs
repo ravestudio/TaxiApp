@@ -24,7 +24,7 @@ namespace TaxiApp.ViewModel.Command
 
         public void Execute(object parameter)
         {
-            this._viewModel.OrderModel.SelectedServices =
+            this._viewModel.SelectedServices =
                 this._viewModel.ServicePicker.SelectedItems.Cast<Core.DataModel.Order.OrderOption>().ToList();
         }
     }

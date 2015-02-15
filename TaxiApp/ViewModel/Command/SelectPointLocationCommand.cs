@@ -38,7 +38,7 @@ namespace TaxiApp.ViewModel.Command
 
             Frame rootFrame = Window.Current.Content as Frame;
 
-            this._viewModel.OrderModel.UpdatePoints();
+            this._viewModel.UpdatePoints();
 
             rootFrame.GoBack();
         }

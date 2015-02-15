@@ -103,7 +103,7 @@
                 <Grid Grid.Row="1" x:Name="ContentRoot" Margin="10,9.5,10,0">
 
                         <ListView
-							ItemsSource="{Binding OrderModel.OrderItemList}"
+							ItemsSource="{Binding OrderItemList}"
 							IsItemClickEnabled="True"
                             ItemTemplate="{StaticResource OrderItemTemplate}"
                     >
@@ -151,7 +151,7 @@
                         <TextBlock Text="{Binding OrderModel.PriceInfo.Time}" Style="{StaticResource SubheaderTextBlockStyle}" Foreground="White" Grid.Row="0" Grid.Column="2" Margin="10,0,0,0"></TextBlock>
                     </Grid>
                     
-                    <Button Content="Make an order" Style="{StaticResource TaxyButtonGreenStyle}" HorizontalAlignment="Center" VerticalAlignment="Bottom" Click="CreateBtnClick"/>
+                    <Button Content="Make an order" Style="{StaticResource TaxyButtonGreenStyle}" HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
                     
                 </Grid>
 

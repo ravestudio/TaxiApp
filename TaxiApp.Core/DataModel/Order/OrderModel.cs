@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Collections.ObjectModel;
 
 using Windows.Devices.Geolocation;
+using Windows.UI.Xaml.Controls.Maps;
 
 namespace TaxiApp.Core.DataModel.Order
 {
@@ -23,17 +24,12 @@ namespace TaxiApp.Core.DataModel.Order
         private TaxiApp.Core.SocketClient SocketClient = new Core.SocketClient();
         private TaxiApp.Core.Socket.SocketManager socketMG = null;
 
-        public IList<OrderOption> SelectedServices = null;
+        
 
         public Windows.UI.Core.CoreDispatcher Dispatcher { get; set; }
 
         public Windows.UI.Xaml.Controls.Primitives.Popup ServicePopup { get; set; }
         public Windows.UI.Xaml.Controls.Primitives.Popup DateTimePopup { get; set; }
-
-        public DateTime EndDate { get; set; }
-        public DateTime EndTime { get; set; }
-
-        public OrderPriceInfo PriceInfo { get; set; }
 
         public OrderModel()
         {
@@ -41,16 +37,11 @@ namespace TaxiApp.Core.DataModel.Order
 
             InitOptions();
 
-            this.EndDate = DateTime.Now;
-            this.EndTime = DateTime.Now;
-
-            this.PriceInfo = new OrderPriceInfo();
-            this.PriceInfo.Visible = false;
             //this.PriceInfo.Time = "40min";
             //this.PriceInfo.Price = "$7.5";
             //this.PriceInfo.Destination = "7.3km";
 
-            this.MapRouteChanged += OrderModel_MapRouteChanged;
+            //this.MapRouteChanged += OrderModel_MapRouteChanged;
 
             string Host = "194.58.102.129";
             string Port = "9090";
@@ -126,52 +117,50 @@ namespace TaxiApp.Core.DataModel.Order
             this._orderCarList.Add(new OrderOption() { id = 9, Name = "Rickshaw" });
         }
 
-        void OrderModel_MapRouteChanged(object sender, EventArgs e)
+        //void OrderModel_MapRouteChanged(object sender, EventArgs e)
+        //{
+        //    int thread = Environment.CurrentManagedThreadId;
+
+        //    this.ShowRoute();
+
+        //}
+
+        public void ShowRoute(MapControl mapControl, Windows.Services.Maps.MapRoute route)
         {
-            int thread = Environment.CurrentManagedThreadId;
-
-            this.ShowRoute();
-
-        }
-
-        public void ShowRoute()
-        {
-            if (this.MapRoute != null)
+            if (route != null)
             {
                 Core.Managers.MapPainter painter = Core.Managers.ManagerFactory.Instance.GetMapPainter();
 
-                Task showRoutTask = painter.ShowRoute(this.RouteMapControl, this.MapRoute).ContinueWith(t =>
+                Task showRoutTask = painter.ShowRoute(mapControl, route).ContinueWith(t =>
                 {
                     string msg = "route showed";
                 });
             }
         }
 
-        public Windows.UI.Xaml.Controls.Maps.MapControl RouteMapControl { get; set; }
+        //private Windows.Services.Maps.MapRoute mapRoute = null;
+        //public Windows.Services.Maps.MapRoute MapRoute
+        //{
+        //    get
+        //    { return this.mapRoute; }
+        //    set
+        //    {
+        //        this.mapRoute = value;
 
-        private Windows.Services.Maps.MapRoute mapRoute = null;
-        public Windows.Services.Maps.MapRoute MapRoute
-        {
-            get
-            { return this.mapRoute; }
-            set
-            {
-                this.mapRoute = value;
+        //        NotifyMapRouteChanged();
+        //    }
+        //}
 
-                NotifyMapRouteChanged();
-            }
-        }
+        //public event EventHandler MapRouteChanged;
 
-        public event EventHandler MapRouteChanged;
-
-        public void NotifyMapRouteChanged()
-        {
-            if (MapRouteChanged != null)
-            {
-                EventArgs args = new EventArgs();
-                MapRouteChanged(this, args);
-            }
-        }
+        //public void NotifyMapRouteChanged()
+        //{
+        //    if (MapRouteChanged != null)
+        //    {
+        //        EventArgs args = new EventArgs();
+        //        MapRouteChanged(this, args);
+        //    }
+        //}
 
         public IList<OrderOption> OrderServiceList
         {
@@ -189,21 +178,13 @@ namespace TaxiApp.Core.DataModel.Order
             }
         }
 
-        public async Task<Windows.Services.Maps.MapRoute> FindRoute()
+        public async Task<Windows.Services.Maps.MapRoute> FindRoute(IEnumerable<Geopoint> geopoints)
         {
             Windows.Services.Maps.MapRoute route = null;
 
             int thread = Environment.CurrentManagedThreadId;
 
             Managers.LocationManager locationMG = Managers.ManagerFactory.Instance.GetLocationManager();
-
-            IEnumerable<Geopoint> geopoints = this._orderItemList.OfType<OrderPoint>().Where(p => p.IsDataReady())
-                .OrderBy(p => p.Priority)
-                .Select(p => new Geopoint(new BasicGeoposition()
-                    {
-                        Latitude = p.Location.Latitude,
-                        Longitude = p.Location.Longitude
-                    }));
 
             if (geopoints.Count() > 1)
             {
@@ -222,10 +203,10 @@ namespace TaxiApp.Core.DataModel.Order
             return route;
         }
 
-        public async Task ShowMyPossitionAsync()
+        public async Task ShowMyPossitionAsync(MapControl mapControl)
         {
             Managers.MapPainter painter = Managers.ManagerFactory.Instance.GetMapPainter();
-            await painter.ShowMyPossitionAsync(this.RouteMapControl);
+            await painter.ShowMyPossitionAsync(mapControl);
         }
 
         public void ShowServices()
@@ -238,76 +219,30 @@ namespace TaxiApp.Core.DataModel.Order
             this.DateTimePopup.IsOpen = true;
         }
 
-
-
-        public List<KeyValuePair<string, string>> ConverToKeyValue()
+        public async void CreateOrder(TaxiApp.Core.Entities.Order order)
         {
-            List<KeyValuePair<string, string>> keyValueData = new List<KeyValuePair<string, string>>();
+            TaxiApp.Core.Entities.User user = TaxiApp.Core.Session.Instance.GetUser();
 
-            //keyValueData.Add(new KeyValuePair<string, string>("enddate", System.DateTime.Now.AddHours(1).ToString("yyyy-mm-dd hh:mm")));
+            var postData = order.ConverToKeyValue();
 
-            //keyValueData.Add(new KeyValuePair<string, string>("enddate", System.DateTime.Now.AddHours(1).ToString("yyyy-MM-dd")));
+            //var postData = new List<KeyValuePair<string, string>>();
 
-            //keyValueData.Add(new KeyValuePair<string, string>("service", "1023"));
-            //keyValueData.Add(new KeyValuePair<string, string>("passengersnum", "3"));
+            postData.Add(new KeyValuePair<string, string>("idpassenger", user.Id.ToString()));
+            postData.Add(new KeyValuePair<string, string>("token", user.token));
+            postData.Add(new KeyValuePair<string, string>("idcompany", "1"));
 
-            byte servieces = 0;
 
-            foreach(OrderOption service in this.SelectedServices)
-            {
-                servieces = (byte)((byte)servieces | (byte)service.id);
-            }
 
-            int i = 0;
-            foreach(OrderPoint orderPoint in this._orderItemList.OfType<OrderPoint>().Where(p => p.IsDataReady()))
-            {
-                string addr = 
-                        string.Format("{0}, {1}, {2} {3}",
-                        orderPoint.Location.MapLocation.Address.Street,
-                        orderPoint.Location.MapLocation.Address.StreetNumber,
-                        orderPoint.Location.MapLocation.Address.Town,
-                        orderPoint.Location.MapLocation.Address.Country
-                        );
+            TaxiApp.Core.WebApiClient client = new TaxiApp.Core.WebApiClient();
 
-                //var utf8 = System.Text.Encoding.UTF8;
-                //byte[] utfBytes = utf8.GetBytes(addr);
-                //addr = utf8.GetString(utfBytes, 0, utfBytes.Length);
+            string url = "http://serv.giddix.ru/api/passenger_setorder/";
 
-                keyValueData.Add(new KeyValuePair<string, string>
-                    (string.Format("address[{0}]",i),addr));
+            string data = await client.GetData(url, postData);
 
-                keyValueData.Add(new KeyValuePair<string, string>
-                    (string.Format("coords[{0}]", i), string.Format("{0},{1}",
-                    orderPoint.Location.Latitude.ToString(System.Globalization.CultureInfo.InvariantCulture),
-                    orderPoint.Location.Longitude.ToString(System.Globalization.CultureInfo.InvariantCulture))));
 
-                keyValueData.Add(new KeyValuePair<string, string>
-                    (string.Format("priority[{0}]",i), orderPoint.Priority.ToString()));
-
-                i++;
-            }
-
-            if (servieces > 0)
-            {
-                keyValueData.Add(new KeyValuePair<string, string>("service", servieces.ToString()));
-            }
-
-            if (this.MapRoute != null)
-            {
-                keyValueData.Add(new KeyValuePair<string, string>("routemeters", this.MapRoute.LengthInMeters.ToString()));
-                keyValueData.Add(new KeyValuePair<string, string>("routetime", this.MapRoute.EstimatedDuration.Minutes.ToString()));
-            }
-
-            //YYYY-MM-DD HH:II
-            //string enddate = string.Format("{0}-{1}-{2} {3}:{4}", this.EndDate.Year, this.EndDate.Month,this.EndDate.Day, this.EndTime.Hour, this.EndTime.Minute);
-            string enddate = string.Format("{0:yyyy}-{0:MM}-{0:dd} {1:HH}:{1:mm}", this.EndDate, this.EndTime);
-
-            keyValueData.Add(new KeyValuePair<string, string>("enddate", enddate));
-
-            return keyValueData;
         }
 
-        private async void GetPriceInfo()
+        public async void GetPriceInfo(TaxiApp.Core.Entities.Order order, OrderPriceInfo priceInfo)
         {
             TaxiApp.Core.Entities.User user = TaxiApp.Core.Session.Instance.GetUser();
 
@@ -316,23 +251,23 @@ namespace TaxiApp.Core.DataModel.Order
             string distance = "0";
             string minutes = "0";
 
-            this.PriceInfo.Destination = string.Empty;
-            this.PriceInfo.Time = string.Empty;
+            priceInfo.Destination = string.Empty;
+            priceInfo.Time = string.Empty;
 
-            if (this.MapRoute != null)
+            if (order.Route.Count > 0)
             {
-                distance = this.MapRoute.LengthInMeters.ToString();
-                minutes = this.MapRoute.EstimatedDuration.Minutes.ToString();
+                distance = order.Routemeters.ToString();
+                minutes = order.Routetime.ToString();
 
-                this.PriceInfo.Destination = string.Format("{0}km", this.MapRoute.LengthInMeters/1000);
-                this.PriceInfo.Time = string.Format("{0}min", this.MapRoute.EstimatedDuration.Minutes);
+                priceInfo.Destination = string.Format("{0}km", order.Routemeters/1000);
+                priceInfo.Time = string.Format("{0}min", order.Routetime);
             }
 
             postData.Add(new KeyValuePair<string, string>("distance", distance));
             postData.Add(new KeyValuePair<string, string>("minutes", minutes));
 
             //YYYY-MM-DD HH:II
-            string enddate = string.Format("{0:yyyy}-{0:MM}-{0:dd} {0:HH}:{0:mm}", this.EndDate);
+            string enddate = string.Format("{0:yyyy}-{0:MM}-{0:dd} {0:HH}:{0:mm}", order.StartDate);
 
             postData.Add(new KeyValuePair<string, string>("orderenddate", enddate));
 
@@ -359,9 +294,9 @@ namespace TaxiApp.Core.DataModel.Order
 
             int price = (int)Resp["price"].GetNumber();
 
-            this.PriceInfo.Price = string.Format("${0}", price);
+            priceInfo.Price = string.Format("${0}", price);
 
-            this.PriceInfo.Visible = true;
+            priceInfo.Visible = true;
         }
     }
 }

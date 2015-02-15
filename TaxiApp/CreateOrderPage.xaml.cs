@@ -36,7 +36,7 @@ namespace TaxiApp
         {
             this.InitializeComponent();
 
-            this.viewOrderModel.OrderModel.RouteMapControl = this.RouteMapControl;
+            this.viewOrderModel.Map.RouteMapControl = this.RouteMapControl;
 
             this.navigationHelper = new NavigationHelper(this);
             this.navigationHelper.LoadState += this.NavigationHelper_LoadState;
@@ -106,7 +106,7 @@ namespace TaxiApp
         /// событий, которые не могут отменить запрос навигации.</param>
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            this.DefaultViewModel.OrderModel.ShowMyPossitionAsync().
+            this.DefaultViewModel.OrderModel.ShowMyPossitionAsync(viewOrderModel.Map.RouteMapControl).
                 ContinueWith(
                 t => {
                     string status = "showed";
@@ -124,7 +124,6 @@ namespace TaxiApp
 
         private void CreateAppBarButton_Click(object sender, RoutedEventArgs e)
         {
-            this.viewOrderModel.CreateOrder();
         }
 
     }

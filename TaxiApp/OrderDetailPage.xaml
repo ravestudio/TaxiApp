@@ -74,7 +74,7 @@
                 <!--<DatePicker Date="{Binding Path=OrderModel.EndDate, Converter={StaticResource DateTimeToDateTimeOffsetConverter}, Mode=TwoWay}"></DatePicker>
                 <TimePicker Time="{Binding Path=OrderModel.EndTime, Mode=TwoWay}"></TimePicker>-->
             </StackPanel>
-            <Button Content="Make an order" Style="{StaticResource TaxyButtonGreenStyle}" HorizontalAlignment="Center" VerticalAlignment="Bottom" Click="createBtnClick"/>
+            <Button Content="Make an order" Style="{StaticResource TaxyButtonGreenStyle}" HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
         </Grid>
 
         <Popup VerticalOffset="10" HorizontalOffset="10" x:Name="ServicePopup">

@@ -135,9 +135,11 @@
     <Compile Include="ViewModel\AuthenticationViewModel.cs" />
     <Compile Include="ViewModel\Command\CancelOrderCommand.cs" />
     <Compile Include="ViewModel\Command\ClickOrderItemCommand.cs" />
+    <Compile Include="ViewModel\Command\CreateOrderCommand.cs" />
     <Compile Include="ViewModel\Command\SelectPointLocationCommand.cs" />
     <Compile Include="ViewModel\Command\SelectServicesCommand.cs" />
     <Compile Include="ViewModel\Command\ShowOrderDetailCommand.cs" />
+    <Compile Include="ViewModel\MapViewModel.cs" />
     <Compile Include="ViewModel\ViewModel.cs" />
     <Compile Include="ViewModel\ViewModelFactory.cs" />
     <Compile Include="ViewModel\EditOrderViewModel.cs" />

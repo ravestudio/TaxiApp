@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using TaxiApp.Core.DataModel;
 using TaxiApp.Core.DataModel.Order;
 
+using Windows.Devices.Geolocation;
+
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
@@ -21,20 +23,32 @@ namespace TaxiApp.ViewModel
         public Command.SelectPointLocationCommand SelectLocationItem { get; set; }
         public Command.SelectServicesCommand SelectServicesCmd { get; set; }
         public Command.CancelOrderCommand CancelOrderCmd { get; set; }
+        public Command.CreateOrderCommand CreateOrderCmd { get; set; }
         public Command.ShowOrderDetailCommand ShowOrderDetailCmd { get; set; }
 
         public Windows.UI.Xaml.Controls.Page Page { get; set; }
         public Windows.UI.Xaml.Controls.Pivot Pivot { get; set; }
 
+        public DateTime EndDate { get; set; }
+        public DateTime EndTime { get; set; }
+        public IList<OrderOption> SelectedServices = null;
+
         public ListPickerFlyout ServicePicker { get; set; }
         public ListPickerFlyout CarPicker { get; set; }
         public TimePickerFlyout TimePicker { get; set; }
 
-        public Dictionary<string, Action<ViewModel, TaxiApp.Core.DataModel.Order.OrderItem>> Actions = null;
+        public OrderPriceInfo PriceInfo { get; set; }
+
+        public Dictionary<string, Action<EditOrderViewModel, TaxiApp.Core.DataModel.Order.OrderItem>> Actions = null;
 
         public ObservableCollection<Core.Entities.Order> OrderList { get; set; }
 
         private ObservableCollection<OrderItem> _orderItemList = null;
+
+        public MapViewModel Map { get; set; }
+
+        private TaxiApp.Core.Entities.Order _order = null;
+        
 
         public ObservableCollection<OrderItem> OrderItemList
         {
@@ -46,6 +60,12 @@ namespace TaxiApp.ViewModel
 
         public EditOrderViewModel()
         {
+            this.Map = new MapViewModel();
+            this.PriceInfo = new OrderPriceInfo();
+
+            this.EndDate = DateTime.Now;
+            this.EndTime = DateTime.Now;
+
             this.OrderList = new ObservableCollection<Core.Entities.Order>();
 
             this.OrderModel = TaxiApp.Core.DataModel.ModelFactory.Instance.GetOrderModel();
@@ -55,6 +75,7 @@ namespace TaxiApp.ViewModel
             this.SelectLocationItem = new Command.SelectPointLocationCommand(this);
             this.SelectServicesCmd = new Command.SelectServicesCommand(this);
             this.CancelOrderCmd = new Command.CancelOrderCommand(this);
+            this.CreateOrderCmd = new Command.CreateOrderCommand(this);
             this.ShowOrderDetailCmd = new Command.ShowOrderDetailCommand(this);
 
             this._orderItemList = new ObservableCollection<OrderItem>();
@@ -96,41 +117,31 @@ namespace TaxiApp.ViewModel
                 IconSource = new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///Assets/carclass.png"))
             });
 
-            this.Actions = new Dictionary<string, Action<ViewModel, TaxiApp.Core.DataModel.Order.OrderItem>>();
+            this.Actions = new Dictionary<string, Action<EditOrderViewModel, TaxiApp.Core.DataModel.Order.OrderItem>>();
 
             this.Actions.Add("Point", (viewModel, item) => {
                 TaxiApp.Core.DataModel.Order.OrderPoint orderPoint = (TaxiApp.Core.DataModel.Order.OrderPoint)item;
 
                 Frame rootFrame = Window.Current.Content as Frame;
 
-                EditOrderViewModel controller = (EditOrderViewModel)viewModel;
-
-                controller.SearchModel.SelectedPoint = orderPoint;
+                viewModel.SearchModel.SelectedPoint = orderPoint;
                 rootFrame.Navigate(typeof(Views.AddPointPage));
             });
 
             this.Actions.Add("Services", (viewModel, item) =>
             {
-                EditOrderViewModel controller = (EditOrderViewModel)viewModel;
-
-                controller.ServicePicker.ShowAt(controller.Page);
+                viewModel.ServicePicker.ShowAt(viewModel.Page);
 
             });
 
             this.Actions.Add("Now", (viewModel, item) =>
             {
-                EditOrderViewModel controller = (EditOrderViewModel)viewModel;
-
-                controller.TimePicker.ShowAt(controller.Page);
-
+                viewModel.TimePicker.ShowAt(viewModel.Page);
             });
 
             this.Actions.Add("Car", (viewModel, item) =>
             {
-                EditOrderViewModel controller = (EditOrderViewModel)viewModel;
-
-                controller.CarPicker.ShowAt(controller.Page);
-
+                viewModel.CarPicker.ShowAt(viewModel.Page);
             });
 
             OrderModel.SocketOnMessage = new OrderModel.SocketHandler((resp) =>
@@ -156,47 +167,22 @@ namespace TaxiApp.ViewModel
         {
             this.Page = page;
 
-            if (page.Name == "mainPage")
+            if (page is TaxiApp.Views.MainPage)
             {
                 this.ServicePicker = (ListPickerFlyout)page.Resources["ServiceFlyout"];
                 this.CarPicker = (ListPickerFlyout)page.Resources["CarFlyout"];
                 this.TimePicker = (TimePickerFlyout)page.Resources["TimeFlyout"];
+
+                this.Pivot = (Windows.UI.Xaml.Controls.Pivot)page.FindName("pivot");
             }
             else
             {
                 //this.OrderModel.RouteMapControl = ((Views.AddPointPage)page).RouteMapControl;
             }
 
-            this.OrderModel.Dispatcher = page.Dispatcher;
+            //this.OrderModel.Dispatcher = page.Dispatcher;
 
             base.Init(page);
-        }
-
-        public async void CreateOrder()
-        {
-            TaxiApp.Core.Entities.User user = TaxiApp.Core.Session.Instance.GetUser();
-
-            var postData = this.OrderModel.ConverToKeyValue();
-
-            //var postData = new List<KeyValuePair<string, string>>();
-
-            postData.Add(new KeyValuePair<string, string>("idpassenger", user.Id.ToString()));
-            postData.Add(new KeyValuePair<string, string>("token", user.token));
-            postData.Add(new KeyValuePair<string, string>("idcompany", "1"));
-
-
-
-            TaxiApp.Core.WebApiClient client = new TaxiApp.Core.WebApiClient();
-
-            string url = "http://serv.giddix.ru/api/passenger_setorder/";
-
-            string data = await client.GetData(url, postData);
-
-            Pivot.SelectedIndex = 1;
-
-            LoadMyOrders();
-
-            
         }
 
         public async Task<IList<TaxiApp.Core.Entities.Order>> GetUserOrders()
@@ -236,14 +222,23 @@ namespace TaxiApp.ViewModel
 
         public void UpdatePoints()
         {
-            Task<Windows.Services.Maps.MapRoute> FindRouteTask = this.OrderModel.FindRoute();
+
+            IEnumerable<Geopoint> geopoints = this._orderItemList.OfType<OrderPoint>().Where(p => p.IsDataReady())
+                .OrderBy(p => p.Priority)
+                .Select(p => new Geopoint(new BasicGeoposition()
+                {
+                    Latitude = p.Location.Latitude,
+                    Longitude = p.Location.Longitude
+                }));
+
+            Task<Windows.Services.Maps.MapRoute> FindRouteTask = this.OrderModel.FindRoute(geopoints);
 
             FindRouteTask.ContinueWith(t =>
             {
                 if (t.Status == TaskStatus.RanToCompletion)
                 {
 
-                    this.OrderModel.MapRoute = t.Result;
+                    this.Map.MapRoute = t.Result;
 
                     Windows.Foundation.IAsyncAction action =
                     this.Page.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
@@ -251,7 +246,10 @@ namespace TaxiApp.ViewModel
                         var dlg = new Windows.UI.Popups.MessageDialog("Маршрут найден");
                         dlg.ShowAsync();
 
-                        this.GetPriceInfo();
+                        TaxiApp.Core.Entities.Order order = null;
+                        order = this.GetEntity();
+
+                        this.OrderModel.GetPriceInfo(order, this.PriceInfo);
                     });
                 }
                 else
@@ -287,5 +285,42 @@ namespace TaxiApp.ViewModel
 
             }
         }
+
+        public TaxiApp.Core.Entities.Order GetEntity()
+        {
+            this._order = new Core.Entities.Order();
+
+            byte servieces = 0;
+                
+            foreach (OrderOption service in this.SelectedServices)
+            {
+                servieces = (byte)((byte)servieces | (byte)service.id);
+            }
+
+            this._order.Servieces = servieces;
+
+            foreach (OrderPoint orderPoint in this._orderItemList.OfType<OrderPoint>().Where(p => p.IsDataReady()))
+            {
+                TaxiApp.Core.Entities.OrderRouteItem routeItem = new TaxiApp.Core.Entities.OrderRouteItem();
+                routeItem.Address = string.Format("{0}, {1}, {2} {3}",
+                        orderPoint.Location.MapLocation.Address.Street,
+                        orderPoint.Location.MapLocation.Address.StreetNumber,
+                        orderPoint.Location.MapLocation.Address.Town,
+                        orderPoint.Location.MapLocation.Address.Country
+                        );
+                routeItem.Latitude = orderPoint.Location.Latitude;
+                routeItem.Longitude = orderPoint.Location.Longitude;
+
+                _order.Route.Add(routeItem);
+            }
+
+            _order.Routemeters = (int)this.Map.MapRoute.LengthInMeters;
+            _order.Routetime = this.Map.MapRoute.EstimatedDuration.Minutes;
+
+            _order.StartDate = new DateTime(EndDate.Year, EndDate.Month, EndDate.Day, EndTime.Hour, EndTime.Minute, EndTime.Second);
+
+            return this._order;
+        }
+
     }
 }

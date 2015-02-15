@@ -15,8 +15,11 @@ namespace TaxiApp.Core.Entities
 
         public decimal Ordersumm { get; set; }
         public int Routemeters { get; set; }
+        public int Routetime { get; set; }
 
-        public IList<OrderRouteItem> route = new List<OrderRouteItem>();
+        public byte Servieces { get; set; }
+
+        private IList<OrderRouteItem> route = new List<OrderRouteItem>();
 
         public Order()
         {
@@ -77,6 +80,57 @@ namespace TaxiApp.Core.Entities
             {
                 return string.Format("{0}km, {1}$", (float)this.Routemeters/1000, this.Ordersumm);
             }
+        }
+
+        public List<KeyValuePair<string, string>> ConverToKeyValue()
+        {
+            List<KeyValuePair<string, string>> keyValueData = new List<KeyValuePair<string, string>>();
+
+            //keyValueData.Add(new KeyValuePair<string, string>("enddate", System.DateTime.Now.AddHours(1).ToString("yyyy-mm-dd hh:mm")));
+
+            //keyValueData.Add(new KeyValuePair<string, string>("enddate", System.DateTime.Now.AddHours(1).ToString("yyyy-MM-dd")));
+
+            //keyValueData.Add(new KeyValuePair<string, string>("service", "1023"));
+            //keyValueData.Add(new KeyValuePair<string, string>("passengersnum", "3"));
+
+
+            int i = 0;
+            foreach (OrderRouteItem routeItem in this.Route)
+            {
+
+
+                keyValueData.Add(new KeyValuePair<string, string>
+                    (string.Format("address[{0}]", i), routeItem.Address));
+
+                keyValueData.Add(new KeyValuePair<string, string>
+                    (string.Format("coords[{0}]", i), string.Format("{0},{1}",
+                    routeItem.Latitude.ToString(System.Globalization.CultureInfo.InvariantCulture),
+                    routeItem.Longitude.ToString(System.Globalization.CultureInfo.InvariantCulture))));
+
+                keyValueData.Add(new KeyValuePair<string, string>
+                    (string.Format("priority[{0}]", i), routeItem.Priority.ToString()));
+
+                i++;
+            }
+
+            if (Servieces > 0)
+            {
+                keyValueData.Add(new KeyValuePair<string, string>("service", Servieces.ToString()));
+            }
+
+            if (this.Route.Count > 0)
+            {
+                keyValueData.Add(new KeyValuePair<string, string>("routemeters", this.Routemeters.ToString()));
+                keyValueData.Add(new KeyValuePair<string, string>("routetime", this.Routetime.ToString()));
+            }
+
+            //YYYY-MM-DD HH:II
+            //string enddate = string.Format("{0}-{1}-{2} {3}:{4}", this.EndDate.Year, this.EndDate.Month,this.EndDate.Day, this.EndTime.Hour, this.EndTime.Minute);
+            string enddate = string.Format("{0:yyyy}-{0:MM}-{0:dd} {0:HH}:{0:mm}", this.StartDate);
+
+            keyValueData.Add(new KeyValuePair<string, string>("enddate", enddate));
+
+            return keyValueData;
         }
 
         public override void ReadData(Windows.Data.Json.JsonObject jsonObj)
@@ -153,7 +207,7 @@ namespace TaxiApp.Core.Entities
     public class OrderRouteItem
     {
         public string Address { get; set; }
-
+        public int Priority { get; set; }
         public double Latitude {get; set; }
         public double Longitude { get; set; }
 

@@ -125,9 +125,6 @@ namespace TaxiApp
             DateTimePopup.IsOpen = false;
         }
 
-        private void createBtnClick(object sender, RoutedEventArgs e)
-        {
-            this.viewOrderModel.CreateOrder();
-        }
+
     }
 }
