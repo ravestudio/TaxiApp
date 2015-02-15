@@ -13,11 +13,14 @@ namespace TaxiApp.Core.Entities
 
         public DateTime StartDate { get; set; }
 
+        public int DriverId { get; set; }
+
         public decimal Ordersumm { get; set; }
         public int Routemeters { get; set; }
         public int Routetime { get; set; }
 
         public byte Servieces { get; set; }
+        public int Carclass { get; set; }
 
         private IList<OrderRouteItem> route = new List<OrderRouteItem>();
 
@@ -142,30 +145,11 @@ namespace TaxiApp.Core.Entities
             this.StartDate = DateTime.Parse(jsonObj["startdate"].GetString(), System.Globalization.CultureInfo.InvariantCulture);
             this.Ordersumm = decimal.Parse(jsonObj["ordersumm"].GetString(), System.Globalization.CultureInfo.InvariantCulture);
 
-            var statusType = jsonObj["status"].ValueType;
-
-            if (statusType == Windows.Data.Json.JsonValueType.Number)
-            {
-                this.Status = (int)jsonObj["status"].GetNumber();
-            }
-
-            if (statusType == Windows.Data.Json.JsonValueType.String)
-            {
-                this.Status = int.Parse(jsonObj["status"].GetString(), System.Globalization.CultureInfo.InvariantCulture);
-            }
-
-
-            var routemetersType = jsonObj["routemeters"].ValueType;
-
-            if (routemetersType == Windows.Data.Json.JsonValueType.Number)
-            {
-                this.Routemeters = (int)jsonObj["routemeters"].GetNumber();
-            }
-
-            if (routemetersType == Windows.Data.Json.JsonValueType.String)
-            {
-                this.Routemeters = int.Parse(jsonObj["routemeters"].GetString(), System.Globalization.CultureInfo.InvariantCulture);
-            }
+            this.Status = this.ReadValue(jsonObj, "status");
+            this.DriverId = this.ReadValue(jsonObj, "iddriver");
+            this.Routemeters = this.ReadValue(jsonObj, "routemeters");
+            this.Carclass = this.ReadValue(jsonObj, "carclass");
+            this.Servieces = (byte)this.ReadValue(jsonObj, "service");
 
             var routeArray = jsonObj["routes"].GetArray();
 

@@ -49,13 +49,16 @@
                           >
 
         </ListPickerFlyout>
-        
-        <TimePickerFlyout x:Key="TimeFlyout">
-        </TimePickerFlyout>
-
 
         <Converters:DateTimeToDateTimeOffsetConverter
             x:Key="DateTimeToDateTimeOffsetConverter"/>
+
+        <DatePickerFlyout x:Key="DateFlyout" Date="{Binding EndDate, Converter={StaticResource DateTimeToDateTimeOffsetConverter}, Mode=TwoWay}">
+        </DatePickerFlyout>
+
+        <TimePickerFlyout x:Key="TimeFlyout" Time="{Binding EndTime, Mode=TwoWay}">
+        </TimePickerFlyout>
+
 
         <DataTemplate x:Key="OrderItemTemplate">
             <StackPanel Margin="10,3,0,0" Orientation="Horizontal">

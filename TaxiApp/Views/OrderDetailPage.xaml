@@ -7,6 +7,7 @@
     xmlns:Maps="using:Windows.UI.Xaml.Controls.Maps"
     x:Class="TaxiApp.Views.OrderDetailPage"
     mc:Ignorable="d"
+    DataContext="{Binding OrderViewModel, RelativeSource={RelativeSource Mode=Self}}"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid x:Name="LayoutRoot">
@@ -29,6 +30,30 @@
         </StackPanel>
 
         <!--TODO: Content should be placed within the following grid-->
-        <Grid Grid.Row="1" x:Name="ContentRoot" Margin="19,9.5,19,0"/>
+        <Grid Grid.Row="1" x:Name="ContentRoot" Margin="19,9.5,19,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <Border Grid.Row="0" Grid.Column="0" Width="150" Height="200" BorderThickness="2" Background="#FFF0F0F0">
+                <Grid>
+                    <Image Width="150" Source="{Binding Path=DriverInfo.DriverPhotolink}" VerticalAlignment="Top"></Image>
+                    <TextBlock Text="{Binding Path=DriverInfo.FullName}" Style="{StaticResource TitleTextBlockStyle}" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,10"></TextBlock>
+                </Grid>
+            </Border>
+
+            <Border Grid.Row="0" Grid.Column="1" Width="150" Height="200" BorderThickness="2" Background="#FFF0F0F0">
+                <Grid>
+                    <Image Width="150" Source="{Binding Path=DriverInfo.Carphotolink}" VerticalAlignment="Top"></Image>
+                    <TextBlock Text="{Binding Path=DriverInfo.Licenseplate}" Style="{StaticResource TitleTextBlockStyle}" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,10"></TextBlock>
+                </Grid>
+            </Border>
+
+        </Grid>
     </Grid>
 </Page>

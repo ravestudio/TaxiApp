@@ -139,6 +139,7 @@
     <Compile Include="ViewModel\Command\SelectPointLocationCommand.cs" />
     <Compile Include="ViewModel\Command\SelectServicesCommand.cs" />
     <Compile Include="ViewModel\Command\ShowOrderDetailCommand.cs" />
+    <Compile Include="ViewModel\DetailOrderViewModel.cs" />
     <Compile Include="ViewModel\MapViewModel.cs" />
     <Compile Include="ViewModel\ViewModel.cs" />
     <Compile Include="ViewModel\ViewModelFactory.cs" />
@@ -218,6 +219,9 @@
     <SDKReference Include="BehaviorsXamlSDKManaged, Version=12.0">
       <Name>Behaviors SDK %28XAML%29</Name>
     </SDKReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram1.cd" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '12.0' ">
     <VisualStudioVersion>12.0</VisualStudioVersion>

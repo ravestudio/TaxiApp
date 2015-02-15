@@ -17,7 +17,7 @@ namespace TaxiApp.Core.Repository
             this._apiClient = apiClient;
         }
 
-        public virtual G GetById(Key id)
+        public virtual async Task<G> GetById(Key id)
         {
             return null;
         }

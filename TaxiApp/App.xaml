@@ -4,7 +4,7 @@
     xmlns:local="using:TaxiApp"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d"
     x:Class="TaxiApp.App"
-    RequestedTheme="Light">
+    RequestedTheme="Dark">
     
     <Application.Resources>
         <Style x:Key="TaxyButtonGreenStyle" TargetType="Button">

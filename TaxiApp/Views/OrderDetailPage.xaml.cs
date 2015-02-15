@@ -26,11 +26,13 @@ namespace TaxiApp.Views
     public sealed partial class OrderDetailPage : Page
     {
         private NavigationHelper navigationHelper;
-        private ObservableDictionary defaultViewModel = new ObservableDictionary();
+        private TaxiApp.ViewModel.DetailOrderViewModel detailOrderViewModel = ViewModel.ViewModelFactory.Instance.GetDetailOrderViewModel();
 
         public OrderDetailPage()
         {
             this.InitializeComponent();
+
+            detailOrderViewModel.Init(this);
 
             this.navigationHelper = new NavigationHelper(this);
             this.navigationHelper.LoadState += this.NavigationHelper_LoadState;
@@ -49,9 +51,9 @@ namespace TaxiApp.Views
         /// Gets the view model for this <see cref="Page"/>.
         /// This can be changed to a strongly typed view model.
         /// </summary>
-        public ObservableDictionary DefaultViewModel
+        public TaxiApp.ViewModel.DetailOrderViewModel OrderViewModel
         {
-            get { return this.defaultViewModel; }
+            get { return this.detailOrderViewModel; }
         }
 
         /// <summary>

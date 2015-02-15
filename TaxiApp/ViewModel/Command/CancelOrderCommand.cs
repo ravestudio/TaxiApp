@@ -65,7 +65,7 @@ namespace TaxiApp.ViewModel.Command
         {
             var order = _viewOrderModel.OrderList.Where(o => o.Id == id).SingleOrDefault();
 
-            this._viewOrderModel.OrderModel.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+            this._viewOrderModel.Page.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
             {
                 _viewOrderModel.OrderList.Remove(order);
             });

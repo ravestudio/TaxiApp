@@ -38,10 +38,10 @@ namespace TaxiApp
             this.navigationHelper.LoadState += this.NavigationHelper_LoadState;
             this.navigationHelper.SaveState += this.NavigationHelper_SaveState;
 
-            viewOrderModel.OrderModel.ServicePopup = ServicePopup;
-            viewOrderModel.OrderModel.DateTimePopup = DateTimePopup;
+            //viewOrderModel.OrderModel.ServicePopup = ServicePopup;
+            //viewOrderModel.OrderModel.DateTimePopup = DateTimePopup;
 
-            this.viewOrderModel.OrderModel.Dispatcher = this.Dispatcher;
+            //this.viewOrderModel.OrderModel.Dispatcher = this.Dispatcher;
         }
 
         /// <summary>

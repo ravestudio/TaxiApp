@@ -28,5 +28,24 @@ namespace TaxiApp.Core.Entities
 
         }
 
+        public int ReadValue(Windows.Data.Json.JsonObject jsonObj, string field)
+        {
+            int value = 0;
+
+            var fieldType = jsonObj[field].ValueType;
+
+            if (fieldType == Windows.Data.Json.JsonValueType.Number)
+            {
+                value = (int)jsonObj[field].GetNumber();
+            }
+
+            if (fieldType == Windows.Data.Json.JsonValueType.String)
+            {
+                value = int.Parse(jsonObj[field].GetString(), System.Globalization.CultureInfo.InvariantCulture);
+            }
+
+            return value;
+        }
+
     }
 }

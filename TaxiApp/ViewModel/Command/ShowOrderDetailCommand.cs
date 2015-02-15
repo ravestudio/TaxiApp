@@ -31,6 +31,7 @@ namespace TaxiApp.ViewModel.Command
 
             Core.Entities.Order order = (Core.Entities.Order)e.ClickedItem;
 
+            TaxiApp.Core.DataModel.ModelFactory.Instance.GetOrderModel().Detailed = order;
 
             Frame rootFrame = Window.Current.Content as Frame;
 

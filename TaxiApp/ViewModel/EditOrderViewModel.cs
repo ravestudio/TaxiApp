@@ -28,12 +28,11 @@ namespace TaxiApp.ViewModel
 
         public Windows.UI.Xaml.Controls.Pivot Pivot { get; set; }
 
-        public DateTime EndDate { get; set; }
-        public DateTime EndTime { get; set; }
         public IList<OrderOption> SelectedServices = null;
 
         public ListPickerFlyout ServicePicker { get; set; }
         public ListPickerFlyout CarPicker { get; set; }
+        public DatePickerFlyout DatePicker { get; set; }
         public TimePickerFlyout TimePicker { get; set; }
 
         public OrderPriceInfo PriceInfo { get; set; }
@@ -63,13 +62,43 @@ namespace TaxiApp.ViewModel
             }
         }
 
+        public DateTime _EndDate;
+        public TimeSpan _EndTime;
+
+        public TimeSpan EndTime {
+            get
+            {
+                return this._EndTime;
+            }
+            set
+            {
+                this._EndTime = value;
+                OrderItem item = this._orderItemList.Where(i => i.Cmd == "Now").Single();
+                item.Title = string.Format("{0:D2}:{0:D2}", value.Hours, value.Minutes);
+            }
+        }
+
+        public DateTime EndDate
+        {
+            get
+            {
+                return this._EndDate;
+            }
+            set
+            {
+                this._EndDate = value;
+                OrderItem item = this._orderItemList.Where(i => i.Cmd == "Date").Single();
+                item.Title = string.Format("{0:yyyy}-{0:MM}-{0:dd}", value);
+            }
+        }
+
         public EditOrderViewModel()
         {
             this.Map = new MapViewModel();
             this.PriceInfo = new OrderPriceInfo();
 
-            this.EndDate = DateTime.Now;
-            this.EndTime = DateTime.Now;
+            this._EndDate = DateTime.Now;
+            this._EndTime = DateTime.Now.TimeOfDay;
 
             this.SelectedServices = new List<OrderOption>();
 
@@ -104,6 +133,14 @@ namespace TaxiApp.ViewModel
 
             this._orderItemList.Add(pointfrom);
             this._orderItemList.Add(pointSecond);
+
+            this._orderItemList.Add(new OrderItem()
+            {
+                Priority = 9,
+                Title = "Today",
+                Cmd = "Date"
+            });
+
 
             this._orderItemList.Add(new OrderItem()
             {
@@ -146,6 +183,11 @@ namespace TaxiApp.ViewModel
 
             });
 
+            this.Actions.Add("Date", (viewModel, item) =>
+            {
+                viewModel.DatePicker.ShowAt(viewModel.Page);
+            });
+
             this.Actions.Add("Now", (viewModel, item) =>
             {
                 viewModel.TimePicker.ShowAt(viewModel.Page);
@@ -177,15 +219,21 @@ namespace TaxiApp.ViewModel
 
         public override void Init(Page page)
         {
-            this.Page = page;
+            base.Init(page);
 
             if (page is TaxiApp.Views.MainPage)
             {
                 this.ServicePicker = (ListPickerFlyout)page.Resources["ServiceFlyout"];
                 this.CarPicker = (ListPickerFlyout)page.Resources["CarFlyout"];
+                this.DatePicker = (DatePickerFlyout)page.Resources["DateFlyout"];
                 this.TimePicker = (TimePickerFlyout)page.Resources["TimeFlyout"];
 
                 this.Pivot = (Windows.UI.Xaml.Controls.Pivot)page.FindName("pivot");
+
+                foreach(OrderOption service in this.SelectedServices)
+                {
+                    this.ServicePicker.SelectedItems.Add(service);
+                }
             }
 
             if (page is TaxiApp.Views.AddPointPage)
@@ -195,7 +243,7 @@ namespace TaxiApp.ViewModel
 
             //this.OrderModel.Dispatcher = page.Dispatcher;
 
-            base.Init(page);
+            
         }
 
         public async Task<IList<TaxiApp.Core.Entities.Order>> GetUserOrders()
@@ -334,7 +382,7 @@ namespace TaxiApp.ViewModel
                 _order.Routetime = this.Map.MapRoute.EstimatedDuration.Minutes;
             }
 
-            _order.StartDate = new DateTime(EndDate.Year, EndDate.Month, EndDate.Day, EndTime.Hour, EndTime.Minute, EndTime.Second);
+            _order.StartDate = new DateTime(EndDate.Year, EndDate.Month, EndDate.Day, EndTime.Hours, EndTime.Minutes, EndTime.Seconds);
 
             return this._order;
         }

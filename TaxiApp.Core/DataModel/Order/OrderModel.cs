@@ -24,12 +24,12 @@ namespace TaxiApp.Core.DataModel.Order
         private TaxiApp.Core.SocketClient SocketClient = new Core.SocketClient();
         private TaxiApp.Core.Socket.SocketManager socketMG = null;
 
-        
 
-        public Windows.UI.Core.CoreDispatcher Dispatcher { get; set; }
+        public TaxiApp.Core.Entities.Order Detailed { get; set; }
+        //public Windows.UI.Core.CoreDispatcher Dispatcher { get; set; }
 
-        public Windows.UI.Xaml.Controls.Primitives.Popup ServicePopup { get; set; }
-        public Windows.UI.Xaml.Controls.Primitives.Popup DateTimePopup { get; set; }
+        //public Windows.UI.Xaml.Controls.Primitives.Popup ServicePopup { get; set; }
+        //public Windows.UI.Xaml.Controls.Primitives.Popup DateTimePopup { get; set; }
 
         public OrderModel()
         {
@@ -209,15 +209,15 @@ namespace TaxiApp.Core.DataModel.Order
             await painter.ShowMyPossitionAsync(mapControl);
         }
 
-        public void ShowServices()
-        {
-            this.ServicePopup.IsOpen = true;
-        }
+        //public void ShowServices()
+        //{
+        //    this.ServicePopup.IsOpen = true;
+        //}
 
-        public void ShowDateTime()
-        {
-            this.DateTimePopup.IsOpen = true;
-        }
+        //public void ShowDateTime()
+        //{
+        //    this.DateTimePopup.IsOpen = true;
+        //}
 
         public async void CreateOrder(TaxiApp.Core.Entities.Order order)
         {
@@ -240,6 +240,22 @@ namespace TaxiApp.Core.DataModel.Order
             string data = await client.GetData(url, postData);
 
 
+        }
+
+        public Task<Entities.Driver> GetDriver(int DriverId)
+        {
+            var tcs = new TaskCompletionSource<Entities.Driver>();
+
+            TaxiApp.Core.WebApiClient client = new TaxiApp.Core.WebApiClient();
+
+            TaxiApp.Core.Repository.DriverRepository driverRepository = new Core.Repository.DriverRepository(client);
+
+            driverRepository.GetById(DriverId).ContinueWith((task) =>
+                {
+                    tcs.SetResult(task.Result);
+                });
+
+            return tcs.Task;
         }
 
         public async void GetPriceInfo(TaxiApp.Core.Entities.Order order, OrderPriceInfo priceInfo)

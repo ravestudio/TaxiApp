@@ -10,6 +10,7 @@ namespace TaxiApp.ViewModel
     {
         private EditOrderViewModel viewOrderModel = null;
         private AuthenticationViewModel viewAuthenticationModel = null;
+        private DetailOrderViewModel detailOrderViewModel = null;
 
         public EditOrderViewModel GetViewOrderModel()
         {
@@ -19,6 +20,16 @@ namespace TaxiApp.ViewModel
             }
 
             return this.viewOrderModel;
+        }
+
+        public DetailOrderViewModel GetDetailOrderViewModel()
+        {
+            if (this.detailOrderViewModel == null)
+            {
+                this.detailOrderViewModel = new DetailOrderViewModel();
+            }
+
+            return this.detailOrderViewModel;
         }
 
         public AuthenticationViewModel GetViewAuthenticationModel()

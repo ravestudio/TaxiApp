@@ -42,7 +42,7 @@ namespace TaxiApp
             this.navigationHelper.LoadState += this.NavigationHelper_LoadState;
             this.navigationHelper.SaveState += this.NavigationHelper_SaveState;
 
-            this.viewOrderModel.OrderModel.Dispatcher = this.Dispatcher;
+            //this.viewOrderModel.OrderModel.Dispatcher = this.Dispatcher;
         }
 
         /// <summary>

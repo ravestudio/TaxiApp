@@ -12,7 +12,7 @@ namespace TaxiApp.ViewModel
 
         public virtual void Init(Windows.UI.Xaml.Controls.Page Page)
         {
-
+            this.Page = Page;
         }
 
         public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
