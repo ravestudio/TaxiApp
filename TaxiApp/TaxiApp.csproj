@@ -120,6 +120,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\SendRatingPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App.xaml.cs">
@@ -135,12 +139,14 @@
     <Compile Include="ViewModel\AuthenticationViewModel.cs" />
     <Compile Include="ViewModel\Command\CancelOrderCommand.cs" />
     <Compile Include="ViewModel\Command\ClickOrderItemCommand.cs" />
+    <Compile Include="ViewModel\Command\ClickRatingStarCommand.cs" />
     <Compile Include="ViewModel\Command\CreateOrderCommand.cs" />
     <Compile Include="ViewModel\Command\SelectPointLocationCommand.cs" />
     <Compile Include="ViewModel\Command\SelectServicesCommand.cs" />
     <Compile Include="ViewModel\Command\ShowOrderDetailCommand.cs" />
     <Compile Include="ViewModel\DetailOrderViewModel.cs" />
     <Compile Include="ViewModel\MapViewModel.cs" />
+    <Compile Include="ViewModel\SendRatingViewModel.cs" />
     <Compile Include="ViewModel\ViewModel.cs" />
     <Compile Include="ViewModel\ViewModelFactory.cs" />
     <Compile Include="ViewModel\EditOrderViewModel.cs" />
@@ -176,6 +182,9 @@
     <Compile Include="Views\OrderDetailPage.xaml.cs">
       <DependentUpon>OrderDetailPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\SendRatingPage.xaml.cs">
+      <DependentUpon>SendRatingPage.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
@@ -188,7 +197,15 @@
     <Content Include="Assets\Logo.scale-240.png" />
     <Content Include="Assets\point.png" />
     <Content Include="Assets\price.png" />
+    <Content Include="Assets\rating1.png" />
+    <Content Include="Assets\rating2.png" />
     <Content Include="Assets\service.png" />
+    <Content Include="Assets\Service\s1.png" />
+    <Content Include="Assets\Service\s16.png" />
+    <Content Include="Assets\Service\s2.png" />
+    <Content Include="Assets\Service\s32.png" />
+    <Content Include="Assets\Service\s4.png" />
+    <Content Include="Assets\Service\s8.png" />
     <Content Include="Assets\SmallLogo.scale-240.png" />
     <Content Include="Assets\SplashScreen.scale-240.png" />
     <Content Include="Assets\Square71x71Logo.scale-240.png" />

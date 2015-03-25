@@ -15,6 +15,8 @@ namespace TaxiApp.ViewModel
 
         public MapViewModel Map { get; set; }
 
+        private IList<OrderOption> _services = null;
+
         private TaxiApp.Core.Entities.Order _order = null;
         private TaxiApp.Core.Entities.Driver _driver = null;
 
@@ -32,10 +34,44 @@ namespace TaxiApp.ViewModel
             }
         }
 
+        public IList<OrderOption> Services
+        {
+            get
+            {
+                return this._services;
+            }
+        }
+
+        private string _carClass = string.Empty;
+        public string CarClass
+        {
+            get
+            {
+                return _carClass;
+            }
+
+            set
+            {
+                this._carClass = value;
+                NotifyPropertyChanged("CarClass");
+            }
+        }
+
+        public TaxiApp.Core.Entities.Order Order
+        {
+            get
+            {
+                return this._order;
+            }
+        }
+
+
         public DetailOrderViewModel()
         {
             this.Map = new MapViewModel();
             this.OrderModel = TaxiApp.Core.DataModel.ModelFactory.Instance.GetOrderModel();
+
+            this._services = new List<OrderOption>();
 
         }
 
@@ -48,6 +84,11 @@ namespace TaxiApp.ViewModel
 
             this._order = this.OrderModel.Detailed;
 
+            this.FillServices(_order.Servieces);
+
+            this.CarClass = this.OrderModel.OrderCarList.Single(c => c.id == this._order.Carclass).Name;
+
+
             if (_order.DriverId > 0)
             {
                 Task<TaxiApp.Core.Entities.Driver> task = this.OrderModel.GetDriver(_order.DriverId);
@@ -58,6 +99,22 @@ namespace TaxiApp.ViewModel
                     });
             }
 
+        }
+
+        private void FillServices(byte services)
+        {
+            this._services.Clear();
+
+            foreach(OrderOption srv in this.OrderModel.OrderServiceList)
+            {
+                int v = services & (byte)srv.id;
+                if (v == srv.id)
+                {
+                    this._services.Add(srv);
+                }
+            }
+
+            NotifyPropertyChanged("Services");
         }
     }
 }

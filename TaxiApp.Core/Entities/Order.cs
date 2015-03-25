@@ -24,6 +24,14 @@ namespace TaxiApp.Core.Entities
 
         private IList<OrderRouteItem> route = new List<OrderRouteItem>();
 
+        public string ArrivalTime
+        {
+            get
+            {
+                return string.Format("{0:yyyy}-{0:MM}-{0:dd} {0:HH}:{0:mm}", this.StartDate);
+            }
+        }
+
         public Order()
         {
             this.Status = 0;

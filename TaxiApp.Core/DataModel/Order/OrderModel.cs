@@ -97,12 +97,12 @@ namespace TaxiApp.Core.DataModel.Order
         private void InitOptions()
         {
             this._orderServiceList = new List<OrderOption>();
-            this._orderServiceList.Add(new OrderOption() { id = 1, Name = "Багаж"});
-            this._orderServiceList.Add(new OrderOption() { id = 2, Name = "Можно курить"});
-            this._orderServiceList.Add(new OrderOption() { id = 4, Name = "Водитель не курит"});
-            this._orderServiceList.Add(new OrderOption() { id = 8, Name = "Детское кресло"});
-            this._orderServiceList.Add(new OrderOption() { id = 16, Name = "Удобства для инвалидов"});
-            this._orderServiceList.Add(new OrderOption() { id = 32, Name = "Перевозка животных "});
+            this._orderServiceList.Add(new OrderOption() { id = 1, Name = "Багаж", IconSource = new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///Assets/service/s1.png")) });
+            this._orderServiceList.Add(new OrderOption() { id = 2, Name = "Можно курить", IconSource = new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///Assets/service/s2.png")) });
+            this._orderServiceList.Add(new OrderOption() { id = 4, Name = "Водитель не курит", IconSource = new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///Assets/service/s4.png")) });
+            this._orderServiceList.Add(new OrderOption() { id = 8, Name = "Детское кресло", IconSource = new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///Assets/service/s8.png")) });
+            this._orderServiceList.Add(new OrderOption() { id = 16, Name = "Удобства для инвалидов", IconSource = new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///Assets/service/s16.png")) });
+            this._orderServiceList.Add(new OrderOption() { id = 32, Name = "Перевозка животных ", IconSource = new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///Assets/service/s32.png")) });
 
             this._orderCarList = new List<OrderOption>();
             this._orderCarList.Add(new OrderOption() { id = 0, Name = "Любой" });

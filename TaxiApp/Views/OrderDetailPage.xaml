@@ -26,7 +26,7 @@
         <!-- Title Panel -->
         <StackPanel Grid.Row="0" Margin="19,0,0,0">
             <TextBlock Text="MY APPLICATION" Style="{ThemeResource TitleTextBlockStyle}" Margin="0,12,0,0"/>
-            <TextBlock Text="order detail" Margin="0,-6.5,0,26.5" Style="{ThemeResource HeaderTextBlockStyle}" CharacterSpacing="{ThemeResource PivotHeaderItemCharacterSpacing}"/>
+            <TextBlock Text="Order detail" Margin="0,-6.5,0,26.5" Style="{ThemeResource HeaderTextBlockStyle}" CharacterSpacing="{ThemeResource PivotHeaderItemCharacterSpacing}"/>
         </StackPanel>
 
         <!--TODO: Content should be placed within the following grid-->
@@ -53,6 +53,32 @@
                     <TextBlock Text="{Binding Path=DriverInfo.Licenseplate}" Style="{StaticResource TitleTextBlockStyle}" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,10"></TextBlock>
                 </Grid>
             </Border>
+            
+            <StackPanel Grid.Row="1" Grid.Column="0">
+                <TextBlock Text="Arrival times" Style="{StaticResource ComboBoxPlaceholderTextBlockStyle}"></TextBlock>
+                <TextBlock Text="{Binding Order.ArrivalTime}" Style="{StaticResource FlyoutPickerTitleTextBlockStyle}"></TextBlock>
+            </StackPanel>
+
+            <StackPanel Grid.Row="1" Grid.Column="2">
+                <TextBlock Text="Services" Style="{StaticResource ComboBoxPlaceholderTextBlockStyle}"></TextBlock>
+                
+                <GridView
+                    ItemsSource="{Binding Services}"
+                    
+                    >
+                    <GridView.ItemTemplate>
+                        <DataTemplate>
+                            <Image Source="{Binding IconSource}" Width="30" Margin="0"/>
+                        </DataTemplate>
+                    </GridView.ItemTemplate>
+                </GridView>
+
+                <TextBlock Text="Car class" Style="{StaticResource ComboBoxPlaceholderTextBlockStyle}"></TextBlock>
+                <TextBlock Text="{Binding CarClass}" Style="{StaticResource FlyoutPickerTitleTextBlockStyle}"></TextBlock>
+                
+                <Button Content="Rating" Click="Button_Click"></Button>
+
+            </StackPanel>
 
         </Grid>
     </Grid>

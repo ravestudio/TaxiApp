@@ -23,16 +23,17 @@ namespace TaxiApp.Views
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class OrderDetailPage : Page
+    public sealed partial class SendRatingPage : Page
     {
         private NavigationHelper navigationHelper;
-        private TaxiApp.ViewModel.DetailOrderViewModel detailOrderViewModel = ViewModel.ViewModelFactory.Instance.GetDetailOrderViewModel();
 
-        public OrderDetailPage()
+        private TaxiApp.ViewModel.SendRatingViewModel sendRatingViewModel = ViewModel.ViewModelFactory.Instance.GetSendRatingViewModel();
+
+        public SendRatingPage()
         {
             this.InitializeComponent();
 
-            detailOrderViewModel.Init(this);
+            sendRatingViewModel.Init(this);
 
             this.navigationHelper = new NavigationHelper(this);
             this.navigationHelper.LoadState += this.NavigationHelper_LoadState;
@@ -51,9 +52,9 @@ namespace TaxiApp.Views
         /// Gets the view model for this <see cref="Page"/>.
         /// This can be changed to a strongly typed view model.
         /// </summary>
-        public TaxiApp.ViewModel.DetailOrderViewModel OrderViewModel
+        public TaxiApp.ViewModel.SendRatingViewModel RatingViewModel
         {
-            get { return this.detailOrderViewModel; }
+            get { return this.sendRatingViewModel; }
         }
 
         /// <summary>
@@ -110,9 +111,9 @@ namespace TaxiApp.Views
 
         #endregion
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void GridView_ItemClick(object sender, ItemClickEventArgs e)
         {
-            this.Frame.Navigate(typeof(Views.SendRatingPage));
+            int i = 0;
         }
     }
 }
