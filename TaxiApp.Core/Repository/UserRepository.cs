@@ -14,7 +14,7 @@ namespace TaxiApp.Core.Repository
 
         public async Task<string> RegisterUser(string PhoneNumber)
         {
-            string url = "http://serv.giddix.ru/api/passenger_registration/";
+            string url = string.Format("{0}{1}", this.ServerURL, "api/passenger_registration/");
 
             var postData = new List<KeyValuePair<string, string>>();
 
@@ -42,14 +42,14 @@ namespace TaxiApp.Core.Repository
 
         public async Task<Entities.User> GetUser(string PhoneNumber, string PIN)
         {
-            string url = "http://serv.giddix.ru/api/passenger_auth/";
+            string url = string.Format("{0}{1}", this.ServerURL, "api/passenger_auth/");
 
             var postData = new List<KeyValuePair<string, string>>();
 
             postData.Add(new KeyValuePair<string, string>("phone", PhoneNumber));
             postData.Add(new KeyValuePair<string, string>("pin", PIN));
             postData.Add(new KeyValuePair<string, string>("idcompany", "1"));
-            postData.Add(new KeyValuePair<string, string>("appversion", "10"));
+            postData.Add(new KeyValuePair<string, string>("appversion", "100"));
 
             //string data = string.Format("phone={0}&pin={1}&idcompany={2}", model.PhoneNumber, model.PIN, 1);
 

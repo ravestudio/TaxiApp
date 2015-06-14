@@ -10,6 +10,9 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid x:Name="LayoutRoot">
+        <Grid.Background>
+            <ImageBrush ImageSource="Assets/BackGroundBMW.png"/>
+        </Grid.Background>
 
         <Grid.ChildrenTransitions>
             <TransitionCollection>
@@ -29,11 +32,15 @@
         </StackPanel>-->
 
         <!--TODO: Содержимое должно размещаться в следующей сетке-->
-        <Grid Grid.Row="1" x:Name="ContentRoot" Margin="19,9.5,19,0">
-            <StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="0,150,0,0">
-                <TextBox Name="phone" Header="Enter your phone to registration" HorizontalAlignment="Center" Text="{Binding RegistrationModel.PhoneNumber, Mode=TwoWay}"/>
-                <Button Content="Register" Command="{Binding RegisterCmd}" Margin="0,30,0,0" HorizontalAlignment="Center" Style="{StaticResource TaxyButtonGreenStyle}"/>
-            </StackPanel>
+        <Grid Grid.Row="1" x:Name="ContentRoot" Margin="19,0,19,0">
+            <Grid HorizontalAlignment="Stretch" VerticalAlignment="Top" Background="#BF000000">
+                <StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="0,150,0,10">
+                    <TextBlock TextWrapping="Wrap" Text="Для регистрации в системе введите номер телефона" HorizontalAlignment="Center" TextAlignment="Center" Width="234" Style="{StaticResource ControlHeaderTextBlockStyle}"/>
+                    <TextBox Name="phone" HorizontalAlignment="Center" Text="{Binding RegistrationModel.PhoneNumber, Mode=TwoWay}" Margin="0,10,0,0" Width="234"/>
+                    <Button Content="Register" Command="{Binding RegisterCmd}" Margin="0,30,0,0" HorizontalAlignment="Center" Style="{StaticResource TaxyButtonGreenStyle}" Width="300"/>
+                    
+                </StackPanel>
+            </Grid>
         </Grid>
     </Grid>
 </Page>

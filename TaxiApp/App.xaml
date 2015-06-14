@@ -4,13 +4,14 @@
     xmlns:local="using:TaxiApp"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d"
     x:Class="TaxiApp.App"
-    RequestedTheme="Light">
+    RequestedTheme="Dark">
     
     <Application.Resources>
         <Style x:Key="TaxyButtonGreenStyle" TargetType="Button">
-        	<Setter Property="Background" Value="#FF41D148"/>
-        	<Setter Property="Foreground" Value="#FF1C4D09"/>
-        	<Setter Property="BorderBrush" Value="#FF219B21"/>
+            <Setter Property="Background" Value="#416ca5"/>
+            <Setter Property="BorderBrush" Value="#2f5689"/>
+            <Setter Property="BorderThickness" Value="0,0,0,2.5"/>
+            <Setter Property="Width" Value="250"/>
         </Style>
         
         <Style x:Key="TaxiPivotHeader" TargetType="TextBlock">

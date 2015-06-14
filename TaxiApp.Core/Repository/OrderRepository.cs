@@ -28,7 +28,7 @@ namespace TaxiApp.Core.Repository
             postData.Add(new KeyValuePair<string, string>("token", user.token));
             postData.Add(new KeyValuePair<string, string>("idcompany", "1"));
 
-            string url = "http://serv.giddix.ru/api/passenger_getmyorders/";
+            string url = string.Format("{0}{1}", this.ServerURL, "api/passenger_getmyorders/");
 
             string data = await this._apiClient.GetData(url, postData);
 
@@ -61,7 +61,7 @@ namespace TaxiApp.Core.Repository
 
             TaxiApp.Core.Entities.User user = TaxiApp.Core.Session.Instance.GetUser();
 
-            string url = "http://serv.giddix.ru/api/passenger_cancelorder/";
+            string url = string.Format("{0}{1}", this.ServerURL, "api/passenger_cancelorder/");
 
             var postData = new List<KeyValuePair<string, string>>();
 

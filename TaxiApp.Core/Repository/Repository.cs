@@ -12,6 +12,8 @@ namespace TaxiApp.Core.Repository
 
         protected TaxiApp.Core.WebApiClient _apiClient = null;
 
+        protected string ServerURL = "http://serv.cabswap.com/";
+
         public Repository(TaxiApp.Core.WebApiClient apiClient)
         {
             this._apiClient = apiClient;
