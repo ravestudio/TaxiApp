@@ -66,7 +66,7 @@ namespace TaxiApp.ViewModel
 
                         Frame frame = _controller.Page.Frame;
 
-                        frame.Navigate(typeof(AuthenticationPage));
+                        frame.Navigate(typeof(Views.AuthenticationPage));
                     });
 
                 });

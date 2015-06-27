@@ -52,5 +52,10 @@ namespace TaxiApp.Core.DataModel.Order
         {
             return IsDataReady()? this.Location.Address:this._title;
         }
+
+        protected override string GetSubtitle()
+        {
+            return IsDataReady() ? this.Location.FullAddress : string.Empty;
+        }
     }
 }

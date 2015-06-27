@@ -61,9 +61,12 @@
 
 
         <DataTemplate x:Key="OrderItemTemplate">
-            <StackPanel Margin="10,3,0,0" Orientation="Horizontal">
-                <Image Source="{Binding IconSource}" Width="30" Margin="0,5,0,0"/>
-                <TextBlock Text="{Binding Title}" Style="{ThemeResource SubheaderTextBlockStyle}" Margin="15,0,0,0"/>
+            <StackPanel Margin="10,0,0,0" Orientation="Horizontal" Height="70">
+                <Image Source="{Binding IconSource}" Width="70" Margin="0,0,0,0"/>
+                <StackPanel Margin="15,0,0,0">
+                    <TextBlock Text="{Binding Title}" Style="{ThemeResource SubheaderTextBlockStyle}" Margin="0,10,0,0"/>
+                    <TextBlock Visibility="{Binding SubheaderVisible}" Text="{Binding Subtitle}" Style="{ThemeResource  ListViewItemSubheaderTextBlockStyle}" Margin="0,0,0,0"/>
+                </StackPanel>
             </StackPanel>
         </DataTemplate>
 
@@ -85,8 +88,16 @@
     </Page.Transitions>
 
     <Grid>
+        
+        <StackPanel Margin="0,110,0,0">
+            <Button Content="item 1"></Button>
+            <Button Content="item 2"></Button>
+            <Button Content="item 3"></Button>
+            <Button Content="item 4"></Button>
+            
+        </StackPanel>
 
-        <Pivot x:Uid="Pivot" Title="MY APPLICATION" x:Name="pivot" CommonNavigationTransitionInfo.IsStaggerElement="True" Style="{StaticResource taxyPivotStyle}" HeaderTemplate="{StaticResource TaxyPivotHeader}">
+        <Pivot x:Uid="Pivot" Title="Rockstar Black" x:Name="pivot" CommonNavigationTransitionInfo.IsStaggerElement="True" Style="{StaticResource taxiPivotStyle}" HeaderTemplate="{StaticResource TaxiPivotHeaderTemplate}" TitleTemplate="{StaticResource TaxiPivotTitleTemplate}">
 
             <!--<PivotItem
 				x:Uid="PivotMenu"
@@ -154,7 +165,7 @@
                         <TextBlock Text="{Binding PriceInfo.Time}" Style="{StaticResource SubheaderTextBlockStyle}" Foreground="White" Grid.Row="0" Grid.Column="2" Margin="10,0,0,0"></TextBlock>
                     </Grid>
 
-                    <Button Content="Make an order" Style="{StaticResource TaxyButtonGreenStyle}" HorizontalAlignment="Center" VerticalAlignment="Bottom" Command="{Binding CreateOrderCmd}"/>
+                    <Button Content="Make an order" Style="{StaticResource TaxiButtonBlueStyle}" HorizontalAlignment="Center" VerticalAlignment="Bottom" Command="{Binding CreateOrderCmd}"/>
                     
                 </Grid>
 

@@ -50,7 +50,7 @@ namespace TaxiApp.Core.DataModel.Order
             {
                 string res = "ok";
 
-                //socketMG.Start();
+                socketMG.Start();
 
             });
 
@@ -235,7 +235,7 @@ namespace TaxiApp.Core.DataModel.Order
 
             TaxiApp.Core.WebApiClient client = new TaxiApp.Core.WebApiClient();
 
-            string url = "http://serv.giddix.ru/api/passenger_setorder/";
+            string url = "http://serv.cabswap.com/api/passenger_setorder/";
 
             string data = await client.GetData(url, postData);
 

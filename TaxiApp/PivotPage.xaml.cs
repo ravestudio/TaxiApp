@@ -165,7 +165,7 @@ namespace TaxiApp
             //}
             int thread = Environment.CurrentManagedThreadId;
 
-            if (this.Frame.BackStack.Count > 0 && this.Frame.BackStack[0].SourcePageType == typeof(AuthenticationPage))
+            if (this.Frame.BackStack.Count > 0 && this.Frame.BackStack[0].SourcePageType == typeof(Views.AuthenticationPage))
             {
                 this.Frame.BackStack.Clear();
             }

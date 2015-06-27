@@ -151,7 +151,8 @@ namespace TaxiApp.Core.Entities
             this.Id = (int)jsonObj["idorder"].GetNumber();
 
             this.StartDate = DateTime.Parse(jsonObj["startdate"].GetString(), System.Globalization.CultureInfo.InvariantCulture);
-            this.Ordersumm = decimal.Parse(jsonObj["ordersumm"].GetString(), System.Globalization.CultureInfo.InvariantCulture);
+            this.Ordersumm = (decimal)jsonObj["ordersumm"].GetNumber();
+            //this.Ordersumm = decimal.Parse(jsonObj["ordersumm"].GetString(), System.Globalization.CultureInfo.InvariantCulture);
 
             this.Status = this.ReadValue(jsonObj, "status");
             this.DriverId = this.ReadValue(jsonObj, "iddriver");

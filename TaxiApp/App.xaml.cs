@@ -108,7 +108,7 @@ namespace TaxiApp
                 System.Threading.Tasks.Task waitTask = System.Threading.Tasks.Task.Delay(1000);
                 await waitTask;
 
-                if (!rootFrame.Navigate(typeof(RegistrationPage), e.Arguments))
+                if (!rootFrame.Navigate(typeof(Views.RegistrationPage), e.Arguments))
                 {
                     throw new Exception("Failed to create initial page");
                 }
@@ -141,5 +141,6 @@ namespace TaxiApp
             await SuspensionManager.SaveAsync();
             deferral.Complete();
         }
+
     }
 }

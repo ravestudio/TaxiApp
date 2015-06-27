@@ -135,7 +135,8 @@ namespace TaxiApp.Core.DataModel
 
         public LocationItem(MapLocation location)
         {
-            this.Address = string.Format("{0} {1}, {2}", location.Address.Street, location.Address.StreetNumber, location.Address.Town);
+            this.Address = string.Format("{0}, {1}", location.Address.Street, location.Address.StreetNumber);
+            this.FullAddress = string.Format("{0}, {1}, {2}", location.Address.Town, location.Address.Region, location.Address.PostCode);
 
             this.Latitude = location.Point.Position.Latitude;
             this.Longitude = location.Point.Position.Longitude;
@@ -146,6 +147,7 @@ namespace TaxiApp.Core.DataModel
         }
 
         public string Address { get; set; }
+        public string FullAddress { get; set; }
 
         public double Latitude { get; set; }
         public double Longitude { get; set; }

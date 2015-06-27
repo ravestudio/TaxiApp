@@ -13,6 +13,7 @@ namespace TaxiApp.Core.DataModel.Order
         public Windows.UI.Xaml.Media.ImageSource IconSource { get; set; }
 
         protected string _title = string.Empty;
+        protected string _subtitle = string.Empty;
 
         public string Title
         {
@@ -28,9 +29,38 @@ namespace TaxiApp.Core.DataModel.Order
             }
         }
 
+        public string Subtitle
+        {
+            get
+            {
+                return this.GetSubtitle();
+            }
+
+            set
+            {
+                this._subtitle = value;
+                NotifyPropertyChanged("Subtitle");
+                NotifyPropertyChanged("SubheaderVisible");
+            }
+        }
+
+        public Windows.UI.Xaml.Visibility SubheaderVisible
+        {
+            get
+            {
+                return string.IsNullOrEmpty(this.GetSubtitle()) ? Windows.UI.Xaml.Visibility.Collapsed : Windows.UI.Xaml.Visibility.Visible;
+            }
+        }
+        
+
         protected virtual string GetTitle()
         {
             return this._title;
+        }
+
+        protected virtual string GetSubtitle()
+        {
+            return this._subtitle;
         }
 
         public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;

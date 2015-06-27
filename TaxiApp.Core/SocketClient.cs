@@ -70,12 +70,24 @@ namespace TaxiApp.Core
 
             DataReader reader = new DataReader(stream);
 
-            System.Text.StringBuilder header = new StringBuilder();
+            byte[] data = new byte[500];
 
-            var count = await reader.LoadAsync(164);
+            int dataLength = 0;
 
-            header.Append(reader.ReadString(count));
+            for (int i = 0; i < data.Length; i++)
+            {
+                var count = await reader.LoadAsync(1);
 
+                data[i] = reader.ReadByte();
+
+                if (i > 1 && data[i] == 48 && data[i-1] == 52)
+                {
+                    dataLength = i;
+                    break;
+                }
+            }
+
+            string header = Encoding.UTF8.GetString(data, 0, dataLength);
 
             reader.DetachStream();
             reader.Dispose();

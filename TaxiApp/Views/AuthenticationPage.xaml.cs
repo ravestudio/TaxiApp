@@ -18,7 +18,7 @@ using Windows.UI.Xaml.Navigation;
 
 // Документацию по шаблону элемента "Основная страница" см. по адресу http://go.microsoft.com/fwlink/?LinkID=390556
 
-namespace TaxiApp
+namespace TaxiApp.Views
 {
     /// <summary>
     /// Пустая страница, которую можно использовать саму по себе или для перехода внутри фрейма.
