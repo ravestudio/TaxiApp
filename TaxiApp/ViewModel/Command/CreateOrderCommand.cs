@@ -30,7 +30,7 @@ namespace TaxiApp.ViewModel.Command
 
             _viewOrderModel.OrderModel.CreateOrder(order);
 
-            _viewOrderModel.Pivot.SelectedIndex = 1;
+            //_viewOrderModel.Pivot.SelectedIndex = 1;
 
             _viewOrderModel.LoadMyOrders();
         }

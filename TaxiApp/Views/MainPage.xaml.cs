@@ -71,7 +71,7 @@ namespace TaxiApp.Views
         /// сеанса.  Это состояние будет равно NULL при первом посещении страницы.</param>
         private void NavigationHelper_LoadState(object sender, LoadStateEventArgs e)
         {
-            this.editOrderViewModel.LoadMyOrders();
+            //this.editOrderViewModel.LoadMyOrders();
         }
 
         /// <summary>

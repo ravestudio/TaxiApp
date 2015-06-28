@@ -78,163 +78,119 @@
                                                   OrderDateTimeTemplate="{StaticResource OrderDateTimeTemplate}"
                                                   />-->
     </Page.Resources>
-    
-    <Page.Transitions>
-        <TransitionCollection>
-            <NavigationThemeTransition>
-                <CommonNavigationTransitionInfo IsStaggeringEnabled="True"/>
-            </NavigationThemeTransition>
-        </TransitionCollection>
-    </Page.Transitions>
 
-    <Grid>
-        
-        <StackPanel Margin="0,110,0,0">
-            <Button Content="item 1"></Button>
-            <Button Content="item 2"></Button>
-            <Button Content="item 3"></Button>
-            <Button Content="item 4"></Button>
-            
-        </StackPanel>
 
-        <Pivot x:Uid="Pivot" Title="Rockstar Black" x:Name="pivot" CommonNavigationTransitionInfo.IsStaggerElement="True" Style="{StaticResource taxiPivotStyle}" HeaderTemplate="{StaticResource TaxiPivotHeaderTemplate}" TitleTemplate="{StaticResource TaxiPivotTitleTemplate}">
 
-            <!--<PivotItem
-				x:Uid="PivotMenu"
-				Header="МЕНЮ">
+    <Grid x:Name="LayoutRoot" Margin="-160,0,0,0">
+
+        <Grid.ChildrenTransitions>
+            <TransitionCollection>
+                <EntranceThemeTransition/>
+            </TransitionCollection>
+        </Grid.ChildrenTransitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="160"/>
+            <ColumnDefinition Width="400"/>
+        </Grid.ColumnDefinitions>
+
+
+
+        <local:MainMenuControl Grid.Row="0" Grid.Column="0" Grid.RowSpan="2"></local:MainMenuControl>
+
+        <!-- Title Panel -->
+        <local:PageTitleControl Grid.Row="0" Grid.Column="1"></local:PageTitleControl>
+
+        <Grid Grid.Row="1" Grid.Column="1" x:Name="ContentRoot" Margin="0,0,0,0">
+            <Grid.Background>
+                <ImageBrush ImageSource="ms-appx:/Assets/BackGroundBMW2.png" Opacity="0.3"/>
+            </Grid.Background>
+
+
+
+            <Grid>
                 
-                <Grid>
-                    <Button x:Uid="SocketPgBtn" x:Name="SocketPgBtn" Content="Socket" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Top" Click="SocketPgBtn_Click"/>
-                </Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="140"></RowDefinition>
+                    <RowDefinition Height="100"></RowDefinition>
+                </Grid.RowDefinitions>
 
-            </PivotItem>-->
-
-            <PivotItem
-				x:Uid="PivotOrder"
-				Header="ЗАКАЗАТЬ"
-				Margin="0,0,0,0">
-                <!--TODO: Содержимое должно размещаться в следующей сетке-->
-                <Grid Grid.Row="1" x:Name="ContentRoot" Margin="10,9.5,10,0">
-
-                        <ListView
+                <ListView
+                    Grid.Row="0"
 							ItemsSource="{Binding OrderItemList}"
 							IsItemClickEnabled="True"
                             ItemTemplate="{StaticResource OrderItemTemplate}"
                     >
 
-                            <i:Interaction.Behaviors>
-                                <core:EventTriggerBehavior EventName="ItemClick">
-                                    <core:InvokeCommandAction Command="{Binding ClickOrderItem}"/>
-                                </core:EventTriggerBehavior>
-                            </i:Interaction.Behaviors>
+                    <i:Interaction.Behaviors>
+                        <core:EventTriggerBehavior EventName="ItemClick">
+                            <core:InvokeCommandAction Command="{Binding ClickOrderItem}"/>
+                        </core:EventTriggerBehavior>
+                    </i:Interaction.Behaviors>
 
-                            <ListView.ItemContainerStyle>
-                                <Style TargetType="ListViewItem">
-                                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-                                </Style>
-                            </ListView.ItemContainerStyle>
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem">
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                        </Style>
+                    </ListView.ItemContainerStyle>
 
-                            <!--<ListView.ItemTemplate>
+                    <!--<ListView.ItemTemplate>
                                 <DataTemplate>
                                     <StackPanel Margin="0,2,0,0" Background="#FFDAE7EE">
                                         <TextBlock Text="{Binding Title}" Style="{ThemeResource SubheaderTextBlockStyle}" Margin="0,0,0,5"/>
-                                        --><!--<TextBlock Text="{Binding Path=Location.Address}" Style="{StaticResource ComboBoxPlaceholderTextBlockStyle}" Margin="5,15"></TextBlock>--><!--
+                                        -->
+                    <!--<TextBlock Text="{Binding Path=Location.Address}" Style="{StaticResource ComboBoxPlaceholderTextBlockStyle}" Margin="5,15"></TextBlock>-->
+                    <!--
                                     </StackPanel>
                                 </DataTemplate>
                             </ListView.ItemTemplate>-->
 
-                        </ListView>
+                </ListView>
 
 
-                        <!--<DatePicker Date="{Binding Path=OrderModel.EndDate, Converter={StaticResource DateTimeToDateTimeOffsetConverter}, Mode=TwoWay}"></DatePicker>
+                <!--<DatePicker Date="{Binding Path=OrderModel.EndDate, Converter={StaticResource DateTimeToDateTimeOffsetConverter}, Mode=TwoWay}"></DatePicker>
                 <TimePicker Time="{Binding Path=OrderModel.EndTime, Mode=TwoWay}"></TimePicker>-->
 
 
 
 
 
-                    <Grid Height="50" VerticalAlignment="Bottom" Margin="0,0,0,60" Background="#FF2A64C9">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
-                        </Grid.ColumnDefinitions>
+                <Grid Grid.Row="1" Margin="20,0,20,0">
 
-                        <TextBlock Text="{Binding PriceInfo.Price}" Style="{StaticResource SubheaderTextBlockStyle}" Foreground="White" Grid.Row="0" Grid.Column="0" Margin="10,0,0,0"></TextBlock>
-                        <TextBlock Text="{Binding PriceInfo.Destination}" Style="{StaticResource SubheaderTextBlockStyle}" Foreground="White" Grid.Row="0" Grid.Column="1" Margin="10,0,0,0"></TextBlock>
-                        <TextBlock Text="{Binding PriceInfo.Time}" Style="{StaticResource SubheaderTextBlockStyle}" Foreground="White" Grid.Row="0" Grid.Column="2" Margin="10,0,0,0"></TextBlock>
-                    </Grid>
-
-                    <Button Content="Make an order" Style="{StaticResource TaxiButtonBlueStyle}" HorizontalAlignment="Center" VerticalAlignment="Bottom" Command="{Binding CreateOrderCmd}"/>
+                    <Grid.Background>
+                        <ImageBrush ImageSource="ms-appx:/Assets/printList.png" Opacity="0.7"/>
+                    </Grid.Background>
                     
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="40"></RowDefinition>
+                        <RowDefinition Height="40"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Text="{Binding PriceInfo.Price}" Style="{StaticResource SubheaderTextBlockStyle}" Foreground="Black"  Margin="10,0,0,0" HorizontalAlignment="Center"></TextBlock>
+                    <TextBlock Grid.Row="2" Grid.Column="0" Text="{Binding PriceInfo.Destination}" Style="{StaticResource SubheaderTextBlockStyle}" Foreground="Black" Margin="10,0,0,0" HorizontalAlignment="Center"></TextBlock>
+                    <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding PriceInfo.Time}" Style="{StaticResource SubheaderTextBlockStyle}" Foreground="Black" Margin="10,0,0,0" HorizontalAlignment="Center"></TextBlock>
+
+                    <TextBlock Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Style="{StaticResource SubheaderTextBlockStyle}" Text="................................................." HorizontalAlignment="Center" Foreground="Black"></TextBlock>
                 </Grid>
 
-            </PivotItem>
-            
-            <PivotItem
-                x:Uid="PivotOrderList"
-                Header="МОИ ЗАКАЗЫ"
-                d:DataContext="{Binding Source={d:DesignData Source=../../TaxiApp.Core/DataModel/OrderList.json, Type=entity:OrderDS}}">
+                <Button Grid.Row="2" Content="Make an order" Style="{StaticResource TaxiButtonBlueStyle}" HorizontalAlignment="Center" VerticalAlignment="Bottom" Command="{Binding CreateOrderCmd}"/>
 
-                <ListView
-                    ItemsSource="{Binding OrderList}"
-                    IsItemClickEnabled="True">
-
-                    <i:Interaction.Behaviors>
-                        <core:EventTriggerBehavior EventName="ItemClick">
-                            <core:InvokeCommandAction Command="{Binding ShowOrderDetailCmd}"/>
-                        </core:EventTriggerBehavior>
-                    </i:Interaction.Behaviors>
-
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <Grid Margin="0,0,0,10">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="110"/>
-                                    <ColumnDefinition/>
-                                </Grid.ColumnDefinitions>
-                                
-                                <StackPanel Grid.Row="0" Grid.Column="0">
-                                    <Image Source="ms-appx:///Assets/price.png"></Image>
-                                    <TextBlock
-                                        Text="{Binding Ordersumm}"
-                                        TextWrapping="Wrap"
-                                        Style="{ThemeResource MessageDialogTitleStyle}"
-                                        Foreground="White"
-                                        Margin="28,-50,0,0"/>
-
-                                    <TextBlock HorizontalAlignment="Center" Text="{Binding StatusText, Mode=TwoWay}" FontSize="20" ></TextBlock>
-
-                                    <Button Foreground="White" Background="#FFCB4A4A" BorderBrush="#FF971E1E"
-                                            Command="{Binding ElementName=mainPage, Path=DataContext.CancelOrderCmd}"
-                                            CommandParameter="{Binding}" >Отменить</Button>
-                                </StackPanel>
-                                
-                                <ListView
-                                    ItemsSource="{Binding Route}"
-                                    Grid.Row="0"
-                                    Grid.Column="1"
-                                    Margin="10,20,0,0"
-                                    >
-                                    <ListView.ItemTemplate>
-                                        <DataTemplate>
-                                            <TextBlock
-                                                Text="{Binding Address}"
-                                                Style="{ThemeResource ListViewItemContentTextBlockStyle}"
-                                                Margin="0,5,19,0"/>
-                                        </DataTemplate>
-                                    </ListView.ItemTemplate>
-                                </ListView>
-
-                            </Grid>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-
-                </ListView>
-
-            </PivotItem>
-
-        </Pivot>
+            </Grid>
+        </Grid>
 
     </Grid>
+
+
 </Page>

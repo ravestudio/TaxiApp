@@ -18,7 +18,7 @@
 
         </Style>
 
-        <Style x:Key="TaxiPivotTitle" TargetType="TextBlock">
+        <Style x:Key="TaxiPageTitle" TargetType="TextBlock">
             <Setter Property="FontFamily" Value="Tahoma"/>
             <Setter Property="FontSize" Value="30" />
         </Style>
@@ -117,7 +117,7 @@
 
         <DataTemplate x:Key="TaxiPivotTitleTemplate">
 
-                <TextBlock Text="{Binding}" Style="{StaticResource TaxiPivotTitle}" Margin="50,0,0,0"/>
+                <TextBlock Text="{Binding}" Style="{StaticResource TaxiPageTitle}" Margin="50,0,0,0"/>
 
         </DataTemplate>
 

@@ -26,8 +26,10 @@ namespace TaxiApp.ViewModel
         public Command.CreateOrderCommand CreateOrderCmd { get; set; }
         public Command.ShowOrderDetailCommand ShowOrderDetailCmd { get; set; }
         public Command.ShowMenuCommand ShowMenuCmd { get; set; }
+        public Command.NavigateToOrderListCommand NavToOrderListCmd { get; set; }
+        public Command.NavigateToMainPageCommand NavToMainPageCmd { get; set; }
 
-        public Windows.UI.Xaml.Controls.Pivot Pivot { get; set; }
+        public IDictionary<Type, Windows.UI.Xaml.Controls.Grid> LayoutRootList { get; set; }
 
         public bool MenuState { get; set; }
 
@@ -117,6 +119,10 @@ namespace TaxiApp.ViewModel
             this.CreateOrderCmd = new Command.CreateOrderCommand(this);
             this.ShowOrderDetailCmd = new Command.ShowOrderDetailCommand(this);
             this.ShowMenuCmd = new Command.ShowMenuCommand(this);
+            this.NavToOrderListCmd = new Command.NavigateToOrderListCommand();
+            this.NavToMainPageCmd = new Command.NavigateToMainPageCommand();
+
+            this.LayoutRootList = new Dictionary<Type, Windows.UI.Xaml.Controls.Grid>();
 
             this.MenuState = false;
 
@@ -167,13 +173,13 @@ namespace TaxiApp.ViewModel
                 IconSource = new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///Assets/options.png"))
             });
 
-            this._orderItemList.Add(new OrderItem()
-            {
-                Priority = 12,
-                Title = "Car",
-                Cmd = "Car"
-                //IconSource = new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///Assets/carclass.png"))
-            });
+            //this._orderItemList.Add(new OrderItem()
+            //{
+            //    Priority = 12,
+            //    Title = "Car",
+            //    Cmd = "Car"
+            //    //IconSource = new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///Assets/carclass.png"))
+            //});
 
             this.Actions = new Dictionary<string, Action<EditOrderViewModel, TaxiApp.Core.DataModel.Order.OrderItem>>();
 
@@ -230,6 +236,14 @@ namespace TaxiApp.ViewModel
         {
             base.Init(page);
 
+            this.MenuState = false;
+
+            if (this.LayoutRootList.Keys.Contains(page.GetType()))
+            {
+                this.LayoutRootList.Remove(page.GetType());
+            }
+            this.LayoutRootList.Add(page.GetType(), (Windows.UI.Xaml.Controls.Grid)page.FindName("LayoutRoot"));
+
             if (page is TaxiApp.Views.MainPage)
             {
                 this.ServicePicker = (ListPickerFlyout)page.Resources["ServiceFlyout"];
@@ -237,13 +251,18 @@ namespace TaxiApp.ViewModel
                 this.DatePicker = (DatePickerFlyout)page.Resources["DateFlyout"];
                 this.TimePicker = (TimePickerFlyout)page.Resources["TimeFlyout"];
 
-                this.Pivot = (Windows.UI.Xaml.Controls.Pivot)page.FindName("pivot");
+                
+
+                //this.LayoutRootList.Add(page.GetType(), (Windows.UI.Xaml.Controls.Grid)page.FindName("LayoutRoot"));
+
+                //this.LayoutRoot = (Windows.UI.Xaml.Controls.Grid)page.FindName("LayoutRoot");
 
                 foreach(OrderOption service in this.SelectedServices)
                 {
                     this.ServicePicker.SelectedItems.Add(service);
                 }
             }
+
 
             if (page is TaxiApp.Views.AddPointPage)
             {
@@ -359,14 +378,16 @@ namespace TaxiApp.ViewModel
 
         public void ShowMenu()
         {
+            Frame rootFrame = Window.Current.Content as Frame;
+
             if (!this.MenuState)
             {
-                this.Pivot.Margin = new Windows.UI.Xaml.Thickness(200, 0, 0, 0);
+                this.LayoutRootList[rootFrame.SourcePageType].Margin = new Windows.UI.Xaml.Thickness(0, 0, 0, 0);
                 this.MenuState = true;
             }
             else
             {
-                this.Pivot.Margin = new Windows.UI.Xaml.Thickness(0, 0, 0, 0);
+                this.LayoutRootList[rootFrame.SourcePageType].Margin = new Windows.UI.Xaml.Thickness(-160, 0, 0, 0);
                 this.MenuState = false;
             }
         }
