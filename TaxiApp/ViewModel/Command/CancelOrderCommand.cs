@@ -24,7 +24,11 @@ namespace TaxiApp.ViewModel.Command
 
         public void Execute(object parameter)
         {
-            TaxiApp.Core.Entities.Order order = (TaxiApp.Core.Entities.Order)parameter;
+            //TaxiApp.Core.Entities.Order order = (TaxiApp.Core.Entities.Order)parameter;
+
+            TaxiApp.ViewModel.EditOrderViewModel editOrderViewModel = ViewModelFactory.Instance.GetViewOrderModel();
+
+            Core.Entities.Order order = editOrderViewModel.OrderList.SingleOrDefault(o => o.Selected == true);
 
             var dlg = new Windows.UI.Popups.MessageDialog("Отменить заказ?");
 

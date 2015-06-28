@@ -7,6 +7,7 @@
     xmlns:controller="using:TaxiApp.ViewModel"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:entity="using:TaxiApp.Core.Entities"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:core="using:Microsoft.Xaml.Interactions.Core"
     mc:Ignorable="d"
@@ -40,23 +41,26 @@
         <!--TODO: Content should be placed within the following grid-->
         <Grid Grid.Row="1" Grid.Column="1"  x:Name="ContentRoot" Margin="0,0,0,0">
             <Grid.Background>
-                <ImageBrush ImageSource="ms-appx:/Assets/BackGroundBMW2.png" Opacity="0.3"/>
+                <ImageBrush ImageSource="ms-appx:/Assets/BackGroundBMW.png" Opacity="0.3"/>
             </Grid.Background>
 
             <ListView
-                    ItemsSource="{Binding OrderList}"
+                
+                ItemsSource="{Binding OrderList}"
+                d:DataContext="{Binding Source={d:DesignData Source=../../TaxiApp.Core/DataModel/OrderList.json, Type=entity:OrderDS}}"
+                
                     SelectionMode="Single"
-                    IsItemClickEnabled="False">
+                    IsItemClickEnabled="True">
 
                 <i:Interaction.Behaviors>
                     <core:EventTriggerBehavior EventName="ItemClick">
-                        <core:InvokeCommandAction Command="{Binding ShowOrderDetailCmd}"/>
+                        <core:InvokeCommandAction Command="{Binding SelectMyOrderCmd}"/>
                     </core:EventTriggerBehavior>
                 </i:Interaction.Behaviors>
 
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <Grid Margin="0,0,0,10">
+                        <Grid Margin="0,0,0,10" Background="{Binding ItemBackground}">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="110"/>
                                 <ColumnDefinition/>
@@ -72,34 +76,44 @@
                                         Margin="28,-50,0,0"/>
 
                                 <TextBlock HorizontalAlignment="Center" Text="{Binding StatusText, Mode=TwoWay}" FontSize="20" ></TextBlock>
-
-                                <!--<Button Foreground="White" Background="#FFCB4A4A" BorderBrush="#FF971E1E"
-                                            Command="{Binding ElementName=mainPage, Path=DataContext.CancelOrderCmd}"
-                                            CommandParameter="{Binding}" >Отменить</Button>-->
                             </StackPanel>
 
-                            <ListView
-                                ItemsSource="{Binding Route}"
-                                Grid.Row="0"
-                                Grid.Column="1"
-                                Margin="10,20,0,0"
-                                IsTapEnabled="False"                                    
+                            <ItemsControl
+                                    ItemsSource="{Binding Route}"
+                                    Grid.Row="0"
+                                    Grid.Column="1"
+                                    Margin="10,10,0,0"
                                     >
-                                <ListView.ItemTemplate>
+                                <ItemsControl.ItemTemplate>
                                     <DataTemplate>
                                         <TextBlock
                                                 Text="{Binding Address}"
-                                                Style="{ThemeResource ListViewItemContentTextBlockStyle}"
-                                                Margin="0,5,19,0"/>
+                                                Foreground="White"
+                                            FontSize="20"
+                                                Margin="0,0,0,0"/>
                                     </DataTemplate>
-                                </ListView.ItemTemplate>
-                            </ListView>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
 
                         </Grid>
                     </DataTemplate>
                 </ListView.ItemTemplate>
 
+
             </ListView>
         </Grid>
     </Grid>
+
+    <Page.BottomAppBar>
+        <CommandBar
+            IsOpen="False" >
+            <AppBarButton x:Uid="OrderDetailBtn" x:Name="OrderDetailBtn" Label="Detail" Icon="ShowBcc" Command="{Binding ShowOrderDetailCmd}" />
+            <AppBarButton x:Uid="CancelOrderBtn" x:Name="CancelOrderBtn" Label="Cancel" Icon="Cancel" Command="{Binding CancelOrderCmd}" />
+            <CommandBar.SecondaryCommands>
+                <AppBarButton x:Uid="SecondaryButton1" x:Name="SecondaryButton1" Label="secondary command 1" />
+                <AppBarButton x:Uid="SecondaryButton2" x:Name="SecondaryButton2" Label="secondary command 2" />
+            </CommandBar.SecondaryCommands>
+        </CommandBar>
+    </Page.BottomAppBar>
+
 </Page>

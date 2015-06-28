@@ -28,6 +28,7 @@ namespace TaxiApp.ViewModel
         public Command.ShowMenuCommand ShowMenuCmd { get; set; }
         public Command.NavigateToOrderListCommand NavToOrderListCmd { get; set; }
         public Command.NavigateToMainPageCommand NavToMainPageCmd { get; set; }
+        public Command.SelectMyOrderCommand SelectMyOrderCmd { get; set; }
 
         public IDictionary<Type, Windows.UI.Xaml.Controls.Grid> LayoutRootList { get; set; }
 
@@ -121,6 +122,7 @@ namespace TaxiApp.ViewModel
             this.ShowMenuCmd = new Command.ShowMenuCommand(this);
             this.NavToOrderListCmd = new Command.NavigateToOrderListCommand();
             this.NavToMainPageCmd = new Command.NavigateToMainPageCommand();
+            this.SelectMyOrderCmd = new Command.SelectMyOrderCommand();
 
             this.LayoutRootList = new Dictionary<Type, Windows.UI.Xaml.Controls.Grid>();
 

@@ -143,6 +143,7 @@
     </Compile>
     <Compile Include="ViewModel\Command\NavigateToMainPageCommand.cs" />
     <Compile Include="ViewModel\Command\NavigateToOrderListCommand.cs" />
+    <Compile Include="ViewModel\Command\SelectMyOrderCommand.cs" />
     <Compile Include="ViewModel\Command\ShowMenuCommand.cs" />
     <Compile Include="Views\AuthenticationPage.xaml.cs">
       <DependentUpon>AuthenticationPage.xaml</DependentUpon>

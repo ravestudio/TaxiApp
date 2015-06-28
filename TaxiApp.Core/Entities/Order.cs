@@ -61,6 +61,46 @@ namespace TaxiApp.Core.Entities
             }
         }
 
+        private bool _Selected = false;
+
+        public bool Selected
+        {
+            get
+            {
+                return _Selected;
+            }
+
+            set
+            {
+                _Selected = value;
+
+                if (value)
+                {
+                    this.ItemBackground = new Windows.UI.Xaml.Media.SolidColorBrush(Windows.UI.Color.FromArgb(255, 80, 80, 80));
+                }
+                else
+                {
+                    this.ItemBackground = new Windows.UI.Xaml.Media.SolidColorBrush(Windows.UI.Color.FromArgb(0, 0, 0, 0));
+                }
+            }
+        }
+
+        private Windows.UI.Xaml.Media.SolidColorBrush _ItemBackground;
+
+        public Windows.UI.Xaml.Media.SolidColorBrush ItemBackground
+        {
+            get
+            {
+                return _ItemBackground;
+            }
+
+            set
+            {
+                _ItemBackground = value;
+                NotifyPropertyChanged("ItemBackground");
+            }
+        }
+
         public string StatusText
         {
             get

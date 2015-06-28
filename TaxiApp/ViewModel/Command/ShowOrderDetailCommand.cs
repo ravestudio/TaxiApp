@@ -27,9 +27,13 @@ namespace TaxiApp.ViewModel.Command
 
         public void Execute(object parameter)
         {
-            Windows.UI.Xaml.Controls.ItemClickEventArgs e = (Windows.UI.Xaml.Controls.ItemClickEventArgs)parameter;
+            //Windows.UI.Xaml.Controls.ItemClickEventArgs e = (Windows.UI.Xaml.Controls.ItemClickEventArgs)parameter;
 
-            Core.Entities.Order order = (Core.Entities.Order)e.ClickedItem;
+            //Core.Entities.Order order = (Core.Entities.Order)e.ClickedItem;
+
+            TaxiApp.ViewModel.EditOrderViewModel editOrderViewModel = ViewModelFactory.Instance.GetViewOrderModel();
+
+            Core.Entities.Order order = editOrderViewModel.OrderList.SingleOrDefault(o => o.Selected == true);
 
             TaxiApp.Core.DataModel.ModelFactory.Instance.GetOrderModel().Detailed = order;
 
