@@ -300,7 +300,7 @@ namespace TaxiApp.Core.DataModel.Order
 
             TaxiApp.Core.WebApiClient client = new TaxiApp.Core.WebApiClient();
 
-            string url = "http://serv.giddix.ru/api/passenger_getprice/";
+            string url = "http://serv.cabswap.com/api/passenger_getprice/";
 
             string data = await client.GetData(url, postData);
 
