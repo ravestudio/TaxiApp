@@ -44,10 +44,13 @@ namespace TaxiApp.Core.Repository
         {
             string url = string.Format("{0}{1}", this.ServerURL, "api/passenger_auth/");
 
+            string protector = Guid.NewGuid().ToString();
+
             var postData = new List<KeyValuePair<string, string>>();
 
             postData.Add(new KeyValuePair<string, string>("phone", PhoneNumber));
             postData.Add(new KeyValuePair<string, string>("pin", PIN));
+            postData.Add(new KeyValuePair<string, string>("protector", protector));
             postData.Add(new KeyValuePair<string, string>("idcompany", "1"));
             postData.Add(new KeyValuePair<string, string>("appversion", "100"));
 
