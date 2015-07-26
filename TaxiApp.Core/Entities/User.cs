@@ -13,7 +13,7 @@ namespace TaxiApp.Core.Entities
 
         public override void ReadData(Windows.Data.Json.JsonObject jsonObj)
         {
-            this.Id = int.Parse(jsonObj["response"].GetObject()["idpassenger"].GetString());
+            this.Id = (int)jsonObj["response"].GetObject()["idpassenger"].GetNumber();
             this.token = jsonObj["response"].GetObject()["token"].GetString();
             //this.pin = jsonObj["response"].GetObject()["pin"].GetString();
 

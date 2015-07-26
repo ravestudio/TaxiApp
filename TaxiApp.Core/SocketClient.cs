@@ -74,13 +74,21 @@ namespace TaxiApp.Core
 
             int dataLength = 0;
 
+            //DataReaderLoadOperation oper = reader.LoadAsync(1);
+            //oper.AsTask().ContinueWith(t =>
+            //{
+            //    uint c = t.Result;
+            //    byte b = reader.ReadByte();
+            //});
+
             for (int i = 0; i < data.Length; i++)
             {
                 var count = await reader.LoadAsync(1);
 
+
                 data[i] = reader.ReadByte();
 
-                if (i > 1 && data[i] == 48 && data[i-1] == 52)
+                if (i > 1 && data[i] == 48 && data[i - 1] == 52)
                 {
                     dataLength = i;
                     break;
