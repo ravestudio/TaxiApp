@@ -92,6 +92,7 @@
     <Compile Include="DataModel\Order\OrderOption.cs" />
     <Compile Include="DataModel\Order\OrderPriceInfo.cs" />
     <Compile Include="DataModel\SearchModel.cs" />
+    <Compile Include="DataModel\UserInfo.cs" />
     <Compile Include="Entities\Driver.cs" />
     <Compile Include="Entities\Entity.cs" />
     <Compile Include="Entities\Order.cs" />

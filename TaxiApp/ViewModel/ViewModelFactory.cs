@@ -12,6 +12,7 @@ namespace TaxiApp.ViewModel
         private AuthenticationViewModel viewAuthenticationModel = null;
         private DetailOrderViewModel detailOrderViewModel = null;
         private SendRatingViewModel sendRatingViewModel = null;
+        private EditUserProfileViewModel editUserProfileViewModel = null;
 
         public EditOrderViewModel GetViewOrderModel()
         {
@@ -51,6 +52,16 @@ namespace TaxiApp.ViewModel
             }
 
             return this.sendRatingViewModel;
+        }
+
+        public EditUserProfileViewModel GetEditUserProfileViewModel()
+        {
+            if (this.editUserProfileViewModel == null)
+            {
+                this.editUserProfileViewModel = new EditUserProfileViewModel();
+            }
+
+            return this.editUserProfileViewModel;
         }
     }
 }

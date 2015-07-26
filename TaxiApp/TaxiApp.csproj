@@ -100,6 +100,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\EditUserProfilePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\MainMenuControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -145,6 +149,7 @@
     <Compile Include="ViewModel\Command\NavigateToOrderListCommand.cs" />
     <Compile Include="ViewModel\Command\SelectMyOrderCommand.cs" />
     <Compile Include="ViewModel\Command\ShowMenuCommand.cs" />
+    <Compile Include="ViewModel\EditUserProfileViewModel.cs" />
     <Compile Include="Views\AuthenticationPage.xaml.cs">
       <DependentUpon>AuthenticationPage.xaml</DependentUpon>
     </Compile>
@@ -183,6 +188,9 @@
       <DependentUpon>PivotPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Views\EditUserProfilePage.xaml.cs">
+      <DependentUpon>EditUserProfilePage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\MainMenuControl.xaml.cs">
       <DependentUpon>MainMenuControl.xaml</DependentUpon>
     </Compile>

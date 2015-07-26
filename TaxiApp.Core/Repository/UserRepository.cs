@@ -40,6 +40,60 @@ namespace TaxiApp.Core.Repository
 
         }
 
+        public Task GetMyInfo()
+        {
+            Task resultTask = null;
+
+            string url = string.Format("{0}{1}", this.ServerURL, "api/passenger_getmyinfo/");
+
+            Entities.User user = TaxiApp.Core.Session.Instance.GetUser();
+
+            var postData = new List<KeyValuePair<string, string>>();
+
+            postData.Add(new KeyValuePair<string, string>("idpassenger", user.Id.ToString()));
+            postData.Add(new KeyValuePair<string, string>("token", user.token.ToString()));
+
+            resultTask = this._apiClient.GetData(url, postData).ContinueWith(t =>
+                {
+                    string data = t.Result;
+
+                    var jsonObj = Windows.Data.Json.JsonValue.Parse(data).GetObject();
+
+                    user.Name = jsonObj["response"].GetObject()["name"].GetString();
+                    user.Surname = jsonObj["response"].GetObject()["surname"].GetString();
+                    user.Lastname = jsonObj["response"].GetObject()["lastname"].GetString();
+                    user.Email = jsonObj["response"].GetObject()["email"].GetString();
+                });
+
+            return resultTask;
+        }
+
+        public Task<string> SaveMyInfo()
+        {
+            System.Threading.Tasks.TaskCompletionSource<string> TCS = new TaskCompletionSource<string>();
+
+            string url = string.Format("{0}{1}", this.ServerURL, "api/passenger_setsettings/");
+
+            Entities.User user = TaxiApp.Core.Session.Instance.GetUser();
+
+            var postData = new List<KeyValuePair<string, string>>();
+
+            postData.Add(new KeyValuePair<string, string>("idpassenger", user.Id.ToString()));
+            postData.Add(new KeyValuePair<string, string>("token", user.token.ToString()));
+            postData.Add(new KeyValuePair<string, string>("name", user.Name.ToString()));
+            postData.Add(new KeyValuePair<string, string>("surname", user.Surname.ToString()));
+            postData.Add(new KeyValuePair<string, string>("lastname", user.Lastname.ToString()));
+            postData.Add(new KeyValuePair<string, string>("email", user.Email.ToString()));
+
+            this._apiClient.GetData(url, postData).ContinueWith(t =>
+                {
+                    string data = t.Result;
+                    TCS.SetResult("OK");
+                });
+
+            return TCS.Task;
+        }
+
         public async Task<Entities.User> GetUser(string PhoneNumber, string PIN)
         {
             string url = string.Format("{0}{1}", this.ServerURL, "api/passenger_auth/");
