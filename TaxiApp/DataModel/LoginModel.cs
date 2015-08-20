@@ -39,5 +39,10 @@ namespace TaxiApp.DataModel
                 this.PIN = Windows.Storage.ApplicationData.Current.LocalSettings.Values["pin"].ToString();
             }
         }
+
+        public void ClearData()
+        {
+            Windows.Storage.ApplicationData.Current.LocalSettings.Values.Clear();
+        }
     }
 }

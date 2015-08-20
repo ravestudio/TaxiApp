@@ -88,7 +88,7 @@ namespace TaxiApp.ViewModel
 
         public event EventHandler CanExecuteChanged;
 
-        public void Execute(object parameter)
+        public async void Execute(object parameter)
         {
             TaxiApp.Core.WebApiClient client = new TaxiApp.Core.WebApiClient();
 
@@ -96,22 +96,55 @@ namespace TaxiApp.ViewModel
 
             DataModel.LoginModel model = _controller.LoginModel;
 
-            userRepository.GetUser(model.PhoneNumber, model.PIN).ContinueWith(t =>
-                {
-                    model.SaveData();
+            int thread = Environment.CurrentManagedThreadId;
 
-                    TaxiApp.Core.Session.Instance.SetUSer(t.Result);
+            var task = userRepository.GetUser(model.PhoneNumber, model.PIN);
 
-                    Windows.Foundation.IAsyncAction action =
-                    this._controller.Page.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
-                    {
-                        int thread = Environment.CurrentManagedThreadId;
+            try
+            {
+                TaxiApp.Core.Session.Instance.SetUSer(await task);
 
-                        Frame frame = _controller.Page.Frame;
+                model.SaveData();
 
-                        frame.Navigate(typeof(Views.EditUserProfilePage));
-                    });
-                });
+                Frame frame = _controller.Page.Frame;
+                frame.Navigate(typeof(Views.EditUserProfilePage));
+            }
+            catch(Exception ex)
+            {
+                string msg = ex.Message;
+
+                model.ClearData();
+
+                Frame frame = _controller.Page.Frame;
+                frame.Navigate(typeof(Views.RegistrationPage));
+            }
+
+
+            //task.ContinueWith(t => {
+
+            //    thread = Environment.CurrentManagedThreadId;
+
+            //    string msg = "err";
+
+
+            //}, TaskContinuationOptions.OnlyOnFaulted);
+
+            //task.ContinueWith(t =>
+            //    {
+            //        model.SaveData();
+
+            //        TaxiApp.Core.Session.Instance.SetUSer(t.Result);
+
+            //        Windows.Foundation.IAsyncAction action =
+            //        this._controller.Page.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+            //        {
+            //            thread = Environment.CurrentManagedThreadId;
+
+            //            Frame frame = _controller.Page.Frame;
+
+            //            frame.Navigate(typeof(Views.EditUserProfilePage));
+            //        });
+            //    }, TaskContinuationOptions.OnlyOnRanToCompletion);
             
         }
     }

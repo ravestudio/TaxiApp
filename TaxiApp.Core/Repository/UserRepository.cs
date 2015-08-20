@@ -106,13 +106,24 @@ namespace TaxiApp.Core.Repository
             postData.Add(new KeyValuePair<string, string>("pin", PIN));
             postData.Add(new KeyValuePair<string, string>("protector", protector));
             postData.Add(new KeyValuePair<string, string>("idcompany", "1"));
-            postData.Add(new KeyValuePair<string, string>("appversion", "100"));
+            postData.Add(new KeyValuePair<string, string>("appversion", "10"));
 
             //string data = string.Format("phone={0}&pin={1}&idcompany={2}", model.PhoneNumber, model.PIN, 1);
 
+            int thread = Environment.CurrentManagedThreadId;
+
             string data = await this._apiClient.GetData(url, postData);
 
+            thread = Environment.CurrentManagedThreadId;
+
             var userValue =  Windows.Data.Json.JsonValue.Parse(data);
+
+            int error = this.GetErrorInfo(userValue);
+
+            if (error != 0)
+            {
+                throw new Exception();
+            }
 
             TaxiApp.Core.Entities.User user = this.GetObject(userValue);
 

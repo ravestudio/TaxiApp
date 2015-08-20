@@ -44,5 +44,16 @@ namespace TaxiApp.Core.Repository
 
             return obj;
         }
+
+        public int GetErrorInfo(Windows.Data.Json.IJsonValue jsonValue)
+        {
+            int error = 0;
+
+            var jsonObj = jsonValue.GetObject();
+
+            error = (int)jsonObj["error"].GetNumber();
+
+            return error;
+        }
     }
 }
