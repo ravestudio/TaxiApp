@@ -10,6 +10,7 @@ namespace TaxiApp.Core.Managers
     {
         private LocationManager locationMG = null;
         private MapPainter mapPainter = null;
+        private SystemManager systemMG = null;
 
         public LocationManager GetLocationManager()
         {
@@ -30,5 +31,16 @@ namespace TaxiApp.Core.Managers
 
             return this.mapPainter;
         }
+
+        public SystemManager GetSystemManager()
+        {
+            if (this.systemMG == null)
+            {
+                this.systemMG = new SystemManager();
+            }
+
+            return this.systemMG;
+        }
+
     }
 }

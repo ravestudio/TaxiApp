@@ -94,11 +94,9 @@ namespace TaxiApp.Core.Repository
             return TCS.Task;
         }
 
-        public async Task<Entities.User> GetUser(string PhoneNumber, string PIN)
+        public async Task<Entities.User> GetUser(string PhoneNumber, string PIN, string protector)
         {
             string url = string.Format("{0}{1}", this.ServerURL, "api/passenger_auth/");
-
-            string protector = Guid.NewGuid().ToString();
 
             var postData = new List<KeyValuePair<string, string>>();
 

@@ -19,7 +19,12 @@ namespace TaxiApp.DataModel
             this.ReadData();
         }
 
-        public void SaveData()
+        public void SaveNumber()
+        {
+            Windows.Storage.ApplicationData.Current.LocalSettings.Values["PhoneNumber"] = this.PhoneNumber;
+        }
+
+        public void SavePIN()
         {
             Windows.Storage.ApplicationData.Current.LocalSettings.Values["pin"] = this.PIN;
         }

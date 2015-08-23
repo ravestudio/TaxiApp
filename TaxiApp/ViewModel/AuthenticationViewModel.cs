@@ -12,7 +12,6 @@ namespace TaxiApp.ViewModel
     public class AuthenticationViewModel : ViewModel
     {
         public DataModel.LoginModel LoginModel { get; set; }
-        public DataModel.RegistrationModel RegistrationModel { get; set; }
 
         public LoginCommand LoginCmd { get; set; }
         public RegisterCommand RegisterCmd { get; set; }
@@ -22,7 +21,6 @@ namespace TaxiApp.ViewModel
         public AuthenticationViewModel()
         {
             this.LoginModel = new DataModel.LoginModel();
-            this.RegistrationModel = new DataModel.RegistrationModel();
             this.LoginCmd = new LoginCommand(this);
             this.RegisterCmd = new RegisterCommand(this);
         }
@@ -51,11 +49,11 @@ namespace TaxiApp.ViewModel
 
             TaxiApp.Core.Repository.UserRepository userRepository = new Core.Repository.UserRepository(client);
 
-            DataModel.RegistrationModel regModel = _controller.RegistrationModel;
+            DataModel.LoginModel model = _controller.LoginModel;
 
-            userRepository.RegisterUser(regModel.PhoneNumber).ContinueWith(t =>
+            userRepository.RegisterUser(model.PhoneNumber).ContinueWith(t =>
                 {
-                    regModel.SaveNumber();
+                    model.SaveNumber();
 
                     string res = t.Result;
 
@@ -98,13 +96,15 @@ namespace TaxiApp.ViewModel
 
             int thread = Environment.CurrentManagedThreadId;
 
-            var task = userRepository.GetUser(model.PhoneNumber, model.PIN);
+            string deviceId = TaxiApp.Core.Managers.ManagerFactory.Instance.GetSystemManager().GetDeviceId();
+
+            var task = userRepository.GetUser(model.PhoneNumber, model.PIN, deviceId);
 
             try
             {
                 TaxiApp.Core.Session.Instance.SetUSer(await task);
 
-                model.SaveData();
+                model.SavePIN();
 
                 Frame frame = _controller.Page.Frame;
                 frame.Navigate(typeof(Views.EditUserProfilePage));

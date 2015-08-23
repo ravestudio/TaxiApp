@@ -36,7 +36,7 @@
             <Grid HorizontalAlignment="Stretch" VerticalAlignment="Top" Background="#BF000000">
                 <StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="0,150,0,10">
 
-                    <TextBox Name="phone" HorizontalAlignment="Center" Header="Для регистрации в системе введите номер телефона" Text="{Binding RegistrationModel.PhoneNumber, Mode=TwoWay}" Margin="0,10,0,0" Width="234" Style="{StaticResource TaxiInputTextBoxStyle}" HeaderTemplate="{StaticResource TaxiControlHeaderTemplate}"/>
+                    <TextBox Name="phone" HorizontalAlignment="Center" Header="Для регистрации в системе введите номер телефона" Text="{Binding LoginModel.PhoneNumber, Mode=TwoWay}" Margin="0,10,0,0" Width="234" Style="{StaticResource TaxiInputTextBoxStyle}" HeaderTemplate="{StaticResource TaxiControlHeaderTemplate}"/>
                     <Button Content="РЕГИСТРАЦИЯ" Command="{Binding RegisterCmd}" Margin="0,30,0,0" HorizontalAlignment="Center" Style="{StaticResource TaxiButtonBlueStyle}" Width="300" Template="{StaticResource TaxiButtonControlTemplate}" />
                     
                 </StackPanel>

@@ -177,7 +177,6 @@
       <DependentUpon>CreateOrderPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="DataModel\LoginModel.cs" />
-    <Compile Include="DataModel\RegistrationModel.cs" />
     <Compile Include="DataModel\SampleDataSource.cs" />
     <Compile Include="DataModel\SocketModel.cs" />
     <Compile Include="ItemPage.xaml.cs">
