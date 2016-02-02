@@ -46,7 +46,7 @@ namespace TaxiApp.Core.Repository
 
             string url = string.Format("{0}{1}", this.ServerURL, "api/passenger_getmyinfo/");
 
-            Entities.User user = TaxiApp.Core.Session.Instance.GetUser();
+            Entities.IUser user = TaxiApp.Core.Session.Instance.GetUser();
 
             var postData = new List<KeyValuePair<string, string>>();
 
@@ -74,7 +74,7 @@ namespace TaxiApp.Core.Repository
 
             string url = string.Format("{0}{1}", this.ServerURL, "api/passenger_setsettings/");
 
-            Entities.User user = TaxiApp.Core.Session.Instance.GetUser();
+            Entities.IUser user = TaxiApp.Core.Session.Instance.GetUser();
 
             var postData = new List<KeyValuePair<string, string>>();
 

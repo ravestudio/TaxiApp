@@ -37,7 +37,7 @@ namespace TaxiApp.Core.DataModel
 
             userRepository.GetMyInfo().ContinueWith(t =>
                 {
-                    Entities.User user = TaxiApp.Core.Session.Instance.GetUser();
+                    Entities.IUser user = TaxiApp.Core.Session.Instance.GetUser();
                     this.Name = user.Name;
                     this.Surname = user.Surname;
                     this.Lastname = user.Lastname;

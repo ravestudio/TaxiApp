@@ -20,7 +20,7 @@ namespace TaxiApp.Core.Repository
 
             var postData = new List<KeyValuePair<string, string>>();
 
-            TaxiApp.Core.Entities.User user = TaxiApp.Core.Session.Instance.GetUser();
+            TaxiApp.Core.Entities.IUser user = TaxiApp.Core.Session.Instance.GetUser();
 
             postData.Add(new KeyValuePair<string, string>("idpassenger", user.Id.ToString()));
             postData.Add(new KeyValuePair<string, string>("token", user.token));

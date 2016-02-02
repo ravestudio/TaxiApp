@@ -51,7 +51,7 @@ namespace TaxiApp.ViewModel
         public void Execute(object parameter)
         {
             EditUserProfileViewModel viewModel = ViewModelFactory.Instance.GetEditUserProfileViewModel();
-            TaxiApp.Core.Entities.User user = TaxiApp.Core.Session.Instance.GetUser();
+            TaxiApp.Core.Entities.IUser user = TaxiApp.Core.Session.Instance.GetUser();
             user.Name = viewModel.UserInfo.Name;
             user.Surname = viewModel.UserInfo.Surname;
             user.Lastname = viewModel.UserInfo.Lastname;

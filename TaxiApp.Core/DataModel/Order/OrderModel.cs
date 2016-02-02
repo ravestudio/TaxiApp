@@ -221,7 +221,7 @@ namespace TaxiApp.Core.DataModel.Order
 
         public async void CreateOrder(TaxiApp.Core.Entities.Order order)
         {
-            TaxiApp.Core.Entities.User user = TaxiApp.Core.Session.Instance.GetUser();
+            TaxiApp.Core.Entities.IUser user = TaxiApp.Core.Session.Instance.GetUser();
 
             var postData = order.ConverToKeyValue();
 
@@ -260,7 +260,7 @@ namespace TaxiApp.Core.DataModel.Order
 
         public async void GetPriceInfo(TaxiApp.Core.Entities.Order order, OrderPriceInfo priceInfo)
         {
-            TaxiApp.Core.Entities.User user = TaxiApp.Core.Session.Instance.GetUser();
+            TaxiApp.Core.Entities.IUser user = TaxiApp.Core.Session.Instance.GetUser();
 
             List<KeyValuePair<string, string>> postData = new List<KeyValuePair<string, string>>();
 

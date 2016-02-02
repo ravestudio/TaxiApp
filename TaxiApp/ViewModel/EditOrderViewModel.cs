@@ -280,7 +280,7 @@ namespace TaxiApp.ViewModel
         {
             TaxiApp.Core.WebApiClient client = new TaxiApp.Core.WebApiClient();       
 
-            TaxiApp.Core.Entities.User user = TaxiApp.Core.Session.Instance.GetUser();
+            TaxiApp.Core.Entities.IUser user = TaxiApp.Core.Session.Instance.GetUser();
 
             TaxiApp.Core.Repository.OrderRepository orderRepository = new Core.Repository.OrderRepository(client);
 

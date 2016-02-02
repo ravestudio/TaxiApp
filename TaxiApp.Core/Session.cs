@@ -10,7 +10,7 @@ namespace TaxiApp.Core
     {
         private Entities.User user = null;
 
-        public Entities.User GetUser()
+        public Entities.IUser GetUser()
         {
             return this.user;
         }

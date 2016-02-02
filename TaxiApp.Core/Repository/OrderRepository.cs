@@ -18,7 +18,7 @@ namespace TaxiApp.Core.Repository
             base.Create(order);
         }
 
-        public async Task<IList<Entities.Order>> GetUserOrders(Entities.User user)
+        public async Task<IList<Entities.Order>> GetUserOrders(Entities.IUser user)
         {
             IList<Entities.Order> orderList = new List<Entities.Order>();
 
@@ -59,7 +59,7 @@ namespace TaxiApp.Core.Repository
 
             bool ret = false;
 
-            TaxiApp.Core.Entities.User user = TaxiApp.Core.Session.Instance.GetUser();
+            TaxiApp.Core.Entities.IUser user = TaxiApp.Core.Session.Instance.GetUser();
 
             string url = string.Format("{0}{1}", this.ServerURL, "api/passenger_cancelorder/");
 

@@ -6,7 +6,19 @@ using System.Threading.Tasks;
 
 namespace TaxiApp.Core.Entities
 {
-    public class User: Entity<int>
+    public interface IUser
+    {
+        int Id { get; set; }
+        string Name { get; set; }
+        string Surname { get; set; }
+        string Lastname { get; set; }
+        string Email { get; set; }
+
+        string token { get; set; }
+        string pin { get; set; }
+    }
+
+    public class User: Entity<int>, IUser
     {
         public string Name { get; set; }
         public string Surname { get; set; }
