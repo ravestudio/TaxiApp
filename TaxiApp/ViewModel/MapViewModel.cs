@@ -47,7 +47,13 @@ namespace TaxiApp.ViewModel
 
             this.RouteChanged = new RouteChangeHandler(() =>
             {
-                this.OrderModel.ShowRoute(this.RouteMapControl, this.mapRoute);
+                Windows.Foundation.IAsyncAction action =
+                RouteMapControl.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+                {
+
+                    this.OrderModel.ShowRoute(this.RouteMapControl, this.mapRoute);
+                });
+
             });
         }
     }

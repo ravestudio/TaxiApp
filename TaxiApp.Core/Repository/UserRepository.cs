@@ -104,7 +104,7 @@ namespace TaxiApp.Core.Repository
             postData.Add(new KeyValuePair<string, string>("pin", PIN));
             postData.Add(new KeyValuePair<string, string>("protector", protector));
             postData.Add(new KeyValuePair<string, string>("idcompany", "1"));
-            postData.Add(new KeyValuePair<string, string>("appversion", "10"));
+            postData.Add(new KeyValuePair<string, string>("appversion", "80"));
 
             //string data = string.Format("phone={0}&pin={1}&idcompany={2}", model.PhoneNumber, model.PIN, 1);
 

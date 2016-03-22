@@ -11,70 +11,28 @@ namespace TaxiApp.Core.Managers
 {
     public class MapPainter
     {
+        private IMap _mapImpl = null;
+
+        public MapPainter(IMap map)
+        {
+            _mapImpl = map;
+        }
 
 
-        public async Task ShowMyPossitionAsync(MapControl mapControl)
+        public async Task ShowMyPossitionAsync()
         {
             TaxiApp.Core.Managers.LocationManager locationMG = TaxiApp.Core.Managers.ManagerFactory.Instance.GetLocationManager();
 
             Geopoint myGeopoint = await locationMG.GetCurrentGeopoint();
 
-            mapControl.Center = myGeopoint;
+            _mapImpl.ShowMyPossition(myGeopoint);
 
-            mapControl.ZoomLevel = 12;
-            mapControl.LandmarksVisible = true;
 
-            AddMapIcon(myGeopoint, mapControl);
         }
 
-        private void AddMapIcon(Geopoint point, MapControl mapControl)
+        public void ShowRoute(Windows.Services.Maps.MapRoute route)
         {
-            Windows.UI.Xaml.Shapes.Ellipse fence = new Windows.UI.Xaml.Shapes.Ellipse();
-            fence.Fill = new Windows.UI.Xaml.Media.SolidColorBrush(Windows.UI.Color.FromArgb(255, 50, 120, 90));
-
-            fence.Width = 15;
-            fence.Height = 15;
-
-            //MapIcon MapIcon1 = new MapIcon();
-            //MapIcon1.Title = "Space Needle";
-
-            var childObj = new Windows.UI.Xaml.Controls.Image
-            {
-                Source = new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///Assets/point.png"))
-            };
-
-            Windows.UI.Xaml.Controls.Maps.MapControl.SetLocation(fence, point);
-            Windows.UI.Xaml.Controls.Maps.MapControl.SetNormalizedAnchorPoint(fence, new Windows.Foundation.Point(0.5, 0.5));
-
-            mapControl.Children.Add(fence);
-        }
-
-        public async Task ShowRoute(MapControl mapControl, Windows.Services.Maps.MapRoute route)
-        {
-            if (route != null)
-            {
-                int thread = Environment.CurrentManagedThreadId;
-
-                Windows.Foundation.IAsyncAction action =
-                mapControl.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, async () =>
-                {
-                    Windows.UI.Xaml.Controls.Maps.MapRouteView viewOfRoute = new Windows.UI.Xaml.Controls.Maps.MapRouteView(route);
-                    viewOfRoute.RouteColor = Windows.UI.Colors.Yellow;
-                    viewOfRoute.OutlineColor = Windows.UI.Colors.Black;
-
-                    // Add the new MapRouteView to the Routes collection
-                    // of the MapControl.
-                    mapControl.Routes.Add(viewOfRoute);
-
-                    // Fit the MapControl to the route.
-                    await mapControl.TrySetViewBoundsAsync(
-                        route.BoundingBox,
-                        null,
-                        Windows.UI.Xaml.Controls.Maps.MapAnimationKind.None);
-                });
-
-                await action;
-            }
+            _mapImpl.ShowRoute(route);
         }
     }
 }

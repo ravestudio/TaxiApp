@@ -129,12 +129,14 @@ namespace TaxiApp.Core.DataModel.Order
         {
             if (route != null)
             {
-                Core.Managers.MapPainter painter = Core.Managers.ManagerFactory.Instance.GetMapPainter();
+                Core.Managers.MapPainter painter = Core.Managers.ManagerFactory.Instance.GetMapPainter(mapControl);
 
-                Task showRoutTask = painter.ShowRoute(mapControl, route).ContinueWith(t =>
-                {
-                    string msg = "route showed";
-                });
+                //Task showRoutTask = painter.ShowRoute(mapControl, route).ContinueWith(t =>
+                //{
+                //    string msg = "route showed";
+                //});
+
+                painter.ShowRoute(route);
             }
         }
 
@@ -205,8 +207,8 @@ namespace TaxiApp.Core.DataModel.Order
 
         public async Task ShowMyPossitionAsync(MapControl mapControl)
         {
-            Managers.MapPainter painter = Managers.ManagerFactory.Instance.GetMapPainter();
-            await painter.ShowMyPossitionAsync(mapControl);
+            Managers.MapPainter painter = Managers.ManagerFactory.Instance.GetMapPainter(mapControl);
+            await painter.ShowMyPossitionAsync();
         }
 
         //public void ShowServices()

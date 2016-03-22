@@ -138,6 +138,9 @@ namespace TaxiApp.Views
             var obj = view.SelectedItems[0];
         }
 
-
+        private void RouteMapControl_MapTapped(Windows.UI.Xaml.Controls.Maps.MapControl sender, Windows.UI.Xaml.Controls.Maps.MapInputEventArgs args)
+        {
+            int i = 0;
+        }
     }
 }

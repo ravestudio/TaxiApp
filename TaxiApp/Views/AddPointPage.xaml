@@ -36,7 +36,7 @@
 
         <!--TODO: Содержимое должно размещаться в следующей сетке-->
         <Grid Grid.Row="1" x:Name="ContentRoot" Margin="0,0,0,0">
-            <Maps:MapControl x:Name="RouteMapControl" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0,70,0,0"/>
+            <Maps:MapControl x:Name="RouteMapControl" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0,70,0,0" MapTapped="RouteMapControl_MapTapped"/>
 
             <StackPanel>
                 <TextBox x:Name="SearchText"

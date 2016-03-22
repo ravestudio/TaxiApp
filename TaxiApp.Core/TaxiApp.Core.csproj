@@ -98,8 +98,10 @@
     <Compile Include="Entities\Order.cs" />
     <Compile Include="Entities\OrderDS.cs" />
     <Compile Include="Entities\User.cs" />
+    <Compile Include="Managers\IMap.cs" />
     <Compile Include="Managers\LocationManager.cs" />
     <Compile Include="Managers\ManagerFactory.cs" />
+    <Compile Include="Managers\Map.cs" />
     <Compile Include="Managers\MapPainter.cs" />
     <Compile Include="Managers\SMSManager.cs" />
     <Compile Include="Managers\SystemManager.cs" />

@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using Windows.UI.Xaml.Controls.Maps;
+
 namespace TaxiApp.Core.Managers
 {
     public class ManagerFactory : TaxiApp.Core.Singleton<ManagerFactory>
@@ -22,11 +24,11 @@ namespace TaxiApp.Core.Managers
             return this.locationMG;
         }
 
-        public MapPainter GetMapPainter()
+        public MapPainter GetMapPainter(MapControl mapControl)
         {
             if (this.mapPainter == null)
             {
-                this.mapPainter = new MapPainter();
+                this.mapPainter = new MapPainter(new Map(mapControl));
             }
 
             return this.mapPainter;
