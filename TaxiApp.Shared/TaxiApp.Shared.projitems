@@ -1,0 +1,121 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>490cc030-189d-4de2-bef7-af9ade0b3351</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>TaxiApp</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="$(MSBuildThisFileDirectory)App.xaml">
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Compile Include="$(MSBuildThisFileDirectory)App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Common\NavigationHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Common\ObservableDictionary.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Common\RelayCommand.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Common\SuspensionManager.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DataModel\LoginModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DataModel\SampleDataSource.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DataModel\SocketModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModel\AuthenticationViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModel\Command\CancelOrderCommand.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModel\Command\ClickOrderItemCommand.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModel\Command\ClickRatingStarCommand.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModel\Command\CreateOrderCommand.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModel\Command\NavigateToMainPageCommand.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModel\Command\NavigateToOrderListCommand.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModel\Command\SelectMyOrderCommand.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModel\Command\SelectPointLocationCommand.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModel\Command\SelectServicesCommand.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModel\Command\ShowMenuCommand.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModel\Command\ShowOrderDetailCommand.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModel\DetailOrderViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModel\EditOrderViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModel\EditUserProfileViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModel\MapViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModel\SendRatingViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModel\ViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModel\ViewModelFactory.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Views\AddPointPage.xaml.cs">
+      <DependentUpon>AddPointPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Views\AuthenticationPage.xaml.cs">
+      <DependentUpon>AuthenticationPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Views\EditUserProfilePage.xaml.cs">
+      <DependentUpon>EditUserProfilePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Views\MainMenuControl.xaml.cs">
+      <DependentUpon>MainMenuControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Views\MainPage.xaml.cs">
+      <DependentUpon>MainPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Views\OrderDetailPage.xaml.cs">
+      <DependentUpon>OrderDetailPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Views\OrderListPage.xaml.cs">
+      <DependentUpon>OrderListPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Views\PageTitleControl.xaml.cs">
+      <DependentUpon>PageTitleControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Views\RegistrationPage.xaml.cs">
+      <DependentUpon>RegistrationPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Views\SendRatingPage.xaml.cs">
+      <DependentUpon>SendRatingPage.xaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="$(MSBuildThisFileDirectory)Common\ReadMe.txt" />
+    <Content Include="$(MSBuildThisFileDirectory)DataModel\SampleData.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="$(MSBuildThisFileDirectory)Views\AddPointPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="$(MSBuildThisFileDirectory)Views\AuthenticationPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="$(MSBuildThisFileDirectory)Views\EditUserProfilePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="$(MSBuildThisFileDirectory)Views\MainMenuControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="$(MSBuildThisFileDirectory)Views\MainPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="$(MSBuildThisFileDirectory)Views\OrderDetailPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="$(MSBuildThisFileDirectory)Views\OrderListPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="$(MSBuildThisFileDirectory)Views\PageTitleControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="$(MSBuildThisFileDirectory)Views\RegistrationPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="$(MSBuildThisFileDirectory)Views\SendRatingPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+</Project>

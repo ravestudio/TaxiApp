@@ -1,17 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{F659A79D-4B33-4686-8969-A971AEF0E350}</ProjectGuid>
+    <ProjectGuid>{83FF1520-2C7B-4B54-9AB4-12639F2403F2}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>TaxiApp.Core</RootNamespace>
     <AssemblyName>TaxiApp.Core</AssemblyName>
-    <DefaultLanguage>ru-RU</DefaultLanguage>
+    <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformVersion>8.1</TargetPlatformVersion>
     <MinimumVisualStudioVersion>12</MinimumVisualStudioVersion>
     <FileAlignment>512</FileAlignment>
@@ -82,14 +82,13 @@
     <!-- A reference to the entire .Net Framework and Windows SDK are automatically included -->
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
     <Compile Include="Common\DateTimeToDateTimeOffsetConverter.cs" />
     <Compile Include="DataModel\ModelFactory.cs" />
-    <Compile Include="DataModel\Order\OrderModel.cs" />
     <Compile Include="DataModel\Order\OrderItem.cs" />
     <Compile Include="DataModel\Order\OrderItemTemplateSelector .cs" />
-    <Compile Include="DataModel\Order\OrderPoint.cs" />
+    <Compile Include="DataModel\Order\OrderModel.cs" />
     <Compile Include="DataModel\Order\OrderOption.cs" />
+    <Compile Include="DataModel\Order\OrderPoint.cs" />
     <Compile Include="DataModel\Order\OrderPriceInfo.cs" />
     <Compile Include="DataModel\SearchModel.cs" />
     <Compile Include="DataModel\UserInfo.cs" />

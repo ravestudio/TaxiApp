@@ -1,0 +1,196 @@
+﻿<Page
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:TaxiApp.Views"
+    xmlns:Converters ="using:TaxiApp.Core.Common"
+    xmlns:viewModel="using:TaxiApp.Core.DataModel"
+    xmlns:OrderTemplates="using:TaxiApp.Core.DataModel.Order"
+    xmlns:controller="using:TaxiApp.ViewModel"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:entity="using:TaxiApp.Core.Entities"
+    xmlns:i="using:Microsoft.Xaml.Interactivity"
+    xmlns:core="using:Microsoft.Xaml.Interactions.Core"
+    xmlns:System="using:System"
+    x:Class="TaxiApp.Views.MainPage"
+    mc:Ignorable="d"
+    DataContext="{Binding OrderViewModel, RelativeSource={RelativeSource Mode=Self}}"
+    d:DataContext="{d:DesignInstance IsDesignTimeCreatable=True, Type=controller:EditOrderViewModel}"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+    
+    Name="mainPage"
+    
+    >
+
+    <Page.Resources>
+
+        <DataTemplate x:Key="ListPickerTemplate">
+            <TextBlock Text="{Binding Path=Name}" FontWeight="Bold" Margin="10,0,0,0"/>
+        </DataTemplate>
+
+        <ListPickerFlyout x:Key="ServiceFlyout" SelectionMode="Multiple"
+                          PickerFlyoutBase.Title="SET SERVICES"             
+                          ItemsSource="{Binding ElementName=mainPage, Path=DataContext.OrderModel.OrderServiceList}"
+                          ItemTemplate="{StaticResource ListPickerTemplate}"
+                          >
+
+            <i:Interaction.Behaviors>
+                <core:EventTriggerBehavior EventName="ItemsPicked">
+                    <core:InvokeCommandAction Command="{Binding SelectServicesCmd}"/>
+                </core:EventTriggerBehavior>
+            </i:Interaction.Behaviors>
+
+        </ListPickerFlyout>
+
+        <ListPickerFlyout x:Key="CarFlyout" SelectionMode="Single"
+                          PickerFlyoutBase.Title="SET CAR CLASS"
+                          ItemsSource="{Binding ElementName=mainPage, Path=DataContext.OrderModel.OrderCarList}"
+                          ItemTemplate="{StaticResource ListPickerTemplate}"
+                          >
+
+        </ListPickerFlyout>
+
+        <Converters:DateTimeToDateTimeOffsetConverter
+            x:Key="DateTimeToDateTimeOffsetConverter"/>
+
+        <DatePickerFlyout x:Key="DateFlyout" Date="{Binding EndDate, Converter={StaticResource DateTimeToDateTimeOffsetConverter}, Mode=TwoWay}">
+        </DatePickerFlyout>
+
+        <TimePickerFlyout x:Key="TimeFlyout" Time="{Binding EndTime, Mode=TwoWay}">
+        </TimePickerFlyout>
+
+
+        <DataTemplate x:Key="OrderItemTemplate">
+            <StackPanel Margin="10,0,0,0" Orientation="Horizontal" Height="70">
+                <Image Source="{Binding IconSource}" Width="70" Margin="0,0,0,0"/>
+                <StackPanel Margin="15,0,0,0">
+                    <TextBlock Text="{Binding Title}" Style="{ThemeResource SubheaderTextBlockStyle}" Margin="0,10,0,0"/>
+                    <TextBlock Visibility="{Binding SubheaderVisible}" Text="{Binding Subtitle}" Style="{ThemeResource  ListViewItemSubheaderTextBlockStyle}" Margin="0,0,0,0"/>
+                </StackPanel>
+            </StackPanel>
+        </DataTemplate>
+
+
+
+        <!--<OrderTemplates:OrderItemTemplateSelector x:Key="OrderItemTemplateSelector"
+                                                  OrderPointDataTemplate="{StaticResource OrderPointTemplate}"
+                                                  OrderServiceDataTemplate="{StaticResource OrderServiceTemplate}"
+                                                  OrderDateTimeTemplate="{StaticResource OrderDateTimeTemplate}"
+                                                  />-->
+    </Page.Resources>
+
+
+
+    <Grid x:Name="LayoutRoot" Margin="-160,0,0,0">
+
+        <Grid.ChildrenTransitions>
+            <TransitionCollection>
+                <EntranceThemeTransition/>
+            </TransitionCollection>
+        </Grid.ChildrenTransitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="160"/>
+            <ColumnDefinition Width="400"/>
+        </Grid.ColumnDefinitions>
+
+
+
+        <local:MainMenuControl Grid.Row="0" Grid.Column="0" Grid.RowSpan="2"></local:MainMenuControl>
+
+        <!-- Title Panel -->
+        <local:PageTitleControl Grid.Row="0" Grid.Column="1"></local:PageTitleControl>
+
+        <Grid Grid.Row="1" Grid.Column="1" x:Name="ContentRoot" Margin="0,0,0,0">
+            <Grid.Background>
+                <ImageBrush ImageSource="ms-appx:/Assets/BackGroundBMW2.png" Opacity="0.3"/>
+            </Grid.Background>
+
+
+
+            <Grid>
+                
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="140"></RowDefinition>
+                    <RowDefinition Height="100"></RowDefinition>
+                </Grid.RowDefinitions>
+
+                <ListView
+                    Grid.Row="0"
+							ItemsSource="{Binding OrderItemList}"
+							IsItemClickEnabled="True"
+                            ItemTemplate="{StaticResource OrderItemTemplate}"
+                    >
+
+                    <i:Interaction.Behaviors>
+                        <core:EventTriggerBehavior EventName="ItemClick">
+                            <core:InvokeCommandAction Command="{Binding ClickOrderItem}"/>
+                        </core:EventTriggerBehavior>
+                    </i:Interaction.Behaviors>
+
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem">
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                        </Style>
+                    </ListView.ItemContainerStyle>
+
+                    <!--<ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Margin="0,2,0,0" Background="#FFDAE7EE">
+                                        <TextBlock Text="{Binding Title}" Style="{ThemeResource SubheaderTextBlockStyle}" Margin="0,0,0,5"/>
+                                        -->
+                    <!--<TextBlock Text="{Binding Path=Location.Address}" Style="{StaticResource ComboBoxPlaceholderTextBlockStyle}" Margin="5,15"></TextBlock>-->
+                    <!--
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>-->
+
+                </ListView>
+
+
+                <!--<DatePicker Date="{Binding Path=OrderModel.EndDate, Converter={StaticResource DateTimeToDateTimeOffsetConverter}, Mode=TwoWay}"></DatePicker>
+                <TimePicker Time="{Binding Path=OrderModel.EndTime, Mode=TwoWay}"></TimePicker>-->
+
+
+
+
+
+                <Grid Grid.Row="1" Margin="20,0,20,0">
+
+                    <Grid.Background>
+                        <ImageBrush ImageSource="ms-appx:/Assets/printList.png" Opacity="0.7"/>
+                    </Grid.Background>
+                    
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="40"></RowDefinition>
+                        <RowDefinition Height="40"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Text="{Binding PriceInfo.Price}" Style="{StaticResource SubheaderTextBlockStyle}" Foreground="Black"  Margin="10,0,0,0" HorizontalAlignment="Center"></TextBlock>
+                    <TextBlock Grid.Row="2" Grid.Column="0" Text="{Binding PriceInfo.Destination}" Style="{StaticResource SubheaderTextBlockStyle}" Foreground="Black" Margin="10,0,0,0" HorizontalAlignment="Center"></TextBlock>
+                    <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding PriceInfo.Time}" Style="{StaticResource SubheaderTextBlockStyle}" Foreground="Black" Margin="10,0,0,0" HorizontalAlignment="Center"></TextBlock>
+
+                    <TextBlock Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Style="{StaticResource SubheaderTextBlockStyle}" Text="................................................." HorizontalAlignment="Center" Foreground="Black"></TextBlock>
+                </Grid>
+
+                <Button Grid.Row="2" Content="Make an order" Style="{StaticResource TaxiButtonBlueStyle}" HorizontalAlignment="Center" VerticalAlignment="Bottom" Command="{Binding CreateOrderCmd}"/>
+
+            </Grid>
+        </Grid>
+
+    </Grid>
+
+
+</Page>

@@ -1,0 +1,48 @@
+﻿<Page
+    x:Class="TaxiApp.Views.EditUserProfilePage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:TaxiApp.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    DataContext="{Binding DefaultViewModel, RelativeSource={RelativeSource Self}}"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid x:Name="LayoutRoot">
+
+        <Grid.Background>
+            <ImageBrush ImageSource="ms-appx:///Assets/BackGroundBMW.png"/>
+        </Grid.Background>
+
+        <Grid.ChildrenTransitions>
+            <TransitionCollection>
+                <EntranceThemeTransition/>
+            </TransitionCollection>
+        </Grid.ChildrenTransitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Title Panel -->
+
+        <!--TODO: Content should be placed within the following grid-->
+        <Grid Grid.Row="1" x:Name="ContentRoot" Margin="19,0,19,0">
+
+            <Grid HorizontalAlignment="Stretch" VerticalAlignment="Top" Background="#BF000000">
+                <StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="0,50,0,10">
+
+                    <TextBox Name="name" HorizontalAlignment="Center" Header="Name" Text="{Binding UserInfo.Name, Mode=TwoWay}" Margin="0,10,0,0" Width="234" Style="{StaticResource TaxiInputTextBoxStyle}" HeaderTemplate="{StaticResource TaxiControlHeaderTemplate}"/>
+                    <TextBox Name="surname" HorizontalAlignment="Center" Header="Surname" Text="{Binding UserInfo.Surname, Mode=TwoWay}" Margin="0,10,0,0" Width="234" Style="{StaticResource TaxiInputTextBoxStyle}" HeaderTemplate="{StaticResource TaxiControlHeaderTemplate}"/>
+                    <TextBox Name="lastname" HorizontalAlignment="Center" Header="Lastname" Text="{Binding UserInfo.Lastname, Mode=TwoWay}" Margin="0,10,0,0" Width="234" Style="{StaticResource TaxiInputTextBoxStyle}" HeaderTemplate="{StaticResource TaxiControlHeaderTemplate}"/>
+                    <TextBox Name="email" HorizontalAlignment="Center" Header="Email" Text="{Binding UserInfo.Email, Mode=TwoWay}" Margin="0,10,0,0" Width="234" Style="{StaticResource TaxiInputTextBoxStyle}" HeaderTemplate="{StaticResource TaxiControlHeaderTemplate}"/>
+                    <Button Content="SAVE" Command="{Binding SaveCmd}" Margin="0,30,0,0" HorizontalAlignment="Center" Style="{StaticResource TaxiButtonBlueStyle}" Width="300" Template="{StaticResource TaxiButtonControlTemplate}" />
+
+                </StackPanel>
+            </Grid>
+            
+        </Grid>
+    </Grid>
+</Page>
