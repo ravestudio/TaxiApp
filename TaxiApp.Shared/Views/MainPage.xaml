@@ -17,6 +17,7 @@
     DataContext="{Binding OrderViewModel, RelativeSource={RelativeSource Mode=Self}}"
     d:DataContext="{d:DesignInstance IsDesignTimeCreatable=True, Type=controller:EditOrderViewModel}"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+
     
     Name="mainPage"
     
@@ -59,6 +60,12 @@
         <TimePickerFlyout x:Key="TimeFlyout" Time="{Binding EndTime, Mode=TwoWay}">
         </TimePickerFlyout>
 
+        <Style x:Key="SubheaderTextBlockStyle" TargetType="TextBlock" BasedOn="{StaticResource BaseTextBlockStyle}">
+            <Setter Property="FontFamily" Value="Courier New"/>
+            <Setter Property="FontSize" Value="30"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="LineHeight" Value="33"/>
+        </Style>
 
         <DataTemplate x:Key="OrderItemTemplate">
             <StackPanel Margin="10,0,0,0" Orientation="Horizontal" Height="70">
@@ -81,7 +88,19 @@
 
 
 
-    <Grid x:Name="LayoutRoot" Margin="-160,0,0,0">
+    <Canvas Name="RootCanvas">
+
+        <Canvas.Resources>
+            <Storyboard x:Name="MoveAnimation">
+                <DoubleAnimation Duration="0:0:0.2" To="0" Storyboard.TargetProperty="(Canvas.Left)" Storyboard.TargetName="Sidebar" d:IsOptimized="True" />
+            </Storyboard>
+        </Canvas.Resources>
+
+        <Grid Width="400" Height="667" Background="#FF2C2624" Canvas.ZIndex="0" Canvas.Top="-27">
+            <local:MainMenuControl></local:MainMenuControl>
+        </Grid>
+
+        <Grid x:Name="Sidebar" Width="400" Height="667" Canvas.ZIndex="1" Canvas.Left="0" Canvas.Top="-27" ManipulationDelta="Sidebar_ManipulationDelta" ManipulationMode="All" ManipulationCompleted="Sidebar_ManipulationCompleted" Background="White">
 
         <Grid.ChildrenTransitions>
             <TransitionCollection>
@@ -94,19 +113,16 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <Grid.ColumnDefinitions>
+        <!--<Grid.ColumnDefinitions>
             <ColumnDefinition Width="160"/>
             <ColumnDefinition Width="400"/>
-        </Grid.ColumnDefinitions>
+        </Grid.ColumnDefinitions>-->
 
-
-
-        <local:MainMenuControl Grid.Row="0" Grid.Column="0" Grid.RowSpan="2"></local:MainMenuControl>
 
         <!-- Title Panel -->
-        <local:PageTitleControl Grid.Row="0" Grid.Column="1"></local:PageTitleControl>
+        <local:PageTitleControl Grid.Row="0"></local:PageTitleControl>
 
-        <Grid Grid.Row="1" Grid.Column="1" x:Name="ContentRoot" Margin="0,0,0,0">
+        <Grid Grid.Row="1" x:Name="ContentRoot" Margin="0,0,0,0">
             <Grid.Background>
                 <ImageBrush ImageSource="ms-appx:/Assets/BackGroundBMW2.png" Opacity="0.3"/>
             </Grid.Background>
@@ -121,12 +137,12 @@
                     <RowDefinition Height="100"></RowDefinition>
                 </Grid.RowDefinitions>
 
-                <ListView
+                    <ListView
                     Grid.Row="0"
-							ItemsSource="{Binding OrderItemList}"
-							IsItemClickEnabled="True"
-                            ItemTemplate="{StaticResource OrderItemTemplate}"
-                    >
+					ItemsSource="{Binding OrderItemList}"							
+                    ItemTemplate="{StaticResource OrderItemTemplate}"
+                    Background="{x:Null}">
+
 
                     <i:Interaction.Behaviors>
                         <core:EventTriggerBehavior EventName="ItemClick">
@@ -191,6 +207,8 @@
         </Grid>
 
     </Grid>
+
+    </Canvas>
 
 
 </Page>

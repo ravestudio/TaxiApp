@@ -9,12 +9,7 @@
     <Import_RootNamespace>TaxiApp</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <ApplicationDefinition Include="$(MSBuildThisFileDirectory)App.xaml">
-      <SubType>Designer</SubType>
-    </ApplicationDefinition>
-    <Compile Include="$(MSBuildThisFileDirectory)App.xaml.cs">
-      <DependentUpon>App.xaml</DependentUpon>
-    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)App.xaml.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Common\NavigationHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Common\ObservableDictionary.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Common\RelayCommand.cs" />
@@ -44,9 +39,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Views\AddPointPage.xaml.cs">
       <DependentUpon>AddPointPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="$(MSBuildThisFileDirectory)Views\AuthenticationPage.xaml.cs">
-      <DependentUpon>AuthenticationPage.xaml</DependentUpon>
-    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Views\AuthenticationPage.xaml.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\EditUserProfilePage.xaml.cs">
       <DependentUpon>EditUserProfilePage.xaml</DependentUpon>
     </Compile>
@@ -62,12 +55,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)Views\OrderListPage.xaml.cs">
       <DependentUpon>OrderListPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="$(MSBuildThisFileDirectory)Views\PageTitleControl.xaml.cs">
-      <DependentUpon>PageTitleControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="$(MSBuildThisFileDirectory)Views\RegistrationPage.xaml.cs">
-      <DependentUpon>RegistrationPage.xaml</DependentUpon>
-    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Views\PageTitleControl.xaml.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Views\RegistrationPage.xaml.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\SendRatingPage.xaml.cs">
       <DependentUpon>SendRatingPage.xaml</DependentUpon>
     </Compile>
@@ -78,10 +67,6 @@
   </ItemGroup>
   <ItemGroup>
     <Page Include="$(MSBuildThisFileDirectory)Views\AddPointPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="$(MSBuildThisFileDirectory)Views\AuthenticationPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -102,14 +87,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="$(MSBuildThisFileDirectory)Views\OrderListPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="$(MSBuildThisFileDirectory)Views\PageTitleControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="$(MSBuildThisFileDirectory)Views\RegistrationPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

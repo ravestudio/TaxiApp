@@ -43,7 +43,7 @@ namespace TaxiApp.Core.DataModel.Order
 
             //this.MapRouteChanged += OrderModel_MapRouteChanged;
 
-            string Host = "54.187.153.101";
+            string Host = "178.208.77.21";
             string Port = "9090";
 
             SocketClient.ConnectAsync(Host, Port).ContinueWith(t =>

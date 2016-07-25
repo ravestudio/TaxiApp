@@ -137,13 +137,13 @@ namespace TaxiApp.ViewModel
 
             OrderPoint pointfrom = new OrderPoint();
             pointfrom.Priority = 0;
-            pointfrom.Title = "Address from";
+            pointfrom.Title = "Откуда?";
             pointfrom.Location = new LocationItem() { Address = "Input address" };
             pointfrom.IconSource = new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///Assets/AddressPoint.png"));
 
             OrderPoint pointSecond = new OrderPoint();
             pointSecond.Priority = 1;
-            pointSecond.Title = "Address";
+            pointSecond.Title = "Куда?";
             pointSecond.Location = new LocationItem() { Address = "Input address" };
             pointSecond.IconSource = new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///Assets/AddressPointTo.png"));
 
@@ -153,7 +153,7 @@ namespace TaxiApp.ViewModel
             this._orderItemList.Add(new OrderItem()
             {
                 Priority = 9,
-                Title = "Today",
+                Title = "Сегодня",
                 Cmd = "Date",
                 IconSource = new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///Assets/time.png"))
             });
@@ -162,7 +162,7 @@ namespace TaxiApp.ViewModel
             this._orderItemList.Add(new OrderItem()
             {
                 Priority = 10,
-                Title = "Now",
+                Title = "Сейчас",
                 Cmd = "Now",
                 IconSource = new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///Assets/time.png"))
             });
@@ -170,7 +170,7 @@ namespace TaxiApp.ViewModel
             this._orderItemList.Add(new OrderItem()
             {
                 Priority = 11,
-                Title = "Services",
+                Title = "Дополнительно",
                 Cmd = "Services",
                 IconSource = new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///Assets/options.png"))
             });

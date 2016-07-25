@@ -12,7 +12,7 @@ namespace TaxiApp.Core.Repository
 
         protected TaxiApp.Core.WebApiClient _apiClient = null;
 
-        protected string ServerURL = "http://serv.cabswap.com/";
+        protected string ServerURL = "http://serv.vezzun.ru/";
 
         public Repository(TaxiApp.Core.WebApiClient apiClient)
         {
