@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using System.Collections.ObjectModel;
 
 using Windows.Devices.Geolocation;
-using Windows.UI.Xaml.Controls.Maps;
 
 namespace TaxiApp.Core.DataModel.Order
 {
@@ -125,11 +124,12 @@ namespace TaxiApp.Core.DataModel.Order
 
         //}
 
-        public void ShowRoute(MapControl mapControl, Windows.Services.Maps.MapRoute route)
+        public void ShowRoute(IRoute route)
         {
             if (route != null)
             {
-                Core.Managers.MapPainter painter = Core.Managers.ManagerFactory.Instance.GetMapPainter(mapControl);
+                //Core.Managers.MapPainter painter = Core.Managers.ManagerFactory.Instance.GetMapPainter(mapControl);
+                Core.Managers.MapPainter painter = null;
 
                 //Task showRoutTask = painter.ShowRoute(mapControl, route).ContinueWith(t =>
                 //{
@@ -180,9 +180,9 @@ namespace TaxiApp.Core.DataModel.Order
             }
         }
 
-        public async Task<Windows.Services.Maps.MapRoute> FindRoute(IEnumerable<Geopoint> geopoints)
+        public async Task<IRoute> FindRoute(IEnumerable<Geopoint> geopoints)
         {
-            Windows.Services.Maps.MapRoute route = null;
+            IRoute route = null;
 
             int thread = Environment.CurrentManagedThreadId;
 
@@ -190,24 +190,17 @@ namespace TaxiApp.Core.DataModel.Order
 
             if (geopoints.Count() > 1)
             {
-                Windows.Services.Maps.MapRouteFinderResult routeResult = null;
-                Task<Windows.Services.Maps.MapRouteFinderResult> routeTask = locationMG.GetRoute(geopoints);
+                Task<IRoute> routeTask = locationMG.GetRoute(geopoints);
 
-                routeResult = await routeTask;
-
-                if (routeResult.Status == Windows.Services.Maps.MapRouteFinderStatus.Success)
-                {
-                    route = routeResult.Route;
-                }
-
+                route = await routeTask;
             }
 
             return route;
         }
 
-        public async Task ShowMyPossitionAsync(MapControl mapControl)
+        public async Task ShowMyPossitionAsync()
         {
-            Managers.MapPainter painter = Managers.ManagerFactory.Instance.GetMapPainter(mapControl);
+            Managers.MapPainter painter = null;
             await painter.ShowMyPossitionAsync();
         }
 

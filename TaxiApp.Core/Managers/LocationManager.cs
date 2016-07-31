@@ -5,7 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 
 using Windows.Devices.Geolocation;
-using Windows.Services.Maps;
 
 namespace TaxiApp.Core.Managers
 {
@@ -14,9 +13,13 @@ namespace TaxiApp.Core.Managers
 
         private Geolocator locator = new Geolocator();
 
-        private MapLocation _currentLocation = null;
+        private ILocation _currentLocation = null;
+
+        private ILocationService _locationService = null;
 
         //private Object thisLock = new Object();
+
+
 
         public bool LocationReady
         {
@@ -30,76 +33,65 @@ namespace TaxiApp.Core.Managers
             //this.Init();
         }
 
-        public async Task InitCurrentLocation()
+        public Task InitCurrentLocation()
         {
+            
+
             this.LocationReady = false;
 
-            Geopoint currentGeopoint = null;
-
             Task<Geopoint> task = this.GetCurrentGeopoint();
-            currentGeopoint = await task;
 
-            MapLocationFinderResult result = null;
-
-            Windows.Foundation.IAsyncOperation<MapLocationFinderResult> findLocationTask = null;
-
-            
-            
-            findLocationTask = MapLocationFinder.FindLocationsAtAsync(currentGeopoint);
-            result = await findLocationTask;
-            
-
-            if (result.Status == MapLocationFinderStatus.Success)
+            return task.ContinueWith(t =>
             {
-                this._currentLocation = result.Locations[0];
-            }
+                Geopoint currentGeopoint = t.Result;
+                var locationTask = this._locationService.GetLocation(currentGeopoint);
 
-            this.LocationReady = true;
+                this._currentLocation = locationTask.Result;
+
+                this.LocationReady = true;
+            });
         }
 
 
 
-        public async Task<Geopoint> GetCurrentGeopoint()
+        public Task<Geopoint> GetCurrentGeopoint()
         {
-            Geoposition pos = null;
+            TaskCompletionSource<Geopoint> TCS = new TaskCompletionSource<Geopoint>();
 
             //locator.DesiredAccuracy = PositionAccuracy.High;
             
-            Windows.Foundation.IAsyncOperation<Geoposition> task = locator.GetGeopositionAsync();
+            Task<Geoposition> task = locator.GetGeopositionAsync().AsTask();
 
-            pos = await locator.GetGeopositionAsync();
-
-            Geopoint myGeopoint = new Geopoint(new BasicGeoposition()
+            task.ContinueWith(t =>
             {
-                Latitude = pos.Coordinate.Point.Position.Latitude,
-                Longitude = pos.Coordinate.Point.Position.Longitude
+                var pos = t.Result;
+
+                Geopoint myGeopoint = new Geopoint(new BasicGeoposition()
+                {
+                    Latitude = pos.Coordinate.Point.Position.Latitude,
+                    Longitude = pos.Coordinate.Point.Position.Longitude
+                });
+
+                TCS.SetResult(myGeopoint);
             });
 
-            return myGeopoint;
+            return TCS.Task;
         }
 
 
-        public MapLocation GetCurrentLocation()
+        public ILocation GetCurrentLocation()
         {
             return this._currentLocation;
         }
 
-        public async Task<MapLocationFinderResult> GetLocations(Geopoint hintPoint, string searchQuery)
+        public Task<IList<ILocation>> GetLocations(Geopoint hintPoint, string searchQuery)
         {
-            MapLocationFinderResult result = await MapLocationFinder.FindLocationsAsync(searchQuery, hintPoint, 3);
-
-            return result;
+            return _locationService.GetLocationList(hintPoint, searchQuery);
         }
 
-        public async Task<MapRouteFinderResult> GetRoute(IEnumerable<Geopoint> points)
+        public Task<IRoute> GetRoute(IEnumerable<Geopoint> points)
         {
-            MapRouteFinderResult routeResult =
-                await MapRouteFinder.GetDrivingRouteFromWaypointsAsync(
-                points,
-                MapRouteOptimization.Time,
-                MapRouteRestrictions.None);
-
-            return routeResult;
+            return _locationService.GetRoute(points);
         }
 
     }

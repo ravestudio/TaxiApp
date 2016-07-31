@@ -12,6 +12,6 @@ namespace TaxiApp.Core.Managers
     {
         void ShowMyPossition(Geopoint myGeopoint);
 
-        void ShowRoute(Windows.Services.Maps.MapRoute route);
+        void ShowRoute(IRoute route);
     }
 }

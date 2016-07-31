@@ -8,9 +8,9 @@ using Windows.Services.Maps;
 
 using Windows.UI.Xaml.Controls.Maps;
 
-namespace TaxiApp.Core.Managers
+namespace TaxiApp.Core.UWP.Managers
 {
-    class Map : IMap
+    class Map : TaxiApp.Core.Managers.IMap
     {
 
         private MapControl mapControl = null;
@@ -37,10 +37,11 @@ namespace TaxiApp.Core.Managers
             AddMapIcon(myGeopoint);
         }
 
-        public void ShowRoute(MapRoute route)
+        public void ShowRoute(IRoute route)
         {
+            MapRoute mapRoute = ((Route)route).MapRoute;
 
-            Windows.UI.Xaml.Controls.Maps.MapRouteView viewOfRoute = new Windows.UI.Xaml.Controls.Maps.MapRouteView(route);
+            Windows.UI.Xaml.Controls.Maps.MapRouteView viewOfRoute = new Windows.UI.Xaml.Controls.Maps.MapRouteView(mapRoute);
             viewOfRoute.RouteColor = Windows.UI.Colors.Blue;
             //viewOfRoute.OutlineColor = Windows.UI.Colors.Black;
 

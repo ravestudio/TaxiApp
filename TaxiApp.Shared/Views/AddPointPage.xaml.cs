@@ -34,7 +34,7 @@ namespace TaxiApp.Views
 
             viewOrderModel.Init(this);
 
-            this.viewOrderModel.Map.RouteMapControl = this.RouteMapControl;
+            //this.viewOrderModel.Map.RouteMapControl = this.RouteMapControl;
 
             this.navigationHelper = new NavigationHelper(this);
             this.navigationHelper.LoadState += this.NavigationHelper_LoadState;
@@ -104,14 +104,14 @@ namespace TaxiApp.Views
         /// событий, которые не могут отменить запрос навигации.</param>
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            this.OrderViewModel.OrderModel.ShowMyPossitionAsync(viewOrderModel.Map.RouteMapControl).
+            this.OrderViewModel.OrderModel.ShowMyPossitionAsync().
                 ContinueWith(
                 t =>
                 {
                     string status = "showed";
                 });
 
-            this.viewOrderModel.OrderModel.ShowRoute(viewOrderModel.Map.RouteMapControl, viewOrderModel.Map.MapRoute);
+            this.viewOrderModel.OrderModel.ShowRoute(viewOrderModel.Map.MapRoute);
 
 
             this.navigationHelper.OnNavigatedTo(e);

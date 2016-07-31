@@ -16,10 +16,9 @@ namespace TaxiApp.ViewModel
 
         public OrderModel OrderModel { get; set; }
 
-        public Windows.UI.Xaml.Controls.Maps.MapControl RouteMapControl { get; set; }
-        private Windows.Services.Maps.MapRoute mapRoute = null;
+        private TaxiApp.Core.IRoute mapRoute = null;
 
-        public Windows.Services.Maps.MapRoute MapRoute
+        public TaxiApp.Core.IRoute MapRoute
         {
             get
             {
@@ -47,12 +46,14 @@ namespace TaxiApp.ViewModel
 
             this.RouteChanged = new RouteChangeHandler(() =>
             {
-                Windows.Foundation.IAsyncAction action =
-                RouteMapControl.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
-                {
+                //Windows.Foundation.IAsyncAction action =
+                //RouteMapControl.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+                //{
 
-                    this.OrderModel.ShowRoute(this.RouteMapControl, this.mapRoute);
-                });
+                //    this.OrderModel.ShowRoute(this.mapRoute);
+                //});
+
+                this.OrderModel.ShowRoute(this.mapRoute);
 
             });
         }

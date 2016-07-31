@@ -266,10 +266,10 @@ namespace TaxiApp.ViewModel
             }
 
 
-            if (page is TaxiApp.Views.AddPointPage)
-            {
-                this.Map.RouteMapControl = (Windows.UI.Xaml.Controls.Maps.MapControl)page.FindName("RouteMapControl");
-            }
+            //if (page is TaxiApp.Views.AddPointPage)
+            //{
+            //    this.Map.RouteMapControl = (Windows.UI.Xaml.Controls.Maps.MapControl)page.FindName("RouteMapControl");
+            //}
 
             //this.OrderModel.Dispatcher = page.Dispatcher;
 
@@ -322,7 +322,7 @@ namespace TaxiApp.ViewModel
                     Longitude = p.Location.Longitude
                 }));
 
-            Task<Windows.Services.Maps.MapRoute> FindRouteTask = this.OrderModel.FindRoute(geopoints);
+            Task<Core.IRoute> FindRouteTask = this.OrderModel.FindRoute(geopoints);
 
             FindRouteTask.ContinueWith(t =>
             {
@@ -412,10 +412,10 @@ namespace TaxiApp.ViewModel
             {
                 TaxiApp.Core.Entities.OrderRouteItem routeItem = new TaxiApp.Core.Entities.OrderRouteItem();
                 routeItem.Address = string.Format("{0}, {1}, {2} {3}",
-                        orderPoint.Location.MapLocation.Address.Street,
-                        orderPoint.Location.MapLocation.Address.StreetNumber,
-                        orderPoint.Location.MapLocation.Address.Town,
-                        orderPoint.Location.MapLocation.Address.Country
+                        orderPoint.Location.Location.Street,
+                        orderPoint.Location.Location.StreetNumber,
+                        orderPoint.Location.Location.Town,
+                        orderPoint.Location.Location.Country
                         );
                 routeItem.Latitude = orderPoint.Location.Latitude;
                 routeItem.Longitude = orderPoint.Location.Longitude;
@@ -426,7 +426,7 @@ namespace TaxiApp.ViewModel
             if (this.Map.MapRoute != null)
             {
                 _order.Routemeters = (int)this.Map.MapRoute.LengthInMeters;
-                _order.Routetime = this.Map.MapRoute.EstimatedDuration.Minutes;
+                _order.Routetime = this.Map.MapRoute.EstimatedDuration;
             }
 
             _order.StartDate = new DateTime(EndDate.Year, EndDate.Month, EndDate.Day, EndTime.Hours, EndTime.Minutes, EndTime.Seconds);

@@ -5,7 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 
 using Windows.Devices.Geolocation;
-using Windows.UI.Xaml.Controls.Maps;
 
 namespace TaxiApp.Core.Managers
 {
@@ -30,7 +29,7 @@ namespace TaxiApp.Core.Managers
 
         }
 
-        public void ShowRoute(Windows.Services.Maps.MapRoute route)
+        public void ShowRoute(IRoute route)
         {
             _mapImpl.ShowRoute(route);
         }

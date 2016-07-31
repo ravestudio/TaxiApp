@@ -5,7 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 
 using Windows.Devices.Geolocation;
-using Windows.Services.Maps;
 
 namespace TaxiApp.Core.DataModel
 {
@@ -86,13 +85,13 @@ namespace TaxiApp.Core.DataModel
         {
             Geopoint hintPoint = await this.locationMg.GetCurrentGeopoint();
 
-            MapLocation currentLocation = this.locationMg.GetCurrentLocation();
+            ILocation currentLocation = this.locationMg.GetCurrentLocation();
 
-            string town = currentLocation.Address.Town;
+            string town = currentLocation.Town;
 
             string searchQuery = string.Format("{0} {1}", town, this.SearchText);
 
-            MapLocationFinderResult SearchResults = await this.locationMg.GetLocations(hintPoint, searchQuery);
+            IList<ILocation> SearchResults = await this.locationMg.GetLocations(hintPoint, searchQuery);
 
             //lock (this.thisLock)
             //{
@@ -103,13 +102,13 @@ namespace TaxiApp.Core.DataModel
             this.FillLocations(SearchResults);
         }
 
-        private void FillLocations(MapLocationFinderResult SearchResults)
+        private void FillLocations(IList<ILocation> SearchResults)
         {
             this.Locations.Clear();
 
-            if (SearchResults.Status == MapLocationFinderStatus.Success)
+            if (SearchResults != null)
             {
-                foreach (MapLocation location in SearchResults.Locations)
+                foreach (ILocation location in SearchResults)
                 {
                     this.Locations.Add(new LocationItem(location));
                 }
@@ -133,15 +132,15 @@ namespace TaxiApp.Core.DataModel
             this.Ready = false;
         }
 
-        public LocationItem(MapLocation location)
+        public LocationItem(ILocation location)
         {
-            this.Address = string.Format("{0}, {1}", location.Address.Street, location.Address.StreetNumber);
-            this.FullAddress = string.Format("{0}, {1}, {2}", location.Address.Town, location.Address.Region, location.Address.PostCode);
+            this.Address = string.Format("{0}, {1}", location.Street, location.StreetNumber);
+            this.FullAddress = string.Format("{0}, {1}, {2}", location.Town, location.Region, location.PostCode);
 
-            this.Latitude = location.Point.Position.Latitude;
-            this.Longitude = location.Point.Position.Longitude;
+            this.Latitude = location.Latitude;
+            this.Longitude = location.Longitude;
 
-            this.MapLocation = location;
+            this.Location = location;
 
             this.Ready = true;
         }
@@ -152,7 +151,7 @@ namespace TaxiApp.Core.DataModel
         public double Latitude { get; set; }
         public double Longitude { get; set; }
 
-        public MapLocation MapLocation { get; set; }
+        public ILocation Location { get; set; }
 
         public bool Ready { get; set; }
 
