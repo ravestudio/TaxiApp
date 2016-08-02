@@ -42,12 +42,7 @@ namespace TaxiApp.ViewModel
         public TimePickerFlyout TimePicker { get; set; }
 
         public OrderPriceInfo PriceInfo { get; set; }
-        public bool LocationReady {
-            get
-            {
-                return this.SearchModel.LocationReady;
-            }
-        }
+        public bool LocationReady { get; set; }
 
         public Dictionary<string, Action<EditOrderViewModel, TaxiApp.Core.DataModel.Order.OrderItem>> Actions = null;
 
@@ -204,21 +199,20 @@ namespace TaxiApp.ViewModel
             
             Messenger.Default.Register<OrderDeletedMessage>(this, (msg) => {
                     var order = this.OrderList.Where(o => o.Id == msg.OrderId).SingleOrDefault();
-
                     this.Page.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
                     {
                         this.OrderList.Remove(order);
                     });
             });
+            
+            Messenger.Default.Register<LocationChangedMessage>(this, (msg) => {
+                this.LocationReady = msg.Ready;
+                this.NotifyPropertyChanged("LocationReady");
+            });
 
             this.LayoutRootList = new Dictionary<Type, Windows.UI.Xaml.Controls.Grid>();
 
             this.MenuState = false;
-
-            this.SearchModel.LocationReadyChanged = new SearchModel.LocationReadyDelegate((ready) =>
-            {
-                this.NotifyPropertyChanged("LocationReady");
-            });
 
             this._orderItemList = new ObservableCollection<OrderItem>();
 
