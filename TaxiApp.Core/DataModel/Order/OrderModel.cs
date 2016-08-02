@@ -30,8 +30,10 @@ namespace TaxiApp.Core.DataModel.Order
         //public Windows.UI.Xaml.Controls.Primitives.Popup ServicePopup { get; set; }
         //public Windows.UI.Xaml.Controls.Primitives.Popup DateTimePopup { get; set; }
 
-        public OrderModel()
+        public OrderModel(OrderRepository orderRepository)
         {
+            this._orderRepository = orderRepository;
+            
             socketMG = new Core.Socket.SocketManager(this.SocketClient);
 
             InitOptions();
@@ -54,6 +56,18 @@ namespace TaxiApp.Core.DataModel.Order
             });
 
             SocketClient.OnMessage += SocketClient_OnMessage;
+            
+            Messenger.Default.Register<CreateOrderMessage>(this, (msg) => {
+                    this.CreateOrder(msg.Order);
+                });
+                
+            Messenger.Default.Register<DeleteOrderMessage>(this, (msg) => {
+                    this.DeleteOrder(msg.OrderId);
+                });
+                
+            Messenger.Default.Register<SelectOrderMessage>(this, (msg) => {
+                    this.Detailed(msg.Order);
+                });
         }
 
         void SocketClient_OnMessage(object sender, EventArgs e)
@@ -235,6 +249,21 @@ namespace TaxiApp.Core.DataModel.Order
             string data = await client.GetData(url, postData);
 
 
+        }
+        
+        private void DeleteOrder(int id)
+        {
+            Task<bool> deleteTask = _orderRepository.DeleteOrder(id);
+
+            deleteTask.ContinueWith((res) =>
+            {
+                if (res.Result)
+                {
+                    Messenger.Default.Send<OrderDeletedMessage>(new OrderDeletedMessage() { 
+                        OrderId = id
+                    });
+                }
+            });
         }
 
         public Task<Entities.Driver> GetDriver(int DriverId)
