@@ -201,6 +201,15 @@ namespace TaxiApp.ViewModel
                 }
                 SelectedOrder.Selected = true;
             });
+            
+            Messenger.Default.Register<OrderDeletedMessage>(this, (msg) => {
+                    var order = this.OrderList.Where(o => o.Id == msg.OrderId).SingleOrDefault();
+
+                    this.Page.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+                    {
+                        this.OrderList.Remove(order);
+                    });
+            });
 
             this.LayoutRootList = new Dictionary<Type, Windows.UI.Xaml.Controls.Grid>();
 
