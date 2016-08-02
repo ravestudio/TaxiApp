@@ -6,9 +6,12 @@ using System.Text;
 using System.Threading.Tasks;
 using TaxiApp.Core.DataModel;
 using TaxiApp.Core.DataModel.Order;
+using TaxiApp.Core.Messages;
 
 using Windows.Devices.Geolocation;
 
+using GalaSoft.MvvmLight.Messaging;
+using GalaSoft.MvvmLight.Command;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
@@ -107,17 +110,14 @@ namespace TaxiApp.ViewModel
 
             this.Locations = new ObservableCollection<LocationItem>();
             this.OrderList = new ObservableCollection<Core.Entities.Order>();
-
-            this.OrderModel = TaxiApp.Core.DataModel.ModelFactory.Instance.GetOrderModel();
-            this.SearchModel = TaxiApp.Core.DataModel.ModelFactory.Instance.GetSearchModel();
             
-            this.searchCmd = new RelayCommand((text) => {
+            this.searchCmd = new RelayCommand<string>((text) => {
                 Messenger.Default.Send<SearchLocationMessage>(new SearchLocationMessage() { 
                   Text = text
                 });
             }, (text) => { return (text.Length > 5); });
 
-            this.ClickOrderItem = new RelayCommand((parameter) =>
+            this.ClickOrderItem = new RelayCommand<object>((parameter) =>
             {
                 Windows.UI.Xaml.Controls.ItemClickEventArgs e = (Windows.UI.Xaml.Controls.ItemClickEventArgs)parameter;
                 TaxiApp.Core.DataModel.Order.OrderItem orderItem = (TaxiApp.Core.DataModel.Order.OrderItem)e.ClickedItem;
@@ -125,13 +125,13 @@ namespace TaxiApp.ViewModel
                 this.Actions[orderItem.Cmd].Invoke(this, orderItem);
             });
             
-            this.SelectLocationItem = new RelayCommand((parameter) =>
+            this.SelectLocationItem = new RelayCommand<object>((parameter) =>
             {
                 Windows.UI.Xaml.Controls.ItemClickEventArgs e = (Windows.UI.Xaml.Controls.ItemClickEventArgs)parameter;
                 LocationItem location = (LocationItem)e.ClickedItem;
                 
-                Messenger.Default.Send<SelectLocationMessage>(new SelectLocationMessage() { 
-                  Location = location;
+                Messenger.Default.Send<SelectLocationMessage>(new SelectLocationMessage() {
+                    LocationItem = location
                 });
                 Frame rootFrame = Window.Current.Content as Frame;
 
@@ -161,7 +161,7 @@ namespace TaxiApp.ViewModel
                     if (dialogResult.Result.Label == "Accept")
                     {
                         Messenger.Default.Send<DeleteOrderMessage>(new DeleteOrderMessage() { 
-                            OrderId = order.Id;
+                            OrderId = order.Id
                         });
                     }
                 });
@@ -172,7 +172,7 @@ namespace TaxiApp.ViewModel
                 TaxiApp.Core.Entities.Order order = this.GetEntity();
                 
                 Messenger.Default.Send<CreateOrderMessage>(new CreateOrderMessage() { 
-                  Order = order;
+                  Order = order
                 });
                 
                 this.LoadMyOrders();
@@ -183,7 +183,7 @@ namespace TaxiApp.ViewModel
                 Core.Entities.Order order = this.OrderList.SingleOrDefault(o => o.Selected == true);
 
                 Messenger.Default.Send<SelectOrderMessage>(new SelectOrderMessage() { 
-                  Order = order;
+                  Order = order
                 });
 
                 Frame rootFrame = Window.Current.Content as Frame;
@@ -194,7 +194,7 @@ namespace TaxiApp.ViewModel
             this.NavToOrderListCmd = new Command.NavigateToOrderListCommand();
             this.NavToMainPageCmd = new Command.NavigateToMainPageCommand();
             
-            this.SelectMyOrderCmd = new RelayCommand((parameter) =>
+            this.SelectMyOrderCmd = new RelayCommand<object>((parameter) =>
             {
                 Windows.UI.Xaml.Controls.ItemClickEventArgs e = (Windows.UI.Xaml.Controls.ItemClickEventArgs)parameter;
                 Core.Entities.Order SelectedOrder = (Core.Entities.Order)e.ClickedItem;
@@ -219,8 +219,13 @@ namespace TaxiApp.ViewModel
                 this.NotifyPropertyChanged("LocationReady");
             });
             
-            Messenger.Default.Register<FindedLocationsMessage>(this, (msg) => {
-                this.Locations = msg.locationItems;
+            Messenger.Default.Register<FoundLocationsMessage>(this, (msg) => {
+                this.Locations.Clear();
+
+                foreach (LocationItem item in msg.LocationItems)
+                {
+                    this.Locations.Add(item);
+                }
             });
 
             this.LayoutRootList = new Dictionary<Type, Windows.UI.Xaml.Controls.Grid>();

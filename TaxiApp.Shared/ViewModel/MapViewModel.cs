@@ -42,7 +42,6 @@ namespace TaxiApp.ViewModel
 
         public MapViewModel()
         {
-            this.OrderModel = TaxiApp.Core.DataModel.ModelFactory.Instance.GetOrderModel();
 
             this.RouteChanged = new RouteChangeHandler(() =>
             {

@@ -6,7 +6,10 @@ using System.Threading.Tasks;
 
 using System.Collections.ObjectModel;
 
+using TaxiApp.Core.Repository;
+using TaxiApp.Core.Messages;
 using Windows.Devices.Geolocation;
+using GalaSoft.MvvmLight.Messaging;
 
 namespace TaxiApp.Core.DataModel.Order
 {
@@ -29,6 +32,9 @@ namespace TaxiApp.Core.DataModel.Order
 
         //public Windows.UI.Xaml.Controls.Primitives.Popup ServicePopup { get; set; }
         //public Windows.UI.Xaml.Controls.Primitives.Popup DateTimePopup { get; set; }
+
+        private OrderRepository _orderRepository = null;
+        private DriverRepository _driverRepository = null;
 
         public OrderModel(OrderRepository orderRepository, DriverRepository driverRepository)
         {
@@ -67,7 +73,7 @@ namespace TaxiApp.Core.DataModel.Order
                 });
                 
             Messenger.Default.Register<SelectOrderMessage>(this, (msg) => {
-                    this.Detailed(msg.Order);
+                    this.Detailed = msg.Order;
                 });
         }
 

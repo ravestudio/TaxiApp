@@ -63,8 +63,6 @@ namespace TaxiApp.ViewModel
         {
             this.ClickStarItem = new Command.ClickRatingStarCommand(this);
 
-            this.OrderModel = TaxiApp.Core.DataModel.ModelFactory.Instance.GetOrderModel();
-
             this._carRating = new List<RatingStar>();
             this._driverRating = new List<RatingStar>();
 

@@ -5,12 +5,17 @@ using System.Text;
 using System.Threading.Tasks;
 
 using Windows.Devices.Geolocation;
+using TaxiApp.Core.Managers;
+using TaxiApp.Core.Messages;
+
+using GalaSoft.MvvmLight.Command;
+using GalaSoft.MvvmLight.Messaging;
 
 namespace TaxiApp.Core.DataModel
 {
     public class SearchModel
     {
-        private TaxiApp.Core.Managers.LocationManager _locationMg = null;
+        private LocationManager _locationMg = null;
         private RelayCommand<string> searchCmd = null;
         private string _searchText = null;
 
@@ -24,7 +29,7 @@ namespace TaxiApp.Core.DataModel
         {
             get
             {
-                return this.locationMg.LocationReady;
+                return this._locationMg.LocationReady;
             }
         }
 
@@ -35,23 +40,23 @@ namespace TaxiApp.Core.DataModel
             this._locationMg = locationManager;
 
 
-            Task initTask = this.locationMg.InitCurrentLocation().ContinueWith((task) =>
+            Task initTask = this._locationMg.InitCurrentLocation().ContinueWith((task) =>
                 {
                     if (task.Exception == null)
                     {
                         Messenger.Default.Send<LocationChangedMessage>(new LocationChangedMessage() { 
                             Ready = _locationMg.LocationReady,
-                            Location = _locationMg.CurrentLocation
+                            Location = _locationMg.GetCurrentLocation()
                         });
                     }
 
                 });
             
             Messenger.Default.Register<SearchLocationMessage>(this, (msg) => {
-                    this.Search(text).ContinueWith((t) => {
+                    this.Search(msg.Text).ContinueWith((t) => {
                         IList<LocationItem> locationItems = t.Result;
-                        Messenger.Default.Send<FindedLocationsMessage>(new FindedLocationsMessage() { 
-                            locationItems = locationItems
+                        Messenger.Default.Send<FoundLocationsMessage>(new FoundLocationsMessage() { 
+                            LocationItems = locationItems
                         });
                     });
                 });
@@ -60,20 +65,21 @@ namespace TaxiApp.Core.DataModel
 
         public Task<IList<LocationItem>> Search(string text)
         {
-            TaskCompletitionSource<IList<LocationItem>> TCS = new TaskCompletitionSource<IList<LocationItem>>();
-            Task<Geopoint> task = this.locationMg.GetCurrentGeopoint();
-            task.ContinueWith((t) => {
+            TaskCompletionSource<IList<LocationItem>> TCS = new TaskCompletionSource<IList<LocationItem>>();
+            Task<Geopoint> task = this._locationMg.GetCurrentGeopoint();
+            task.ContinueWith((t) =>
+            {
                 IList<LocationItem> locations = new List<LocationItem>();
                 Geopoint hintPoint = t.Result;
-                
-                ILocation currentLocation = this.locationMg.GetCurrentLocation();
+
+                ILocation currentLocation = this._locationMg.GetCurrentLocation();
 
                 string town = currentLocation.Town;
 
-                string searchQuery = string.Format("{0} {1}", town, this.SearchText);
+                string searchQuery = string.Format("{0} {1}", town, text);
 
-                IList<ILocation> SearchResults = this.locationMg.GetLocations(hintPoint, searchQuery).Result;
-                
+                IList<ILocation> SearchResults = this._locationMg.GetLocations(hintPoint, searchQuery).Result;
+
                 if (SearchResults != null)
                 {
                     foreach (ILocation location in SearchResults)
@@ -82,7 +88,7 @@ namespace TaxiApp.Core.DataModel
                     }
                 }
                 TCS.SetResult(locations);
-            }
+            });
             return TCS.Task;
         }
     }

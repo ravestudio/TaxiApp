@@ -4,6 +4,6 @@ namespace TaxiApp.Core.Messages
 {
     public class DeleteOrderMessage
     {
-		  int OrderId { get; set; }
+		  public int OrderId { get; set; }
     }
 }

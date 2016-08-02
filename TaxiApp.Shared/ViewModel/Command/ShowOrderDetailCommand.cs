@@ -35,7 +35,7 @@ namespace TaxiApp.ViewModel.Command
 
             Core.Entities.Order order = editOrderViewModel.OrderList.SingleOrDefault(o => o.Selected == true);
 
-            TaxiApp.Core.DataModel.ModelFactory.Instance.GetOrderModel().Detailed = order;
+            //TaxiApp.Core.DataModel.ModelFactory.Instance.GetOrderModel().Detailed = order;
 
             Frame rootFrame = Window.Current.Content as Frame;
 

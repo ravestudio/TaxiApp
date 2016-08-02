@@ -11,24 +11,24 @@ namespace TaxiApp.Core.DataModel
         private Order.OrderModel orderModel = null;
         private SearchModel searchModel = null;
 
-        public Order.OrderModel GetOrderModel()
-        {
-            if (this.orderModel == null)
-            {
-                this.orderModel = new Order.OrderModel();
-            }
+        //public Order.OrderModel GetOrderModel()
+        //{
+        //    if (this.orderModel == null)
+        //    {
+        //        this.orderModel = new Order.OrderModel(new Repository.OrderRepository(new WebApiClient()), new Repository.DriverRepository(new WebApiClient()));
+        //    }
 
-            return this.orderModel;
-        }
+        //    return this.orderModel;
+        //}
 
-        public SearchModel GetSearchModel()
-        {
-            if (this.searchModel == null)
-            {
-                this.searchModel = new SearchModel();
-            }
+        //public SearchModel GetSearchModel()
+        //{
+        //    if (this.searchModel == null)
+        //    {
+        //        this.searchModel = new SearchModel();
+        //    }
 
-            return this.searchModel;
-        }
+        //    return this.searchModel;
+        //}
     }
 }
