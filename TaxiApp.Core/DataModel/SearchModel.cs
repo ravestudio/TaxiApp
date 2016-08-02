@@ -10,7 +10,7 @@ namespace TaxiApp.Core.DataModel
 {
     public class SearchModel
     {
-        private TaxiApp.Core.Managers.LocationManager locationMg = null;
+        private TaxiApp.Core.Managers.LocationManager _locationMg = null;
         private SearchCommand search_cmd = null;
         private string _searchText = null;
 
@@ -20,9 +20,6 @@ namespace TaxiApp.Core.DataModel
 
         //public Windows.UI.Core.CoreDispatcher Dispatcher { get; set; }
 
-        public delegate void LocationReadyDelegate(bool ready);
-        public LocationReadyDelegate LocationReadyChanged;
-
         public bool LocationReady
         {
             get
@@ -31,20 +28,23 @@ namespace TaxiApp.Core.DataModel
             }
         }
 
-        public SearchModel()
+        public SearchModel(LocationManager locationManager)
         {
             int thread = Environment.CurrentManagedThreadId;
 
             this.search_cmd = new SearchCommand(this);
 
-            this.locationMg = Managers.ManagerFactory.Instance.GetLocationManager();
+            this._locationMg = locationManager;
 
 
             Task initTask = this.locationMg.InitCurrentLocation().ContinueWith((task) =>
                 {
                     if (task.Exception == null)
                     {
-                        this.NotifyLocationReadyChanged();
+                        Messenger.Default.Send<LocationChangedMessage>(new LocationChangedMessage() { 
+                            Ready = _locationMg.LocationReady,
+                            Location = _locationMg.CurrentLocation
+                        });
                     }
 
                 });
@@ -112,15 +112,6 @@ namespace TaxiApp.Core.DataModel
                 {
                     this.Locations.Add(new LocationItem(location));
                 }
-            }
-        }
-
-        public void NotifyLocationReadyChanged()
-        {
-            if (LocationReadyChanged != null)
-            {
-                LocationReadyChanged(this.locationMg.LocationReady);
-
             }
         }
     }
