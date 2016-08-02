@@ -19,16 +19,16 @@ namespace TaxiApp.ViewModel
         public OrderModel OrderModel { get; set; }
         public SearchModel SearchModel { get; set; }
 
-        public Command.ClickOrderItemCommand ClickOrderItem { get; set; }
-        public Command.SelectPointLocationCommand SelectLocationItem { get; set; }
-        public Command.SelectServicesCommand SelectServicesCmd { get; set; }
-        public Command.CancelOrderCommand CancelOrderCmd { get; set; }
-        public Command.CreateOrderCommand CreateOrderCmd { get; set; }
-        public Command.ShowOrderDetailCommand ShowOrderDetailCmd { get; set; }
+        public RelayCommand<object> ClickOrderItem { get; set; }
+        public RelayCommand<object> SelectLocationItem { get; set; }
+        public RelayCommand SelectServicesCmd { get; set; }
+        public RelayCommand CancelOrderCmd { get; set; }
+        public RelayCommand CreateOrderCmd { get; set; }
+        public RelayCommand ShowOrderDetailCmd { get; set; }
         public Command.ShowMenuCommand ShowMenuCmd { get; set; }
         public Command.NavigateToOrderListCommand NavToOrderListCmd { get; set; }
         public Command.NavigateToMainPageCommand NavToMainPageCmd { get; set; }
-        public Command.SelectMyOrderCommand SelectMyOrderCmd { get; set; }
+        public RelayCommand<object> SelectMyOrderCmd { get; set; }
 
         public IDictionary<Type, Windows.UI.Xaml.Controls.Grid> LayoutRootList { get; set; }
 
@@ -113,16 +113,94 @@ namespace TaxiApp.ViewModel
             this.OrderModel = TaxiApp.Core.DataModel.ModelFactory.Instance.GetOrderModel();
             this.SearchModel = TaxiApp.Core.DataModel.ModelFactory.Instance.GetSearchModel();
 
-            this.ClickOrderItem = new Command.ClickOrderItemCommand(this);
-            this.SelectLocationItem = new Command.SelectPointLocationCommand(this);
-            this.SelectServicesCmd = new Command.SelectServicesCommand(this);
-            this.CancelOrderCmd = new Command.CancelOrderCommand(this);
-            this.CreateOrderCmd = new Command.CreateOrderCommand(this);
-            this.ShowOrderDetailCmd = new Command.ShowOrderDetailCommand(this);
+            this.ClickOrderItem = new RelayCommand((parameter) =>
+            {
+                Windows.UI.Xaml.Controls.ItemClickEventArgs e = (Windows.UI.Xaml.Controls.ItemClickEventArgs)parameter;
+                TaxiApp.Core.DataModel.Order.OrderItem orderItem = (TaxiApp.Core.DataModel.Order.OrderItem)e.ClickedItem;
+
+                this.Actions[orderItem.Cmd].Invoke(this, orderItem);
+            });
+            
+            this.SelectLocationItem = new RelayCommand((parameter) =>
+            {
+                Windows.UI.Xaml.Controls.ItemClickEventArgs e = (Windows.UI.Xaml.Controls.ItemClickEventArgs)parameter;
+                LocationItem location = (LocationItem)e.ClickedItem;
+                
+                Messenger.Default.Send<SelectLocationMessage>(new SelectLocationMessage() { 
+                  Location = location;
+                });
+                Frame rootFrame = Window.Current.Content as Frame;
+
+                this.UpdatePoints();
+                rootFrame.GoBack();
+            });
+            
+            this.SelectServicesCmd = new RelayCommand(() =>
+            {
+                this.SelectedServices =
+                this.ServicePicker.SelectedItems.Cast<Core.DataModel.Order.OrderOption>().ToList();
+            });
+            
+            this.CancelOrderCmd = new RelayCommand(() =>
+            {
+                Core.Entities.Order order = this.OrderList.SingleOrDefault(o => o.Selected == true);
+
+                var dlg = new Windows.UI.Popups.MessageDialog("Отменить заказ?");
+
+                dlg.Commands.Add(new Windows.UI.Popups.UICommand("Accept"));
+                dlg.Commands.Add(new Windows.UI.Popups.UICommand("Cancel"));
+
+                Task<Windows.UI.Popups.IUICommand> dlgTask = dlg.ShowAsync().AsTask();
+
+                dlgTask.ContinueWith((dialogResult) =>
+                {
+                    if (dialogResult.Result.Label == "Accept")
+                    {
+                        Messenger.Default.Send<DeleteOrderMessage>(new DeleteOrderMessage() { 
+                            OrderId = order.Id;
+                        });
+                    }
+                });
+            });
+            
+            this.CreateOrderCmd = new RelayCommand(() =>
+            {
+                TaxiApp.Core.Entities.Order order = this.GetEntity();
+                
+                Messenger.Default.Send<CreateOrderMessage>(new CreateOrderMessage() { 
+                  Order = order;
+                });
+                
+                this.LoadMyOrders();
+            });
+            
+            this.ShowOrderDetailCmd = new RelayCommand(() =>
+            {
+                Core.Entities.Order order = this.OrderList.SingleOrDefault(o => o.Selected == true);
+
+                Messenger.Default.Send<SelectOrderMessage>(new SelectOrderMessage() { 
+                  Order = order;
+                });
+
+                Frame rootFrame = Window.Current.Content as Frame;
+                rootFrame.Navigate(typeof(Views.OrderDetailPage));
+            });
+            
             this.ShowMenuCmd = new Command.ShowMenuCommand(this);
             this.NavToOrderListCmd = new Command.NavigateToOrderListCommand();
             this.NavToMainPageCmd = new Command.NavigateToMainPageCommand();
-            this.SelectMyOrderCmd = new Command.SelectMyOrderCommand();
+            
+            this.SelectMyOrderCmd = new RelayCommand((parameter) =>
+            {
+                Windows.UI.Xaml.Controls.ItemClickEventArgs e = (Windows.UI.Xaml.Controls.ItemClickEventArgs)parameter;
+                Core.Entities.Order SelectedOrder = (Core.Entities.Order)e.ClickedItem;
+                
+                foreach(Core.Entities.Order order in this.OrderList)
+                {
+                    order.Selected = false;
+                }
+                SelectedOrder.Selected = true;
+            });
 
             this.LayoutRootList = new Dictionary<Type, Windows.UI.Xaml.Controls.Grid>();
 
