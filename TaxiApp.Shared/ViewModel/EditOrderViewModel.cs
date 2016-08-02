@@ -30,6 +30,7 @@ namespace TaxiApp.ViewModel
         public Command.NavigateToMainPageCommand NavToMainPageCmd { get; set; }
         public RelayCommand<object> SelectMyOrderCmd { get; set; }
 
+        private RelayCommand<string> searchCmd {get; set; }
         public IDictionary<Type, Windows.UI.Xaml.Controls.Grid> LayoutRootList { get; set; }
 
         public bool MenuState { get; set; }
@@ -48,6 +49,7 @@ namespace TaxiApp.ViewModel
 
         public ObservableCollection<Core.Entities.Order> OrderList { get; set; }
 
+        public ObservableCollection<LocationItem> Locations { get; set; }
         private ObservableCollection<OrderItem> _orderItemList = null;
 
         public MapViewModel Map { get; set; }
@@ -103,10 +105,17 @@ namespace TaxiApp.ViewModel
 
             this.SelectedServices = new List<OrderOption>();
 
+            this.Locations = new ObservableCollection<LocationItem>();
             this.OrderList = new ObservableCollection<Core.Entities.Order>();
 
             this.OrderModel = TaxiApp.Core.DataModel.ModelFactory.Instance.GetOrderModel();
             this.SearchModel = TaxiApp.Core.DataModel.ModelFactory.Instance.GetSearchModel();
+            
+            this.searchCmd = new RelayCommand((text) => {
+                Messenger.Default.Send<SearchLocationMessage>(new SearchLocationMessage() { 
+                  Text = text
+                });
+            }, (text) => { return (text.Length > 5); });
 
             this.ClickOrderItem = new RelayCommand((parameter) =>
             {
@@ -208,6 +217,10 @@ namespace TaxiApp.ViewModel
             Messenger.Default.Register<LocationChangedMessage>(this, (msg) => {
                 this.LocationReady = msg.Ready;
                 this.NotifyPropertyChanged("LocationReady");
+            });
+            
+            Messenger.Default.Register<FindedLocationsMessage>(this, (msg) => {
+                this.Locations = msg.locationItems;
             });
 
             this.LayoutRootList = new Dictionary<Type, Windows.UI.Xaml.Controls.Grid>();
