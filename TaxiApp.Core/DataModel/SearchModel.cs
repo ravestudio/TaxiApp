@@ -11,7 +11,7 @@ namespace TaxiApp.Core.DataModel
     public class SearchModel
     {
         private TaxiApp.Core.Managers.LocationManager _locationMg = null;
-        private SearchCommand search_cmd = null;
+        private RelayCommand<string> searchCmd = null;
         private string _searchText = null;
 
         //private Object thisLock = new Object();
@@ -32,8 +32,6 @@ namespace TaxiApp.Core.DataModel
         {
             int thread = Environment.CurrentManagedThreadId;
 
-            this.search_cmd = new SearchCommand(this);
-
             this._locationMg = locationManager;
 
 
@@ -48,71 +46,44 @@ namespace TaxiApp.Core.DataModel
                     }
 
                 });
-
-            this._searchText = string.Empty;
-
-            this.Locations = new System.Collections.ObjectModel.ObservableCollection<LocationItem>();
+            
+            Messenger.Default.Register<SearchLocationMessage>(this, (msg) => {
+                    this.Search(text).ContinueWith((t) => {
+                        IList<LocationItem> locationItems = t.Result;
+                        Messenger.Default.Send<FindedLocationsMessage>(new FindedLocationsMessage() { 
+                            locationItems = locationItems
+                        });
+                    });
+                });
         }
 
-        public string SearchText {
-            get { return this._searchText; }
-            set
-            {
-                this._searchText = value;
 
-                if (this.SearchChanged.CanExecute(null))
-                {
-                    this.SearchChanged.Execute(null);
-                }
-                else
-                {
-                    this.Locations.Clear();
-                }
-            }
-        }
-
-        public SearchCommand SearchChanged { get { return this.search_cmd; } }
-
-        //public Windows.Services.Maps.MapLocationFinderResult SearchResults
-        //{
-        //    get;
-        //    set;
-        //}
-
-        public System.Collections.ObjectModel.ObservableCollection<LocationItem> Locations { get; set; }
-
-        public async void Search()
+        public Task<IList<LocationItem>> Search(string text)
         {
-            Geopoint hintPoint = await this.locationMg.GetCurrentGeopoint();
+            TaskCompletitionSource<IList<LocationItem>> TCS = new TaskCompletitionSource<IList<LocationItem>>();
+            Task<Geopoint> task = this.locationMg.GetCurrentGeopoint();
+            task.ContinueWith((t) => {
+                IList<LocationItem> locations = new List<LocationItem>();
+                Geopoint hintPoint = t.Result;
+                
+                ILocation currentLocation = this.locationMg.GetCurrentLocation();
 
-            ILocation currentLocation = this.locationMg.GetCurrentLocation();
+                string town = currentLocation.Town;
 
-            string town = currentLocation.Town;
+                string searchQuery = string.Format("{0} {1}", town, this.SearchText);
 
-            string searchQuery = string.Format("{0} {1}", town, this.SearchText);
-
-            IList<ILocation> SearchResults = await this.locationMg.GetLocations(hintPoint, searchQuery);
-
-            //lock (this.thisLock)
-            //{
-            //    this.FillLocations(SearchResults);
-
-            //}
-
-            this.FillLocations(SearchResults);
-        }
-
-        private void FillLocations(IList<ILocation> SearchResults)
-        {
-            this.Locations.Clear();
-
-            if (SearchResults != null)
-            {
-                foreach (ILocation location in SearchResults)
+                IList<ILocation> SearchResults = this.locationMg.GetLocations(hintPoint, searchQuery).Result;
+                
+                if (SearchResults != null)
                 {
-                    this.Locations.Add(new LocationItem(location));
+                    foreach (ILocation location in SearchResults)
+                    {
+                        locations.Add(new LocationItem(location));
+                    }
                 }
+                TCS.SetResult(locations);
             }
+            return TCS.Task;
         }
     }
 
@@ -147,35 +118,5 @@ namespace TaxiApp.Core.DataModel
         public bool Ready { get; set; }
 
     }
-
-    public class SearchCommand : System.Windows.Input.ICommand
-    {
-        private SearchModel _model = null;
-
-        public SearchCommand(SearchModel model)
-        {
-            this._model = model;
-        }
-
-        public bool CanExecute(object parameter)
-        {
-            bool res = false;
-            
-            if (this._model.SearchText.Length > 5)
-            {
-                res = true;
-            }
-
-            return res;
-        }
-
-        public event EventHandler CanExecuteChanged;
-
-        public void Execute(object parameter)
-        {
-            this._model.Search();
-        }
-    }
-
 
 }
