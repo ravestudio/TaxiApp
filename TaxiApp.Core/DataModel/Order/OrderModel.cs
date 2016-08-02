@@ -30,9 +30,10 @@ namespace TaxiApp.Core.DataModel.Order
         //public Windows.UI.Xaml.Controls.Primitives.Popup ServicePopup { get; set; }
         //public Windows.UI.Xaml.Controls.Primitives.Popup DateTimePopup { get; set; }
 
-        public OrderModel(OrderRepository orderRepository)
+        public OrderModel(OrderRepository orderRepository, DriverRepository driverRepository)
         {
             this._orderRepository = orderRepository;
+            this._driverRepository = driverRepository;
             
             socketMG = new Core.Socket.SocketManager(this.SocketClient);
 
@@ -270,11 +271,7 @@ namespace TaxiApp.Core.DataModel.Order
         {
             var tcs = new TaskCompletionSource<Entities.Driver>();
 
-            TaxiApp.Core.WebApiClient client = new TaxiApp.Core.WebApiClient();
-
-            TaxiApp.Core.Repository.DriverRepository driverRepository = new Core.Repository.DriverRepository(client);
-
-            driverRepository.GetById(DriverId).ContinueWith((task) =>
+            this._driverRepository.GetById(DriverId).ContinueWith((task) =>
                 {
                     tcs.SetResult(task.Result);
                 });
