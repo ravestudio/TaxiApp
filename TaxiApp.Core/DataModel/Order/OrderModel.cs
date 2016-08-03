@@ -64,13 +64,20 @@ namespace TaxiApp.Core.DataModel.Order
 
             SocketClient.OnMessage += SocketClient_OnMessage;
             
-            Messenger.Default.Register<CreateOrderMessage>(this, (msg) => {
-                    this.CreateOrder(msg.Order);
+            Messenger.Default.Register<CreateOrderMessage>(this, async (msg) => {
+                    string data = await this.CreateOrder(msg.Order);
                 });
                 
-            Messenger.Default.Register<DeleteOrderMessage>(this, (msg) => {
-                    this.DeleteOrder(msg.OrderId);
+            Messenger.Default.Register<DeleteOrderMessage>(this, async (msg) => {
+                    bool deleted = await _orderRepository.DeleteOrder(id);
+                    if (deleted)
+                    {
+                        Messenger.Default.Send<OrderDeletedMessage>(new OrderDeletedMessage() { 
+                            OrderId = id
+                        });
+                    }
                 });
+
                 
             Messenger.Default.Register<SelectOrderMessage>(this, (msg) => {
                     this.Detailed = msg.Order;
@@ -235,8 +242,10 @@ namespace TaxiApp.Core.DataModel.Order
         //    this.DateTimePopup.IsOpen = true;
         //}
 
-        public async void CreateOrder(TaxiApp.Core.Entities.Order order)
+        public Task<string> CreateOrder(TaxiApp.Core.Entities.Order order)
         {
+            var tcs = new TaskCompletionSource<string>();
+            
             TaxiApp.Core.Entities.IUser user = TaxiApp.Core.Session.Instance.GetUser();
 
             var postData = order.ConverToKeyValue();
@@ -247,31 +256,13 @@ namespace TaxiApp.Core.DataModel.Order
             postData.Add(new KeyValuePair<string, string>("token", user.token));
             postData.Add(new KeyValuePair<string, string>("idcompany", "1"));
 
-
-
             TaxiApp.Core.WebApiClient client = new TaxiApp.Core.WebApiClient();
 
             string url = "http://serv.cabswap.com/api/passenger_setorder/";
 
-            string data = await client.GetData(url, postData);
-
-
+            return client.GetData(url, postData);
         }
         
-        private void DeleteOrder(int id)
-        {
-            Task<bool> deleteTask = _orderRepository.DeleteOrder(id);
-
-            deleteTask.ContinueWith((res) =>
-            {
-                if (res.Result)
-                {
-                    Messenger.Default.Send<OrderDeletedMessage>(new OrderDeletedMessage() { 
-                        OrderId = id
-                    });
-                }
-            });
-        }
 
         public Task<Entities.Driver> GetDriver(int DriverId)
         {
