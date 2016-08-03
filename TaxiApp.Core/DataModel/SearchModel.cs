@@ -52,10 +52,10 @@ namespace TaxiApp.Core.DataModel
 
                 });
             
-            Messenger.Default.Register<SearchLocationMessage>(this, (msg) => {
-                    this.Search(msg.Text).ContinueWith((t) => {
-                        IList<LocationItem> locationItems = t.Result;
-                        Messenger.Default.Send<FoundLocationsMessage>(new FoundLocationsMessage() { 
+            Messenger.Default.Register<SearchLocationMessage>(this, async (msg) => {
+                    IList<LocationItem> locationItems = await this.Search(msg.Text);
+                    
+                    Messenger.Default.Send<FoundLocationsMessage>(new FoundLocationsMessage() { 
                             LocationItems = locationItems
                         });
                     });
