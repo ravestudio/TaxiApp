@@ -10,13 +10,39 @@ namespace TaxiApp.DataModel
     {
         public string PhoneNumber { get; set; }
         public string PIN { get; set; }
+        
+        private TaxiApp.Core.Repository.UserRepository _userRepository = null;
 
-        public LoginModel()
+        public LoginModel(TaxiApp.Core.Repository.UserRepository userRepository, SystemManager)
         {
+            this._userRepository = userRepository;
             this.PhoneNumber = string.Empty;
             this.PIN = string.Empty;
 
             this.ReadData();
+            
+             Messenger.Default.Register<RegisterUserMessage>(this, async (msg) => {
+                 string result = await this.RegisterUser(msg.PhoneNumber);
+                 
+                 if (result == "success")
+                 {
+                    Messenger.Default.Send<UserRegisteredMessage>(new UserRegisteredMessage());
+                 }
+             });
+             
+            Messenger.Default.Register<LoginUserMessage>(this, async (msg) => {
+                 string result = await this.Login(msg.PhoneNumber, msg.PIN);
+                 
+                 if (result == "success")
+                 {
+                    Messenger.Default.Send<UserAutorizedMessage>(new UserAutorizedMessage());
+                 }
+                 
+                 if (result == "fail")
+                 {
+                     Messenger.Default.Send<AutorizationErrorMessage>(new AutorizationErrorMessage());
+                 }
+             });
         }
 
         public void SaveNumber()
@@ -49,5 +75,48 @@ namespace TaxiApp.DataModel
         {
             Windows.Storage.ApplicationData.Current.LocalSettings.Values.Clear();
         }
+        
+        private Task<string> RegisterUser(string phoneNumber)
+        {
+            var tcs = new TaskCompletionSource<string>();
+            
+            userRepository.RegisterUser(model.PhoneNumber).ContinueWith(t =>
+                {
+                    model.SaveNumber();
+
+                    tcs.SetResult(task.Result);
+                });
+                
+            return tcs.Task;
+        }
+        
+        private Task<string> Login(string PhoneNumber, string PIN)
+        {
+            var tcs = new TaskCompletionSource<string>();
+            
+            string deviceId = _systemManager.GetDeviceId();
+            
+            var task = userRepository.GetUser(PhoneNumber, PIN, deviceId);
+            
+            task.ContinueWith(t =>
+            {
+                TaxiApp.Core.Session.Instance.SetUSer(t.Result);
+                
+                model.SavePIN();
+                
+                tcs.SetResult("success");
+            }, success);
+            
+            task.ContinueWith(t =>
+            {
+                model.ClearData();
+                
+                tcs.SetResult("fail");
+                
+            },fail);
+            
+            return tcs.Task;
+        }
+        
     }
 }
