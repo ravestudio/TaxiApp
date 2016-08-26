@@ -26,7 +26,7 @@ namespace TaxiApp.Views
     public sealed partial class AuthenticationPage : Page
     {
         private NavigationHelper navigationHelper;
-        private ViewModel.AuthenticationViewModel defaultViewModel = ViewModel.ViewModelFactory.Instance.GetViewAuthenticationModel();
+        //private ViewModel.AuthenticationViewModel defaultViewModel = ViewModel.ViewModelFactory.Instance.GetViewAuthenticationModel();
 
         public AuthenticationPage()
         {
@@ -36,7 +36,7 @@ namespace TaxiApp.Views
             this.navigationHelper.LoadState += this.NavigationHelper_LoadState;
             this.navigationHelper.SaveState += this.NavigationHelper_SaveState;
 
-            defaultViewModel.Page = this;
+            //defaultViewModel.Page = this;
         }
 
         /// <summary>
@@ -51,10 +51,10 @@ namespace TaxiApp.Views
         /// Получает модель представлений для данного объекта <see cref="Page"/>.
         /// Эту настройку можно изменить на модель строго типизированных представлений.
         /// </summary>
-        public ViewModel.AuthenticationViewModel DefaultViewModel
-        {
-            get { return this.defaultViewModel; }
-        }
+        //public ViewModel.AuthenticationViewModel DefaultViewModel
+        //{
+        //    get { return this.defaultViewModel; }
+        //}
 
         /// <summary>
         /// Заполняет страницу содержимым, передаваемым в процессе навигации.  Также предоставляется любое сохраненное состояние

@@ -6,7 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    DataContext="{Binding DefaultViewModel, RelativeSource={RelativeSource Self}}"
+    DataContext="{Binding AuthenticationViewModel, Source={StaticResource Locator}}"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Page.Transitions>
@@ -44,7 +44,7 @@
             <Grid HorizontalAlignment="Stretch" VerticalAlignment="Top">
                 <StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="0,150,0,10">
 
-                    <TextBox  Name="pin" Header="Введите проверочный код (СМС) или дождитесь СМС-сообщения" Text="{Binding LoginModel.PIN, Mode=TwoWay}" HorizontalAlignment="Center"  Margin="0,10,0,0" Width="234" />
+                    <TextBox  Name="pin" Header="Введите проверочный код (СМС) или дождитесь СМС-сообщения" Text="{Binding PIN, Mode=TwoWay}" HorizontalAlignment="Center"  Margin="0,10,0,0" Width="234" />
                     <Button Content="OK" Command="{Binding LoginCmd}" Margin="0,30,0,0" HorizontalAlignment="Center" Width="300"></Button>
                 </StackPanel>
             </Grid>

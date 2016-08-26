@@ -6,7 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    DataContext="{Binding DefaultViewModel, RelativeSource={RelativeSource Self}}"
+    DataContext="{Binding AuthenticationViewModel, Source={StaticResource Locator}}"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
     <Page.BottomAppBar>
         <CommandBar>
@@ -29,7 +29,7 @@
             <StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="0,70,0,10">
 
                 <!--<Image Source="ms-appx:///Assets/Vezzun_logo.png" Stretch="Fill"/>-->
-                <TextBox Name="phone" HorizontalAlignment="Center" Header="Для регистрации в системе введите номер телефона" Text="{Binding LoginModel.PhoneNumber, Mode=TwoWay}" Margin="0,40,0,0" Width="270"/>
+                <TextBox Name="phone" HorizontalAlignment="Center" Header="Для регистрации в системе введите номер телефона" Text="{Binding PhoneNumber, Mode=TwoWay}" Margin="0,40,0,0" Width="270"/>
 
             </StackPanel>
 
