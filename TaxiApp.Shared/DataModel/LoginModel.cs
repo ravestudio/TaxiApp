@@ -4,6 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using TaxiApp.Core.Messages;
+using TaxiApp.Core.Repository;
+using TaxiApp.Core.Managers;
+
+using GalaSoft.MvvmLight.Messaging;
+
 namespace TaxiApp.DataModel
 {
     public class LoginModel
@@ -11,11 +17,14 @@ namespace TaxiApp.DataModel
         public string PhoneNumber { get; set; }
         public string PIN { get; set; }
         
-        private TaxiApp.Core.Repository.UserRepository _userRepository = null;
+        private UserRepository _userRepository = null;
+        private SystemManager _systemManager = null;
 
-        public LoginModel(TaxiApp.Core.Repository.UserRepository userRepository, SystemManager)
+        public LoginModel(TaxiApp.Core.Repository.UserRepository userRepository, SystemManager systemManager)
         {
             this._userRepository = userRepository;
+            this._systemManager = systemManager;
+
             this.PhoneNumber = string.Empty;
             this.PIN = string.Empty;
 
@@ -80,11 +89,11 @@ namespace TaxiApp.DataModel
         {
             var tcs = new TaskCompletionSource<string>();
             
-            userRepository.RegisterUser(model.PhoneNumber).ContinueWith(t =>
+            this._userRepository.RegisterUser(phoneNumber).ContinueWith(t =>
                 {
-                    model.SaveNumber();
+                    SaveNumber();
 
-                    tcs.SetResult(task.Result);
+                    tcs.SetResult(t.Result);
                 });
                 
             return tcs.Task;
@@ -96,24 +105,24 @@ namespace TaxiApp.DataModel
             
             string deviceId = _systemManager.GetDeviceId();
             
-            var task = userRepository.GetUser(PhoneNumber, PIN, deviceId);
+            var task = this._userRepository.GetUser(PhoneNumber, PIN, deviceId);
             
             task.ContinueWith(t =>
             {
                 TaxiApp.Core.Session.Instance.SetUSer(t.Result);
                 
-                model.SavePIN();
+                SavePIN();
                 
                 tcs.SetResult("success");
-            }, success);
+            }, TaskContinuationOptions.OnlyOnRanToCompletion);
             
             task.ContinueWith(t =>
             {
-                model.ClearData();
+                ClearData();
                 
                 tcs.SetResult("fail");
                 
-            },fail);
+            }, TaskContinuationOptions.OnlyOnFaulted);
             
             return tcs.Task;
         }

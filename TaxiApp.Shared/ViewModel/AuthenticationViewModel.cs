@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TaxiApp.Core.Messages;
+
+using GalaSoft.MvvmLight.Messaging;
+using GalaSoft.MvvmLight.Command;
 
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;

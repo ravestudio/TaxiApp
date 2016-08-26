@@ -59,7 +59,6 @@ namespace TaxiApp.Core.DataModel
                             LocationItems = locationItems
                         });
                     });
-                });
         }
 
 

@@ -69,11 +69,11 @@ namespace TaxiApp.Core.DataModel.Order
                 });
                 
             Messenger.Default.Register<DeleteOrderMessage>(this, async (msg) => {
-                    bool deleted = await _orderRepository.DeleteOrder(id);
+                    bool deleted = await _orderRepository.DeleteOrder(msg.OrderId);
                     if (deleted)
                     {
                         Messenger.Default.Send<OrderDeletedMessage>(new OrderDeletedMessage() { 
-                            OrderId = id
+                            OrderId = msg.OrderId
                         });
                     }
                 });
