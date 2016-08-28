@@ -26,37 +26,28 @@ namespace TaxiApp.DataModel
             this.ReadData();
             
              Messenger.Default.Register<RegisterUserMessage>(this, async (msg) => {
-                 string result = await this.RegisterUser(msg.PhoneNumber);
+                 UserRegistrationResultMessage result = await this.RegisterUser(msg.PhoneNumber);
+
+                 Messenger.Default.Send<UserRegistrationResultMessage>(result);
                  
-                 if (result == "success")
-                 {
-                    Messenger.Default.Send<UserRegisteredMessage>(new UserRegisteredMessage());
-                 }
              });
              
             Messenger.Default.Register<LoginUserMessage>(this, async (msg) => {
-                 string result = await this.Login(msg.PhoneNumber, msg.PIN);
+                 UserAutorizationResultMessage result = await this.Login(msg.PhoneNumber, msg.PIN);
                  
-                 if (result == "success")
-                 {
-                    Messenger.Default.Send<UserAutorizedMessage>(new UserAutorizedMessage());
-                 }
-                 
-                 if (result == "fail")
-                 {
-                     Messenger.Default.Send<AutorizationErrorMessage>(new AutorizationErrorMessage());
-                 }
+                 Messenger.Default.Send<UserAutorizationResultMessage>(result);
+
              });
         }
 
-        public void SaveNumber()
+        public void SaveNumber(string phoneNumber)
         {
-            //Windows.Storage.ApplicationData.Current.LocalSettings.Values["PhoneNumber"] = this.PhoneNumber;
+            Windows.Storage.ApplicationData.Current.LocalSettings.Values["PhoneNumber"] = phoneNumber;
         }
 
-        public void SavePIN()
+        public void SavePIN(string PIN)
         {
-            //Windows.Storage.ApplicationData.Current.LocalSettings.Values["pin"] = this.PIN;
+            Windows.Storage.ApplicationData.Current.LocalSettings.Values["pin"] = PIN;
         }
 
         public void ReadData()
@@ -80,23 +71,32 @@ namespace TaxiApp.DataModel
             Windows.Storage.ApplicationData.Current.LocalSettings.Values.Clear();
         }
         
-        private Task<string> RegisterUser(string phoneNumber)
+        private Task<UserRegistrationResultMessage> RegisterUser(string phoneNumber)
         {
-            var tcs = new TaskCompletionSource<string>();
-            
-            this._userRepository.RegisterUser(phoneNumber).ContinueWith(t =>
-                {
-                    SaveNumber();
+            var tcs = new TaskCompletionSource<UserRegistrationResultMessage>();
 
-                    tcs.SetResult(t.Result);
-                });
-                
+            var task = this._userRepository.RegisterUser(phoneNumber);
+
+            task.ContinueWith(t =>
+            {
+                SaveNumber(phoneNumber);
+
+                tcs.SetResult( new UserRegistrationResultMessage() { Status = MessageStatus.Success });
+            }, TaskContinuationOptions.OnlyOnRanToCompletion);
+
+            task.ContinueWith(t =>
+            {
+
+                tcs.SetResult(new UserRegistrationResultMessage() { Status = MessageStatus.Faulted });
+
+            }, TaskContinuationOptions.OnlyOnFaulted);
+
             return tcs.Task;
         }
         
-        private Task<string> Login(string PhoneNumber, string PIN)
+        private Task<UserAutorizationResultMessage> Login(string PhoneNumber, string PIN)
         {
-            var tcs = new TaskCompletionSource<string>();
+            var tcs = new TaskCompletionSource<UserAutorizationResultMessage>();
             
             string deviceId = _systemManager.GetDeviceId();
             
@@ -106,16 +106,16 @@ namespace TaxiApp.DataModel
             {
                 TaxiApp.Core.Session.Instance.SetUSer(t.Result);
                 
-                SavePIN();
+                SavePIN(PIN);
                 
-                tcs.SetResult("success");
+                tcs.SetResult(new UserAutorizationResultMessage() { Status = MessageStatus.Success });
             }, TaskContinuationOptions.OnlyOnRanToCompletion);
             
             task.ContinueWith(t =>
             {
                 ClearData();
                 
-                tcs.SetResult("fail");
+                tcs.SetResult(new UserAutorizationResultMessage() { Status = MessageStatus.Faulted });
                 
             }, TaskContinuationOptions.OnlyOnFaulted);
             

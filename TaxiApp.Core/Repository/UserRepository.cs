@@ -12,8 +12,10 @@ namespace TaxiApp.Core.Repository
         {
         }
 
-        public async Task<string> RegisterUser(string PhoneNumber)
+        public Task<string> RegisterUser(string PhoneNumber)
         {
+            TaskCompletionSource<string> TCS = new TaskCompletionSource<string>();
+
             string url = string.Format("{0}{1}", this.ServerURL, "api/passenger_registration/");
 
             var postData = new List<KeyValuePair<string, string>>();
@@ -22,21 +24,34 @@ namespace TaxiApp.Core.Repository
             postData.Add(new KeyValuePair<string, string>("idcompany", "1"));
             postData.Add(new KeyValuePair<string, string>("licenseaccepted", "1"));
 
-            string data = string.Empty;
 
             object pin = Windows.Storage.ApplicationData.Current.LocalSettings.Values["pin"];
             if (pin != null)
             {
-                data = "ok";
+                TCS.SetResult("success");
             }
             else
             {
-                data = await this._apiClient.GetData(url, postData);
+                this._apiClient.GetData(url, postData).ContinueWith(t =>
+                {
+                    var resp = Windows.Data.Json.JsonValue.Parse(t.Result);
+
+                    int error = this.GetErrorInfo(resp);
+
+                    if (error != 0)
+                    {
+                        TCS.SetException(new Exception());
+                    }
+
+                    if (error == 0)
+                    {
+
+                        TCS.SetResult("success");
+                    }
+                });
             }
 
-            //data = await this._apiClient.GetData(url, postData);
-
-            return data;
+            return TCS.Task;
 
         }
 
@@ -94,8 +109,10 @@ namespace TaxiApp.Core.Repository
             return TCS.Task;
         }
 
-        public async Task<Entities.User> GetUser(string PhoneNumber, string PIN, string protector)
+        public Task<Entities.User> GetUser(string PhoneNumber, string PIN, string protector)
         {
+            TaskCompletionSource<Entities.User> TCS = new TaskCompletionSource<Entities.User>();
+
             string url = string.Format("{0}{1}", this.ServerURL, "api/passenger_auth/");
 
             var postData = new List<KeyValuePair<string, string>>();
@@ -111,22 +128,26 @@ namespace TaxiApp.Core.Repository
 
             int thread = Environment.CurrentManagedThreadId;
 
-            string data = await this._apiClient.GetData(url, postData);
-
-            thread = Environment.CurrentManagedThreadId;
-
-            var userValue =  Windows.Data.Json.JsonValue.Parse(data);
-
-            int error = this.GetErrorInfo(userValue);
-
-            if (error != 0)
+            this._apiClient.GetData(url, postData).ContinueWith(t =>
             {
-                throw new Exception();
-            }
+                thread = Environment.CurrentManagedThreadId;
 
-            TaxiApp.Core.Entities.User user = this.GetObject(userValue);
+                var userValue = Windows.Data.Json.JsonValue.Parse(t.Result);
 
-            return user;
+                int error = this.GetErrorInfo(userValue);
+
+                if (error != 0)
+                {
+                    TCS.SetException(new Exception());
+                }
+
+                if (error == 0)
+                {
+                    TCS.SetResult(this.GetObject(userValue));
+                }
+            });
+
+            return TCS.Task;
         }
     }
 }

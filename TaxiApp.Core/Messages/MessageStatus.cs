@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace TaxiApp.Core.Messages
 {
-    public class AutorizationErrorMessage
+    public enum MessageStatus
     {
+        Success,
+        Faulted
     }
 }

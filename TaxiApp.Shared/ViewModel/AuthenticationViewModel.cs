@@ -21,8 +21,39 @@ namespace TaxiApp.ViewModel
         public RelayCommand LoginCmd { get; set; }
         public RelayCommand RegisterCmd { get; set; }
 
+        private IDictionary<MessageStatus, Action> registrationActions = null;
+        private IDictionary<MessageStatus, Action> autorizationActions = null;
+
         public AuthenticationViewModel()
         {
+
+            this.registrationActions = new Dictionary<MessageStatus, Action>();
+            this.autorizationActions = new Dictionary<MessageStatus, Action>();
+
+            this.registrationActions.Add(MessageStatus.Success, () =>
+            {
+                Frame frame = Window.Current.Content as Frame;
+                frame.Navigate(typeof(Views.AuthenticationPage));
+            });
+
+            this.registrationActions.Add(MessageStatus.Faulted, () =>
+            {
+                var dlg = new Windows.UI.Popups.MessageDialog("Ошибка регистрации");
+                dlg.ShowAsync();
+            });
+
+            this.autorizationActions.Add(MessageStatus.Success, () =>
+            {
+                Frame frame = Window.Current.Content as Frame;
+                frame.Navigate(typeof(Views.EditUserProfilePage));
+            });
+
+            this.autorizationActions.Add(MessageStatus.Faulted, () =>
+            {
+                Frame frame = Window.Current.Content as Frame;
+                frame.Navigate(typeof(Views.RegistrationPage));
+            });
+
             this.LoginCmd = new RelayCommand(() =>
             {
                 Messenger.Default.Send<LoginUserMessage>(new LoginUserMessage() { 
@@ -38,20 +69,14 @@ namespace TaxiApp.ViewModel
                 });
             });
             
-            Messenger.Default.Register<UserRegisteredMessage>(this, (msg) => {
-                Frame frame = Window.Current.Content as Frame;
-                frame.Navigate(typeof(Views.AuthenticationPage));
+            Messenger.Default.Register<UserRegistrationResultMessage>(this, (msg) => {
+                this.registrationActions[msg.Status].Invoke();
             });
             
-            Messenger.Default.Register<UserAutorizedMessage>(this, (msg) => {
-                Frame frame = Window.Current.Content as Frame;
-                frame.Navigate(typeof(Views.EditUserProfilePage));
+            Messenger.Default.Register<UserAutorizationResultMessage>(this, (msg) => {
+                this.autorizationActions[msg.Status].Invoke();
             });
             
-            Messenger.Default.Register<AutorizationErrorMessage>(this, (msg) => {
-                Frame frame = Window.Current.Content as Frame;
-                frame.Navigate(typeof(Views.RegistrationPage));
-            });
         }
 
     }
