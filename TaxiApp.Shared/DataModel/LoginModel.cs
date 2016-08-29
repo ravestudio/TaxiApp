@@ -55,15 +55,22 @@ namespace TaxiApp.DataModel
             object phone = Windows.Storage.ApplicationData.Current.LocalSettings.Values["PhoneNumber"];
             object pin = Windows.Storage.ApplicationData.Current.LocalSettings.Values["pin"];
 
-            //if (phone != null)
-            //{
-            //    this.PhoneNumber = Windows.Storage.ApplicationData.Current.LocalSettings.Values["PhoneNumber"].ToString();
-            //}
+            ReadPhoneNumberResultMessage msg = new ReadPhoneNumberResultMessage();
 
-            //if (pin != null)
-            //{
-            //    this.PIN = Windows.Storage.ApplicationData.Current.LocalSettings.Values["pin"].ToString();
-            //}
+            if (phone != null)
+            {
+                msg.PhoneNumber = Windows.Storage.ApplicationData.Current.LocalSettings.Values["PhoneNumber"].ToString();
+            }
+
+            if (pin != null)
+            {
+                msg.PIN = Windows.Storage.ApplicationData.Current.LocalSettings.Values["pin"].ToString();
+            }
+
+            if (!(string.IsNullOrEmpty(msg.PhoneNumber) || string.IsNullOrEmpty(msg.PIN)))
+            {
+                Messenger.Default.Send<ReadPhoneNumberResultMessage>(msg);
+            }
         }
 
         public void ClearData()

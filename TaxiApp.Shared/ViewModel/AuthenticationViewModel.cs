@@ -76,6 +76,12 @@ namespace TaxiApp.ViewModel
             Messenger.Default.Register<UserAutorizationResultMessage>(this, (msg) => {
                 this.autorizationActions[msg.Status].Invoke();
             });
+
+            Messenger.Default.Register<ReadPhoneNumberResultMessage>(this, (msg) =>
+            {
+                this.PhoneNumber = msg.PhoneNumber;
+                this.PIN = msg.PIN;
+            });
             
         }
 

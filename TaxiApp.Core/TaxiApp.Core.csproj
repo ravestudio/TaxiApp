@@ -109,6 +109,7 @@
     <Compile Include="Messages\LoginUserMessage.cs" />
     <Compile Include="Messages\MessageStatus.cs" />
     <Compile Include="Messages\OrderDeletedMessage.cs" />
+    <Compile Include="Messages\ReadPhoneNumberResultMessage.cs" />
     <Compile Include="Messages\RegisterUserMessage.cs" />
     <Compile Include="Messages\SearchLocationMessage.cs" />
     <Compile Include="Messages\SelectLocationMessage.cs" />
