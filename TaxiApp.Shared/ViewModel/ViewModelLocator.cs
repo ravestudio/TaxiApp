@@ -35,6 +35,8 @@ namespace TaxiApp.ViewModel
 
             SimpleIoc.Default.Register<AuthenticationViewModel>();
             SimpleIoc.Default.Register<EditOrderViewModel>();
+
+            
             
         }
 

@@ -15,7 +15,6 @@
     x:Class="TaxiApp.Views.MainPage"
     mc:Ignorable="d"
     DataContext="{Binding EditOrderViewModel, Source={StaticResource Locator}}"
-    d:DataContext="{d:DesignInstance IsDesignTimeCreatable=True, Type=controller:EditOrderViewModel}"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
 
     

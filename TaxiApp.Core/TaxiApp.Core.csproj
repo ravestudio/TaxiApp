@@ -99,6 +99,7 @@
     <Compile Include="IRoute.cs" />
     <Compile Include="Managers\ILocationService.cs" />
     <Compile Include="Managers\IMap.cs" />
+    <Compile Include="Managers\IMenu.cs" />
     <Compile Include="Managers\LocationManager.cs" />
     <Compile Include="Managers\ManagerFactory.cs" />
     <Compile Include="Managers\MapPainter.cs" />

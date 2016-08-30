@@ -99,7 +99,7 @@ namespace TaxiApp.ViewModel
             }
         }
 
-        public EditOrderViewModel()
+        public EditOrderViewModel(TaxiApp.Core.Managers.IMenu menu)
         {
             this.Map = new MapViewModel();
             this.PriceInfo = new OrderPriceInfo();

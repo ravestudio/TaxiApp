@@ -16,10 +16,10 @@ namespace TaxiApp.ViewModel
 
         public EditOrderViewModel GetViewOrderModel()
         {
-            if (this.viewOrderModel == null)
-            {
-                this.viewOrderModel = new EditOrderViewModel();
-            }
+            //if (this.viewOrderModel == null)
+            //{
+            //    this.viewOrderModel = new EditOrderViewModel();
+            //}
 
             return this.viewOrderModel;
         }

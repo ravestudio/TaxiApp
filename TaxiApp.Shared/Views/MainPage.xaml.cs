@@ -19,6 +19,7 @@ using Windows.UI.Xaml.Media.Animation;
 
 using TaxiApp.Core.Messages;
 using GalaSoft.MvvmLight.Messaging;
+using GalaSoft.MvvmLight.Ioc;
 
 // Документацию по шаблону элемента "Основная страница" см. по адресу http://go.microsoft.com/fwlink/?LinkID=390556
 
@@ -31,23 +32,19 @@ namespace TaxiApp.Views
     {
         private NavigationHelper navigationHelper;
 
-        private TaxiApp.ViewModel.EditOrderViewModel editOrderViewModel = ViewModel.ViewModelFactory.Instance.GetViewOrderModel();
+        //private TaxiApp.ViewModel.EditOrderViewModel editOrderViewModel = ViewModel.ViewModelFactory.Instance.GetViewOrderModel();
 
         public MainPage()
         {
             this.InitializeComponent();
 
-            editOrderViewModel.Init(this);
             //editOrderViewModel.Pivot = this.pivot;
 
             this.navigationHelper = new NavigationHelper(this);
             this.navigationHelper.LoadState += this.NavigationHelper_LoadState;
             this.navigationHelper.SaveState += this.NavigationHelper_SaveState;
 
-            Messenger.Default.Register<OpenedMenuMessage>(this, (msg) => {
-
-                this.panel_splitter.
-            });
+            //SimpleIoc.Default.Register<TaxiApp.Core.Managers.IMenu, TaxiApp.Core.u>();
         }
 
         /// <summary>
@@ -58,14 +55,6 @@ namespace TaxiApp.Views
             get { return this.navigationHelper; }
         }
 
-        /// <summary>
-        /// Получает модель представлений для данного объекта <see cref="Page"/>.
-        /// Эту настройку можно изменить на модель строго типизированных представлений.
-        /// </summary>
-        public TaxiApp.ViewModel.EditOrderViewModel OrderViewModel
-        {
-            get { return this.editOrderViewModel; }
-        }
 
         /// <summary>
         /// Заполняет страницу содержимым, передаваемым в процессе навигации.  Также предоставляется любое сохраненное состояние
