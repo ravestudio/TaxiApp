@@ -32,6 +32,7 @@ namespace TaxiApp.ViewModel
         public Command.NavigateToOrderListCommand NavToOrderListCmd { get; set; }
         public Command.NavigateToMainPageCommand NavToMainPageCmd { get; set; }
         public RelayCommand<object> SelectMyOrderCmd { get; set; }
+        public RelayCommand clickMenuBtn { get; set; }
 
         private RelayCommand<string> searchCmd {get; set; }
         public IDictionary<Type, Windows.UI.Xaml.Controls.Grid> LayoutRootList { get; set; }
@@ -40,10 +41,10 @@ namespace TaxiApp.ViewModel
 
         public IList<OrderOption> SelectedServices = null;
 
-        public ListPickerFlyout ServicePicker { get; set; }
-        public ListPickerFlyout CarPicker { get; set; }
-        public DatePickerFlyout DatePicker { get; set; }
-        public TimePickerFlyout TimePicker { get; set; }
+        //public ListPickerFlyout ServicePicker { get; set; }
+        //public ListPickerFlyout CarPicker { get; set; }
+        //public DatePickerFlyout DatePicker { get; set; }
+        //public TimePickerFlyout TimePicker { get; set; }
 
         public OrderPriceInfo PriceInfo { get; set; }
         public bool LocationReady { get; set; }
@@ -141,8 +142,8 @@ namespace TaxiApp.ViewModel
             
             this.SelectServicesCmd = new RelayCommand(() =>
             {
-                this.SelectedServices =
-                this.ServicePicker.SelectedItems.Cast<Core.DataModel.Order.OrderOption>().ToList();
+                //this.SelectedServices =
+                //this.ServicePicker.SelectedItems.Cast<Core.DataModel.Order.OrderOption>().ToList();
             });
             
             this.CancelOrderCmd = new RelayCommand(() =>
@@ -205,7 +206,12 @@ namespace TaxiApp.ViewModel
                 }
                 SelectedOrder.Selected = true;
             });
-            
+
+            this.clickMenuBtn = new RelayCommand(() =>
+            {
+                Messenger.Default.Send<OpenedMenuMessage>(new OpenedMenuMessage());
+            });
+
             Messenger.Default.Register<OrderDeletedMessage>(this, (msg) => {
                     var order = this.OrderList.Where(o => o.Id == msg.OrderId).SingleOrDefault();
                     this.Page.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
@@ -295,41 +301,41 @@ namespace TaxiApp.ViewModel
 
             this.Actions.Add("Services", (viewModel, item) =>
             {
-                viewModel.ServicePicker.ShowAt(viewModel.Page);
+                //viewModel.ServicePicker.ShowAt(viewModel.Page);
 
             });
 
             this.Actions.Add("Date", (viewModel, item) =>
             {
-                viewModel.DatePicker.ShowAt(viewModel.Page);
+                //viewModel.DatePicker.ShowAt(viewModel.Page);
             });
 
             this.Actions.Add("Now", (viewModel, item) =>
             {
-                viewModel.TimePicker.ShowAt(viewModel.Page);
+                //viewModel.TimePicker.ShowAt(viewModel.Page);
             });
 
             this.Actions.Add("Car", (viewModel, item) =>
             {
-                viewModel.CarPicker.ShowAt(viewModel.Page);
+                //viewModel.CarPicker.ShowAt(viewModel.Page);
             });
 
-            OrderModel.SocketOnMessage = new OrderModel.SocketHandler((resp) =>
-            {
-                if (resp.request == "neworderstatus")
-                {
-                    var order = this.OrderList.SingleOrDefault(o => o.Id == resp.idorder);
+            //OrderModel.SocketOnMessage = new OrderModel.SocketHandler((resp) =>
+            //{
+            //    if (resp.request == "neworderstatus")
+            //    {
+            //        var order = this.OrderList.SingleOrDefault(o => o.Id == resp.idorder);
 
-                    if (order!= null)
-                    {
+            //        if (order!= null)
+            //        {
 
-                        this.Page.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
-                        {
-                            order.Status = resp.orderstatus;
-                        });
-                    }
-                }
-            });
+            //            this.Page.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+            //            {
+            //                order.Status = resp.orderstatus;
+            //            });
+            //        }
+            //    }
+            //});
             
         }
 
@@ -347,10 +353,10 @@ namespace TaxiApp.ViewModel
 
             if (page is TaxiApp.Views.MainPage)
             {
-                this.ServicePicker = (ListPickerFlyout)page.Resources["ServiceFlyout"];
-                this.CarPicker = (ListPickerFlyout)page.Resources["CarFlyout"];
-                this.DatePicker = (DatePickerFlyout)page.Resources["DateFlyout"];
-                this.TimePicker = (TimePickerFlyout)page.Resources["TimeFlyout"];
+                //this.ServicePicker = (ListPickerFlyout)page.Resources["ServiceFlyout"];
+                //this.CarPicker = (ListPickerFlyout)page.Resources["CarFlyout"];
+                //this.DatePicker = (DatePickerFlyout)page.Resources["DateFlyout"];
+                //this.TimePicker = (TimePickerFlyout)page.Resources["TimeFlyout"];
 
                 
 
@@ -360,7 +366,7 @@ namespace TaxiApp.ViewModel
 
                 foreach(OrderOption service in this.SelectedServices)
                 {
-                    this.ServicePicker.SelectedItems.Add(service);
+                    //this.ServicePicker.SelectedItems.Add(service);
                 }
             }
 
@@ -477,21 +483,21 @@ namespace TaxiApp.ViewModel
             }
         }
 
-        public void ShowMenu()
-        {
-            Frame rootFrame = Window.Current.Content as Frame;
+        //public void ShowMenu()
+        //{
+        //    Frame rootFrame = Window.Current.Content as Frame;
 
-            if (!this.MenuState)
-            {
-                this.LayoutRootList[rootFrame.SourcePageType].Margin = new Windows.UI.Xaml.Thickness(0, 0, 0, 0);
-                this.MenuState = true;
-            }
-            else
-            {
-                this.LayoutRootList[rootFrame.SourcePageType].Margin = new Windows.UI.Xaml.Thickness(-160, 0, 0, 0);
-                this.MenuState = false;
-            }
-        }
+        //    if (!this.MenuState)
+        //    {
+        //        this.LayoutRootList[rootFrame.SourcePageType].Margin = new Windows.UI.Xaml.Thickness(0, 0, 0, 0);
+        //        this.MenuState = true;
+        //    }
+        //    else
+        //    {
+        //        this.LayoutRootList[rootFrame.SourcePageType].Margin = new Windows.UI.Xaml.Thickness(-160, 0, 0, 0);
+        //        this.MenuState = false;
+        //    }
+        //}
 
         public TaxiApp.Core.Entities.Order GetEntity()
         {

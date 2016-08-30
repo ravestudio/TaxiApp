@@ -19,7 +19,7 @@
                 </core:EventTriggerBehavior>
             </i:Interaction.Behaviors>
         </Image>
-        <TextBlock Text="VEZZUN" Style="{ThemeResource TaxiPageTitle}" Margin="35,39,0,12"/>
+        <TextBlock Text="VEZZUN" Margin="35,39,0,12"/>
     </StackPanel>
 
 </UserControl>

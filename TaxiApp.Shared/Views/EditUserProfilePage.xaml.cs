@@ -26,7 +26,7 @@ namespace TaxiApp.Views
     public sealed partial class EditUserProfilePage : Page
     {
         private NavigationHelper navigationHelper;
-        private ViewModel.EditUserProfileViewModel defaultViewModel = ViewModel.ViewModelFactory.Instance.GetEditUserProfileViewModel();
+        //private ViewModel.EditUserProfileViewModel defaultViewModel = ViewModel.ViewModelFactory.Instance.GetEditUserProfileViewModel();
 
         public EditUserProfilePage()
         {
@@ -36,7 +36,7 @@ namespace TaxiApp.Views
             this.navigationHelper.LoadState += this.NavigationHelper_LoadState;
             this.navigationHelper.SaveState += this.NavigationHelper_SaveState;
 
-            defaultViewModel.Init(this);
+            //defaultViewModel.Init(this);
         }
 
         /// <summary>
@@ -51,10 +51,10 @@ namespace TaxiApp.Views
         /// Gets the view model for this <see cref="Page"/>.
         /// This can be changed to a strongly typed view model.
         /// </summary>
-        public ViewModel.EditUserProfileViewModel DefaultViewModel
-        {
-            get { return this.defaultViewModel; }
-        }
+        //public ViewModel.EditUserProfileViewModel DefaultViewModel
+        //{
+        //    get { return this.defaultViewModel; }
+        //}
 
         /// <summary>
         /// Populates the page with content passed during navigation.  Any saved state is also

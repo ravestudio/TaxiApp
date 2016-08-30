@@ -34,6 +34,7 @@ namespace TaxiApp.ViewModel
             SimpleIoc.Default.Register<DataModel.LoginModel>(true);
 
             SimpleIoc.Default.Register<AuthenticationViewModel>();
+            SimpleIoc.Default.Register<EditOrderViewModel>();
             
         }
 
@@ -42,6 +43,14 @@ namespace TaxiApp.ViewModel
             get
             {
                 return ServiceLocator.Current.GetInstance<AuthenticationViewModel>();
+            }
+        }
+
+        public EditOrderViewModel EditOrderViewModel
+        {
+            get
+            {
+                return ServiceLocator.Current.GetInstance<EditOrderViewModel>();
             }
         }
 

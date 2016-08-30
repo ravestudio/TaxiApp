@@ -45,7 +45,7 @@ namespace TaxiApp.ViewModel
             this.autorizationActions.Add(MessageStatus.Success, () =>
             {
                 Frame frame = Window.Current.Content as Frame;
-                frame.Navigate(typeof(Views.EditUserProfilePage));
+                frame.Navigate(typeof(Views.MainPage));
             });
 
             this.autorizationActions.Add(MessageStatus.Faulted, () =>

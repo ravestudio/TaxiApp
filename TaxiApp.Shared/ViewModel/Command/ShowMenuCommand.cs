@@ -24,7 +24,7 @@ namespace TaxiApp.ViewModel.Command
 
         public void Execute(object parameter)
         {
-            _viewModel.ShowMenu();
+            //_viewModel.ShowMenu();
         }
     }
 }
