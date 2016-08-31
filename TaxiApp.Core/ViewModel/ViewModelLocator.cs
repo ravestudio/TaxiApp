@@ -9,7 +9,7 @@ using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Ioc;
 using Microsoft.Practices.ServiceLocation;
 
-namespace TaxiApp.ViewModel
+namespace TaxiApp.Core.ViewModel
 {
     public class ViewModelLocator
     {

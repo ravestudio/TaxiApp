@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using TaxiApp.Core.DataModel;
 using TaxiApp.Core.DataModel.Order;
 
-namespace TaxiApp.ViewModel
+namespace TaxiApp.Core.ViewModel
 {
     public class MapViewModel
     {

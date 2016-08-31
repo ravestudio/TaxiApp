@@ -11,7 +11,7 @@ using GalaSoft.MvvmLight.Command;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
-namespace TaxiApp.ViewModel
+namespace TaxiApp.Core.ViewModel
 {
     public class AuthenticationViewModel : ViewModel
     {
@@ -33,7 +33,7 @@ namespace TaxiApp.ViewModel
             this.registrationActions.Add(MessageStatus.Success, () =>
             {
                 Frame frame = Window.Current.Content as Frame;
-                frame.Navigate(typeof(Views.AuthenticationPage));
+                //frame.Navigate(typeof(Views.AuthenticationPage));
             });
 
             this.registrationActions.Add(MessageStatus.Faulted, () =>
@@ -45,13 +45,13 @@ namespace TaxiApp.ViewModel
             this.autorizationActions.Add(MessageStatus.Success, () =>
             {
                 Frame frame = Window.Current.Content as Frame;
-                frame.Navigate(typeof(Views.MainPage));
+                //frame.Navigate(typeof(Views.MainPage));
             });
 
             this.autorizationActions.Add(MessageStatus.Faulted, () =>
             {
                 Frame frame = Window.Current.Content as Frame;
-                frame.Navigate(typeof(Views.RegistrationPage));
+                //frame.Navigate(typeof(Views.RegistrationPage));
             });
 
             this.LoginCmd = new RelayCommand(() =>

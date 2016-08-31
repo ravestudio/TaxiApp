@@ -17,9 +17,9 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using Windows.UI.Xaml.Media.Animation;
 
-using TaxiApp.Core.Messages;
-using GalaSoft.MvvmLight.Messaging;
-using GalaSoft.MvvmLight.Ioc;
+//using TaxiApp.Core.Messages;
+//using GalaSoft.MvvmLight.Messaging;
+//using GalaSoft.MvvmLight.Ioc;
 
 // Документацию по шаблону элемента "Основная страница" см. по адресу http://go.microsoft.com/fwlink/?LinkID=390556
 

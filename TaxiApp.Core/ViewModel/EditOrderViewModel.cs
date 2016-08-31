@@ -15,7 +15,7 @@ using GalaSoft.MvvmLight.Command;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
-namespace TaxiApp.ViewModel
+namespace TaxiApp.Core.ViewModel
 {
     public class EditOrderViewModel : ViewModel
     {
@@ -59,7 +59,8 @@ namespace TaxiApp.ViewModel
         public MapViewModel Map { get; set; }
 
         private TaxiApp.Core.Entities.Order _order = null;
-        
+
+        private TaxiApp.Core.Managers.IMenu _menu = null;
 
         public ObservableCollection<OrderItem> OrderItemList
         {
@@ -101,6 +102,7 @@ namespace TaxiApp.ViewModel
 
         public EditOrderViewModel(TaxiApp.Core.Managers.IMenu menu)
         {
+            this._menu = menu;
             this.Map = new MapViewModel();
             this.PriceInfo = new OrderPriceInfo();
 
@@ -188,7 +190,7 @@ namespace TaxiApp.ViewModel
                 });
 
                 Frame rootFrame = Window.Current.Content as Frame;
-                rootFrame.Navigate(typeof(Views.OrderDetailPage));
+                //rootFrame.Navigate(typeof(Views.OrderDetailPage));
             });
             
             this.ShowMenuCmd = new Command.ShowMenuCommand(this);
@@ -209,7 +211,7 @@ namespace TaxiApp.ViewModel
 
             this.clickMenuBtn = new RelayCommand(() =>
             {
-                Messenger.Default.Send<OpenedMenuMessage>(new OpenedMenuMessage());
+                this._menu.Open();
             });
 
             Messenger.Default.Register<OrderDeletedMessage>(this, (msg) => {
@@ -296,7 +298,7 @@ namespace TaxiApp.ViewModel
                 Frame rootFrame = Window.Current.Content as Frame;
 
                 viewModel.SearchModel.SelectedPoint = orderPoint;
-                rootFrame.Navigate(typeof(Views.AddPointPage));
+                //rootFrame.Navigate(typeof(Views.AddPointPage));
             });
 
             this.Actions.Add("Services", (viewModel, item) =>
@@ -351,24 +353,24 @@ namespace TaxiApp.ViewModel
             }
             this.LayoutRootList.Add(page.GetType(), (Windows.UI.Xaml.Controls.Grid)page.FindName("LayoutRoot"));
 
-            if (page is TaxiApp.Views.MainPage)
-            {
-                //this.ServicePicker = (ListPickerFlyout)page.Resources["ServiceFlyout"];
-                //this.CarPicker = (ListPickerFlyout)page.Resources["CarFlyout"];
-                //this.DatePicker = (DatePickerFlyout)page.Resources["DateFlyout"];
-                //this.TimePicker = (TimePickerFlyout)page.Resources["TimeFlyout"];
+            //if (page is TaxiApp.Views.MainPage)
+            //{
+            //    //this.ServicePicker = (ListPickerFlyout)page.Resources["ServiceFlyout"];
+            //    //this.CarPicker = (ListPickerFlyout)page.Resources["CarFlyout"];
+            //    //this.DatePicker = (DatePickerFlyout)page.Resources["DateFlyout"];
+            //    //this.TimePicker = (TimePickerFlyout)page.Resources["TimeFlyout"];
 
                 
 
-                //this.LayoutRootList.Add(page.GetType(), (Windows.UI.Xaml.Controls.Grid)page.FindName("LayoutRoot"));
+            //    //this.LayoutRootList.Add(page.GetType(), (Windows.UI.Xaml.Controls.Grid)page.FindName("LayoutRoot"));
 
-                //this.LayoutRoot = (Windows.UI.Xaml.Controls.Grid)page.FindName("LayoutRoot");
+            //    //this.LayoutRoot = (Windows.UI.Xaml.Controls.Grid)page.FindName("LayoutRoot");
 
-                foreach(OrderOption service in this.SelectedServices)
-                {
-                    //this.ServicePicker.SelectedItems.Add(service);
-                }
-            }
+            //    foreach(OrderOption service in this.SelectedServices)
+            //    {
+            //        //this.ServicePicker.SelectedItems.Add(service);
+            //    }
+            //}
 
 
             //if (page is TaxiApp.Views.AddPointPage)

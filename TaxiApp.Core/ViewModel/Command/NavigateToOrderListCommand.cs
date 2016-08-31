@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
-namespace TaxiApp.ViewModel.Command
+namespace TaxiApp.Core.ViewModel.Command
 {
     public class NavigateToOrderListCommand : System.Windows.Input.ICommand
     {
@@ -22,7 +22,7 @@ namespace TaxiApp.ViewModel.Command
         public void Execute(object parameter)
         {
             Frame rootFrame = Window.Current.Content as Frame;
-            rootFrame.Navigate(typeof(Views.OrderListPage));
+            //rootFrame.Navigate(typeof(Views.OrderListPage));
         }
     }
 }

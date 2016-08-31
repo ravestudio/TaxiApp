@@ -17,26 +17,18 @@
     <Compile Include="$(MSBuildThisFileDirectory)DataModel\LoginModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DataModel\SampleDataSource.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DataModel\SocketModel.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)ViewModel\AuthenticationViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModel\Command\CancelOrderCommand.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModel\Command\ClickOrderItemCommand.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModel\Command\ClickRatingStarCommand.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModel\Command\CreateOrderCommand.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)ViewModel\Command\NavigateToMainPageCommand.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)ViewModel\Command\NavigateToOrderListCommand.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModel\Command\SelectMyOrderCommand.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModel\Command\SelectPointLocationCommand.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModel\Command\SelectServicesCommand.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)ViewModel\Command\ShowMenuCommand.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModel\Command\ShowOrderDetailCommand.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModel\DetailOrderViewModel.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)ViewModel\EditOrderViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModel\EditUserProfileViewModel.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)ViewModel\MapViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModel\SendRatingViewModel.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)ViewModel\ViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModel\ViewModelFactory.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)ViewModel\ViewModelLocator.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\AddPointPage.xaml.cs">
       <DependentUpon>AddPointPage.xaml</DependentUpon>
     </Compile>

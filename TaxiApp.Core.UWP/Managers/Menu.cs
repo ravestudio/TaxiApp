@@ -8,14 +8,16 @@ namespace TaxiApp.Core.UWP.Managers
 {
     public class Menu : TaxiApp.Core.Managers.IMenu
     {
-        public Menu(Windows.UI.Xaml.Controls.Page Page)
+        private Windows.UI.Xaml.Controls.SplitView _splitmenu;
+
+        public Menu(Windows.UI.Xaml.Controls.SplitView splitmenu)
         {
-            
+            this._splitmenu = splitmenu;
         }
 
         public void Open()
         {
-            bool opened = true;
+            this._splitmenu.IsPaneOpen = !this._splitmenu.IsPaneOpen;
         }
     }
 }

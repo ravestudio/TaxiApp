@@ -81,6 +81,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Common\DateTimeToDateTimeOffsetConverter.cs" />
+    <Compile Include="DataModel\LoginModel.cs" />
     <Compile Include="DataModel\ModelFactory.cs" />
     <Compile Include="DataModel\Order\OrderItem.cs" />
     <Compile Include="DataModel\Order\OrderItemTemplateSelector .cs" />
@@ -109,7 +110,6 @@
     <Compile Include="Messages\LocationChangedMessage.cs" />
     <Compile Include="Messages\LoginUserMessage.cs" />
     <Compile Include="Messages\MessageStatus.cs" />
-    <Compile Include="Messages\OpenedMenuMessage.cs" />
     <Compile Include="Messages\OrderDeletedMessage.cs" />
     <Compile Include="Messages\ReadPhoneNumberResultMessage.cs" />
     <Compile Include="Messages\RegisterUserMessage.cs" />
@@ -132,6 +132,14 @@
     <Compile Include="Socket\SocketManager.cs" />
     <Compile Include="Socket\SocketRequest.cs" />
     <Compile Include="Socket\SocketResponse.cs" />
+    <Compile Include="ViewModel\AuthenticationViewModel.cs" />
+    <Compile Include="ViewModel\Command\NavigateToMainPageCommand.cs" />
+    <Compile Include="ViewModel\Command\NavigateToOrderListCommand.cs" />
+    <Compile Include="ViewModel\Command\ShowMenuCommand.cs" />
+    <Compile Include="ViewModel\EditOrderViewModel.cs" />
+    <Compile Include="ViewModel\MapViewModel.cs" />
+    <Compile Include="ViewModel\ViewModel.cs" />
+    <Compile Include="ViewModel\ViewModelLocator.cs" />
     <Compile Include="WebApiClient.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -157,6 +165,7 @@
       <Private>True</Private>
     </Reference>
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '12.0' ">
     <VisualStudioVersion>12.0</VisualStudioVersion>
   </PropertyGroup>

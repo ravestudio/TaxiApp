@@ -140,10 +140,6 @@
     </SDKReference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\TaxiApp.Core.UWP\TaxiApp.Core.UWP.csproj">
-      <Project>{c7e2e890-f7e6-4b9a-98fe-524047dd5f6d}</Project>
-      <Name>TaxiApp.Core.UWP</Name>
-    </ProjectReference>
     <ProjectReference Include="..\TaxiApp.Core\TaxiApp.Core.csproj">
       <Project>{83ff1520-2c7b-4b54-9ab4-12639f2403f2}</Project>
       <Name>TaxiApp.Core</Name>

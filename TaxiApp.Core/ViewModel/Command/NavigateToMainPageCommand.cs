@@ -4,17 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TaxiApp.ViewModel.Command
+using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
+
+namespace TaxiApp.Core.ViewModel.Command
 {
-    public class ShowMenuCommand : System.Windows.Input.ICommand
+    public class NavigateToMainPageCommand : System.Windows.Input.ICommand
     {
-        private EditOrderViewModel _viewModel = null;
-
-        public ShowMenuCommand(EditOrderViewModel viewModel)
-        {
-            this._viewModel = viewModel;
-        }
-
         public bool CanExecute(object parameter)
         {
             return true;
@@ -24,7 +20,8 @@ namespace TaxiApp.ViewModel.Command
 
         public void Execute(object parameter)
         {
-            //_viewModel.ShowMenu();
+            Frame rootFrame = Window.Current.Content as Frame;
+            //rootFrame.Navigate(typeof(Views.MainPage));
         }
     }
 }
