@@ -13,7 +13,7 @@ using Windows.UI.Xaml.Controls;
 
 namespace TaxiApp.Core.ViewModel
 {
-    public class AuthenticationViewModel : ViewModel
+    public class AuthenticationViewModel : TaxiViewModel
     {
         public string PhoneNumber { get; set; }
         public string PIN { get; set; }

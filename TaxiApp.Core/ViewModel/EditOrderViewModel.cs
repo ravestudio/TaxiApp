@@ -17,7 +17,7 @@ using Windows.UI.Xaml.Controls;
 
 namespace TaxiApp.Core.ViewModel
 {
-    public class EditOrderViewModel : ViewModel
+    public class EditOrderViewModel : TaxiViewModel
     {
         public OrderModel OrderModel { get; set; }
         public SearchModel SearchModel { get; set; }

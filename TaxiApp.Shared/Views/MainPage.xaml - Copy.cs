@@ -15,6 +15,11 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using Windows.UI.Xaml.Media.Animation;
+
+//using TaxiApp.Core.Messages;
+//using GalaSoft.MvvmLight.Messaging;
+//using GalaSoft.MvvmLight.Ioc;
 
 // Документацию по шаблону элемента "Основная страница" см. по адресу http://go.microsoft.com/fwlink/?LinkID=390556
 
@@ -23,23 +28,23 @@ namespace TaxiApp.Views
     /// <summary>
     /// Пустая страница, которую можно использовать саму по себе или для перехода внутри фрейма.
     /// </summary>
-    public sealed partial class AddPointPage : Page
+    public sealed partial class MainPage : Page
     {
         private NavigationHelper navigationHelper;
-        //private TaxiApp.ViewModel.EditOrderViewModel viewOrderModel = ViewModel.ViewModelFactory.Instance.GetViewOrderModel();
 
-        public AddPointPage()
+        //private TaxiApp.ViewModel.EditOrderViewModel editOrderViewModel = ViewModel.ViewModelFactory.Instance.GetViewOrderModel();
+
+        public MainPage()
         {
             this.InitializeComponent();
 
-            //viewOrderModel.Init(this);
-
-            //this.viewOrderModel.Map.RouteMapControl = this.RouteMapControl;
+            //editOrderViewModel.Pivot = this.pivot;
 
             this.navigationHelper = new NavigationHelper(this);
             this.navigationHelper.LoadState += this.NavigationHelper_LoadState;
             this.navigationHelper.SaveState += this.NavigationHelper_SaveState;
 
+            //SimpleIoc.Default.Register<TaxiApp.Core.Managers.IMenu, TaxiApp.Core.u>();
         }
 
         /// <summary>
@@ -50,14 +55,6 @@ namespace TaxiApp.Views
             get { return this.navigationHelper; }
         }
 
-        /// <summary>
-        /// Получает модель представлений для данного объекта <see cref="Page"/>.
-        /// Эту настройку можно изменить на модель строго типизированных представлений.
-        /// </summary>
-        //public TaxiApp.ViewModel.EditOrderViewModel OrderViewModel
-        //{
-        //    get { return this.viewOrderModel; }
-        //}
 
         /// <summary>
         /// Заполняет страницу содержимым, передаваемым в процессе навигации.  Также предоставляется любое сохраненное состояние
@@ -72,7 +69,7 @@ namespace TaxiApp.Views
         /// сеанса.  Это состояние будет равно NULL при первом посещении страницы.</param>
         private void NavigationHelper_LoadState(object sender, LoadStateEventArgs e)
         {
-            //this.DefaultViewModel["searchModel"] = new TaxiApp.Core.DataModel.SearchModel();
+            //this.editOrderViewModel.LoadMyOrders();
         }
 
         /// <summary>
@@ -104,16 +101,6 @@ namespace TaxiApp.Views
         /// событий, которые не могут отменить запрос навигации.</param>
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            //this.OrderViewModel.OrderModel.ShowMyPossitionAsync().
-            //    ContinueWith(
-            //    t =>
-            //    {
-            //        string status = "showed";
-            //    });
-
-            //this.viewOrderModel.OrderModel.ShowRoute(viewOrderModel.Map.MapRoute);
-
-
             this.navigationHelper.OnNavigatedTo(e);
         }
 
@@ -124,23 +111,71 @@ namespace TaxiApp.Views
 
         #endregion
 
-        private void ListView_ItemClick(object sender, ItemClickEventArgs e)
+        private void SocketPgBtn_Click(object sender, RoutedEventArgs e)
         {
-            ListView view = (ListView)sender;
-
-            var obj = view.SelectedItems;
+            //this.Frame.Navigate(typeof(SocketPage)); 
         }
 
-        private void ListView_Tapped(object sender, TappedRoutedEventArgs e)
-        {
-            ListView view = (ListView)sender;
+        private bool _triggerCompleted;
+        private const double SideMenuCollapsedLeft = 0;
+        private const double SideMenuExpandedLeft = 300;
 
-            var obj = view.SelectedItems[0];
+        private void Sidebar_ManipulationDelta(object sender, ManipulationDeltaRoutedEventArgs e)
+        {
+            //_triggerCompleted = true;
+
+            //double finalLeft = Canvas.GetLeft(Sidebar) + e.Delta.Translation.X;
+            //if (finalLeft > 300 || finalLeft < 0)
+            //    return;
+
+            //Canvas.SetLeft(Sidebar, finalLeft);
+
+            //if (e.IsInertial && e.Velocities.Linear.X > 1)
+            //{
+            //    _triggerCompleted = false;
+            //    e.Complete();
+            //    MoveLeft(SideMenuExpandedLeft);
+            //}
+
+            //if (e.IsInertial && e.Velocities.Linear.X < -1)
+            //{
+            //    _triggerCompleted = false;
+            //    e.Complete();
+            //    MoveLeft(SideMenuCollapsedLeft);
+            //}
+
+            //if (e.IsInertial && Math.Abs(e.Velocities.Linear.X) <= 1)
+            //    e.Complete();
         }
 
-        private void RouteMapControl_MapTapped(Windows.UI.Xaml.Controls.Maps.MapControl sender, Windows.UI.Xaml.Controls.Maps.MapInputEventArgs args)
+        private void Sidebar_ManipulationCompleted(object sender, ManipulationCompletedRoutedEventArgs e)
         {
-            int i = 0;
+            //if (_triggerCompleted == false)
+            //    return;
+
+            //double finalLeft = Canvas.GetLeft(Sidebar);
+
+            //if (finalLeft > 170)
+            //    MoveLeft(SideMenuExpandedLeft);
+            //else
+            //    MoveLeft(SideMenuCollapsedLeft);
         }
+
+        private void MoveLeft(double left)
+        {
+            //double finalLeft = Canvas.GetLeft(Sidebar);
+
+            //Storyboard moveAnivation = ((Storyboard)RootCanvas.Resources["MoveAnimation"]);
+            //DoubleAnimation direction = ((DoubleAnimation)((Storyboard)RootCanvas.Resources["MoveAnimation"]).Children[0]);
+
+            //direction.From = finalLeft;
+
+            //moveAnivation.SkipToFill();
+
+            //direction.To = left;
+
+            //moveAnivation.Begin();
+        }
+
     }
 }

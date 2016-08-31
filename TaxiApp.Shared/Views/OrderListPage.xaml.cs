@@ -27,13 +27,13 @@ namespace TaxiApp.Views
     {
         private NavigationHelper navigationHelper;
 
-        private TaxiApp.ViewModel.EditOrderViewModel editOrderViewModel = ViewModel.ViewModelFactory.Instance.GetViewOrderModel();
+        //private TaxiApp.ViewModel.EditOrderViewModel editOrderViewModel = ViewModel.ViewModelFactory.Instance.GetViewOrderModel();
 
         public OrderListPage()
         {
             this.InitializeComponent();
 
-            editOrderViewModel.Init(this);
+            //editOrderViewModel.Init(this);
 
             this.navigationHelper = new NavigationHelper(this);
             this.navigationHelper.LoadState += this.NavigationHelper_LoadState;
@@ -52,10 +52,10 @@ namespace TaxiApp.Views
         /// Gets the view model for this <see cref="Page"/>.
         /// This can be changed to a strongly typed view model.
         /// </summary>
-        public TaxiApp.ViewModel.EditOrderViewModel OrderViewModel
-        {
-            get { return this.editOrderViewModel; }
-        }
+        //public TaxiApp.ViewModel.EditOrderViewModel OrderViewModel
+        //{
+        //    get { return this.editOrderViewModel; }
+        //}
 
         /// <summary>
         /// Populates the page with content passed during navigation.  Any saved state is also
@@ -70,7 +70,7 @@ namespace TaxiApp.Views
         /// session.  The state will be null the first time a page is visited.</param>
         private void NavigationHelper_LoadState(object sender, LoadStateEventArgs e)
         {
-            this.editOrderViewModel.LoadMyOrders();
+            //this.editOrderViewModel.LoadMyOrders();
         }
 
         /// <summary>

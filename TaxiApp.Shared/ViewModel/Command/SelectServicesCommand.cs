@@ -8,12 +8,12 @@ namespace TaxiApp.ViewModel.Command
 {
     public class SelectServicesCommand : System.Windows.Input.ICommand
     {
-        private EditOrderViewModel _viewModel = null;
+        //private EditOrderViewModel _viewModel = null;
 
-        public SelectServicesCommand(EditOrderViewModel model)
-        {
-            this._viewModel = model;
-        }
+        //public SelectServicesCommand(EditOrderViewModel model)
+        //{
+        //    this._viewModel = model;
+        //}
 
         public bool CanExecute(object parameter)
         {

@@ -11,12 +11,12 @@ namespace TaxiApp.ViewModel.Command
 {
     public class ShowOrderDetailCommand : System.Windows.Input.ICommand
     {
-        private EditOrderViewModel _viewModel = null;
+        //private EditOrderViewModel _viewModel = null;
 
-        public ShowOrderDetailCommand(EditOrderViewModel viewModel)
-        {
-            this._viewModel = viewModel;
-        }
+        //public ShowOrderDetailCommand(EditOrderViewModel viewModel)
+        //{
+        //    this._viewModel = viewModel;
+        //}
 
         public bool CanExecute(object parameter)
         {
@@ -31,9 +31,9 @@ namespace TaxiApp.ViewModel.Command
 
             //Core.Entities.Order order = (Core.Entities.Order)e.ClickedItem;
 
-            TaxiApp.ViewModel.EditOrderViewModel editOrderViewModel = ViewModelFactory.Instance.GetViewOrderModel();
+            //TaxiApp.ViewModel.EditOrderViewModel editOrderViewModel = ViewModelFactory.Instance.GetViewOrderModel();
 
-            Core.Entities.Order order = editOrderViewModel.OrderList.SingleOrDefault(o => o.Selected == true);
+            //Core.Entities.Order order = editOrderViewModel.OrderList.SingleOrDefault(o => o.Selected == true);
 
             //TaxiApp.Core.DataModel.ModelFactory.Instance.GetOrderModel().Detailed = order;
 

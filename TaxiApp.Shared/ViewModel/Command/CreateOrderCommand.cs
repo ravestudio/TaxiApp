@@ -9,12 +9,12 @@ namespace TaxiApp.ViewModel.Command
     public class CreateOrderCommand : System.Windows.Input.ICommand
     {
 
-        private EditOrderViewModel _viewOrderModel = null;
+        //private EditOrderViewModel _viewOrderModel = null;
 
-        public CreateOrderCommand(EditOrderViewModel model)
-        {
-            this._viewOrderModel = model;
-        }
+        //public CreateOrderCommand(EditOrderViewModel model)
+        //{
+        //    this._viewOrderModel = model;
+        //}
 
 
         public bool CanExecute(object parameter)
@@ -26,13 +26,13 @@ namespace TaxiApp.ViewModel.Command
 
         public void Execute(object parameter)
         {
-            TaxiApp.Core.Entities.Order order = _viewOrderModel.GetEntity();
+            //TaxiApp.Core.Entities.Order order = _viewOrderModel.GetEntity();
 
-            _viewOrderModel.OrderModel.CreateOrder(order);
+            //_viewOrderModel.OrderModel.CreateOrder(order);
 
-            //_viewOrderModel.Pivot.SelectedIndex = 1;
+            ////_viewOrderModel.Pivot.SelectedIndex = 1;
 
-            _viewOrderModel.LoadMyOrders();
+            //_viewOrderModel.LoadMyOrders();
         }
     }
 }

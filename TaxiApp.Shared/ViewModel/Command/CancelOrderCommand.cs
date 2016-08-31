@@ -8,12 +8,12 @@ namespace TaxiApp.ViewModel.Command
 {
     public class CancelOrderCommand : System.Windows.Input.ICommand
     {
-        private EditOrderViewModel _viewOrderModel = null;
+        //private EditOrderViewModel _viewOrderModel = null;
 
-        public CancelOrderCommand(EditOrderViewModel model)
-        {
-            this._viewOrderModel = model;
-        }
+        //public CancelOrderCommand(EditOrderViewModel model)
+        //{
+        //    this._viewOrderModel = model;
+        //}
 
         public bool CanExecute(object parameter)
         {
@@ -26,24 +26,24 @@ namespace TaxiApp.ViewModel.Command
         {
             //TaxiApp.Core.Entities.Order order = (TaxiApp.Core.Entities.Order)parameter;
 
-            TaxiApp.ViewModel.EditOrderViewModel editOrderViewModel = ViewModelFactory.Instance.GetViewOrderModel();
+            //TaxiApp.ViewModel.EditOrderViewModel editOrderViewModel = ViewModelFactory.Instance.GetViewOrderModel();
 
-            Core.Entities.Order order = editOrderViewModel.OrderList.SingleOrDefault(o => o.Selected == true);
+            //Core.Entities.Order order = editOrderViewModel.OrderList.SingleOrDefault(o => o.Selected == true);
 
-            var dlg = new Windows.UI.Popups.MessageDialog("Отменить заказ?");
+            //var dlg = new Windows.UI.Popups.MessageDialog("Отменить заказ?");
 
-            dlg.Commands.Add(new Windows.UI.Popups.UICommand("Accept"));
-            dlg.Commands.Add(new Windows.UI.Popups.UICommand("Cancel"));
+            //dlg.Commands.Add(new Windows.UI.Popups.UICommand("Accept"));
+            //dlg.Commands.Add(new Windows.UI.Popups.UICommand("Cancel"));
 
-            Task<Windows.UI.Popups.IUICommand> dlgTask = dlg.ShowAsync().AsTask();
+            //Task<Windows.UI.Popups.IUICommand> dlgTask = dlg.ShowAsync().AsTask();
 
-            dlgTask.ContinueWith((dialogResult) =>
-                {
-                    if (dialogResult.Result.Label == "Accept")
-                    {
-                        Delete(order.Id);
-                    }
-                });
+            //dlgTask.ContinueWith((dialogResult) =>
+            //    {
+            //        if (dialogResult.Result.Label == "Accept")
+            //        {
+            //            Delete(order.Id);
+            //        }
+            //    });
 
 
         }
@@ -67,12 +67,12 @@ namespace TaxiApp.ViewModel.Command
 
         private void RemoveOrder(int id)
         {
-            var order = _viewOrderModel.OrderList.Where(o => o.Id == id).SingleOrDefault();
+            //var order = _viewOrderModel.OrderList.Where(o => o.Id == id).SingleOrDefault();
 
-            this._viewOrderModel.Page.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
-            {
-                _viewOrderModel.OrderList.Remove(order);
-            });
+            //this._viewOrderModel.Page.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+            //{
+            //    _viewOrderModel.OrderList.Remove(order);
+            //});
         }
     }
 }

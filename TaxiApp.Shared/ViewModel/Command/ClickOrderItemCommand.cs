@@ -8,12 +8,12 @@ namespace TaxiApp.ViewModel.Command
 {
     public class ClickOrderItemCommand : System.Windows.Input.ICommand
     {
-        private EditOrderViewModel _viewModel = null;
+        //private EditOrderViewModel _viewModel = null;
 
-        public ClickOrderItemCommand(EditOrderViewModel model)
-        {
-            this._viewModel = model;
-        }
+        //public ClickOrderItemCommand(EditOrderViewModel model)
+        //{
+        //    this._viewModel = model;
+        //}
         public bool CanExecute(object parameter)
         {
             return true;
@@ -27,7 +27,7 @@ namespace TaxiApp.ViewModel.Command
 
             TaxiApp.Core.DataModel.Order.OrderItem orderItem = (TaxiApp.Core.DataModel.Order.OrderItem)e.ClickedItem;
 
-            _viewModel.Actions[orderItem.Cmd].Invoke(_viewModel, orderItem);
+            //_viewModel.Actions[orderItem.Cmd].Invoke(_viewModel, orderItem);
         }
     }
 }

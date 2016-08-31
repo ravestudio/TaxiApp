@@ -17,17 +17,17 @@ namespace TaxiApp.ViewModel.Command
 
         public void Execute(object parameter)
         {
-            Windows.UI.Xaml.Controls.ItemClickEventArgs e = (Windows.UI.Xaml.Controls.ItemClickEventArgs)parameter;
+            //Windows.UI.Xaml.Controls.ItemClickEventArgs e = (Windows.UI.Xaml.Controls.ItemClickEventArgs)parameter;
 
-            Core.Entities.Order SelectedOrder = (Core.Entities.Order)e.ClickedItem;
+            //Core.Entities.Order SelectedOrder = (Core.Entities.Order)e.ClickedItem;
 
-            TaxiApp.ViewModel.EditOrderViewModel editOrderViewModel = ViewModelFactory.Instance.GetViewOrderModel();
-            foreach(Core.Entities.Order order in editOrderViewModel.OrderList)
-            {
-                order.Selected = false;
-            }
+            //TaxiApp.ViewModel.EditOrderViewModel editOrderViewModel = ViewModelFactory.Instance.GetViewOrderModel();
+            //foreach(Core.Entities.Order order in editOrderViewModel.OrderList)
+            //{
+            //    order.Selected = false;
+            //}
 
-            SelectedOrder.Selected = true;
+            //SelectedOrder.Selected = true;
 
         }
     }

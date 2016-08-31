@@ -2,9 +2,8 @@
   <Application.Resources>
     <ResourceDictionary>
       <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="ms-appx:///Assets/Themes/VezzunStyle.xaml">
-          <vm:ViewModelLocator x:Key="Locator" d:IsDataSource="True" xmlns:vm="using:TaxiApp.ViewModel" />
-        </ResourceDictionary>
+                <ResourceDictionary Source="ms-appx:///Assets/Themes/VezzunStyle.xaml">
+                </ResourceDictionary>
       </ResourceDictionary.MergedDictionaries>
     </ResourceDictionary>
   </Application.Resources>

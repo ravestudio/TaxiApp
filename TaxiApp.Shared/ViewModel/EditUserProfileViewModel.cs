@@ -4,12 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using TaxiApp.Core.ViewModel;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
 namespace TaxiApp.ViewModel
 {
-    public class EditUserProfileViewModel : ViewModel
+    public class EditUserProfileViewModel : TaxiViewModel
     {
         public TaxiApp.Core.DataModel.UserInfo UserInfo { get; set; }
 
@@ -71,7 +72,7 @@ namespace TaxiApp.ViewModel
 
                     Frame frame = viewModel.Page.Frame;
 
-                    frame.Navigate(typeof(Views.MainPage));
+                    //frame.Navigate(typeof(Views.MainPage));
                 });
             });
         }

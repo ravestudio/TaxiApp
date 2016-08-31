@@ -14,12 +14,12 @@ namespace TaxiApp.ViewModel.Command
 {
     public class SelectPointLocationCommand : System.Windows.Input.ICommand
     {
-        private EditOrderViewModel _viewModel = null;
+        //private EditOrderViewModel _viewModel = null;
 
-        public SelectPointLocationCommand(EditOrderViewModel model)
-        {
-            this._viewModel = model;
-        }
+        //public SelectPointLocationCommand(EditOrderViewModel model)
+        //{
+        //    this._viewModel = model;
+        //}
 
         public bool CanExecute(object parameter)
         {
@@ -30,17 +30,17 @@ namespace TaxiApp.ViewModel.Command
 
         public void Execute(object parameter)
         {
-            Windows.UI.Xaml.Controls.ItemClickEventArgs e = (Windows.UI.Xaml.Controls.ItemClickEventArgs)parameter;
+            //Windows.UI.Xaml.Controls.ItemClickEventArgs e = (Windows.UI.Xaml.Controls.ItemClickEventArgs)parameter;
 
-            LocationItem location = (LocationItem)e.ClickedItem;
+            //LocationItem location = (LocationItem)e.ClickedItem;
 
-            _viewModel.SearchModel.SelectedPoint.Location = location;
+            //_viewModel.SearchModel.SelectedPoint.Location = location;
 
-            Frame rootFrame = Window.Current.Content as Frame;
+            //Frame rootFrame = Window.Current.Content as Frame;
 
-            this._viewModel.UpdatePoints();
+            //this._viewModel.UpdatePoints();
 
-            rootFrame.GoBack();
+            //rootFrame.GoBack();
         }
     }
 }

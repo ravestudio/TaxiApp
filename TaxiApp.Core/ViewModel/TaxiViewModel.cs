@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TaxiApp.Core.ViewModel
 {
-    public class ViewModel : System.ComponentModel.INotifyPropertyChanged
+    public class TaxiViewModel : System.ComponentModel.INotifyPropertyChanged
     {
         public Windows.UI.Xaml.Controls.Page Page { get; set; }
 
