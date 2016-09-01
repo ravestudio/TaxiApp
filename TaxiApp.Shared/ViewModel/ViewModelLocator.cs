@@ -4,12 +4,14 @@ using System.Text;
 
 using TaxiApp.Core.Repository;
 using TaxiApp.Core.Managers;
+using TaxiApp.Core.ViewModel;
 
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Ioc;
+using GalaSoft.MvvmLight.Views;
 using Microsoft.Practices.ServiceLocation;
 
-namespace TaxiApp.Core.ViewModel
+namespace TaxiApp.ViewModel
 {
     public class ViewModelLocator
     {
@@ -36,8 +38,19 @@ namespace TaxiApp.Core.ViewModel
             SimpleIoc.Default.Register<AuthenticationViewModel>();
             SimpleIoc.Default.Register<EditOrderViewModel>();
 
-            
-            
+            SimpleIoc.Default.Register<INavigationService>(GetNavigationService);            
+
+        }
+
+        private static INavigationService GetNavigationService()
+        {
+            var navigationService = new NavigationService();
+
+            navigationService.Configure("Registration", typeof(Views.RegistrationPage));
+            navigationService.Configure("Authentication", typeof(Views.AuthenticationPage));
+            navigationService.Configure("Main", typeof(Views.MainPage));
+
+            return navigationService;
         }
 
         public AuthenticationViewModel AuthenticationViewModel

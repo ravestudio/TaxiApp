@@ -22,7 +22,7 @@
                         VerticalAlignment="Top"
                         HorizontalAlignment="Stretch">
 
-                    <Button FontFamily="Segoe MDL2 Assets" Content="&#xE700;" Background="Transparent" ></Button>
+                    <Button FontFamily="Segoe MDL2 Assets" Content="&#xE700;" Background="Transparent" Command="{Binding clickMenuBtn}"></Button>
 
                     <Button Content="My Orders" HorizontalContentAlignment="Left" Background="Transparent" HorizontalAlignment="Stretch"></Button>
                     <Button Content="Settings" HorizontalContentAlignment="Left" Background="Transparent" HorizontalAlignment="Stretch"></Button>

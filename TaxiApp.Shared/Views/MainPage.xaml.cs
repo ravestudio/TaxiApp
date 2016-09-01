@@ -13,6 +13,9 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
+using TaxiApp.Core.Managers;
+using GalaSoft.MvvmLight.Ioc;
+
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 
 namespace TaxiApp.Views
@@ -24,7 +27,15 @@ namespace TaxiApp.Views
     {
         public MainPage()
         {
+            var menu = new TaxiApp.Core.UWP.Managers.Menu();
+
+            SimpleIoc.Default.Register<IMenu>(() => { return menu; });
+
             this.InitializeComponent();
+
+            menu.Init(this.panel_splitter);
+
         }
+
     }
 }

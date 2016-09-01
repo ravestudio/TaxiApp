@@ -29,6 +29,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)ViewModel\EditUserProfileViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModel\SendRatingViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModel\ViewModelFactory.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModel\ViewModelLocator.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\AddPointPage.xaml.cs">
       <DependentUpon>AddPointPage.xaml</DependentUpon>
     </Compile>

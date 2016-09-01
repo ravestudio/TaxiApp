@@ -7,6 +7,7 @@ using TaxiApp.Core.Messages;
 
 using GalaSoft.MvvmLight.Messaging;
 using GalaSoft.MvvmLight.Command;
+using GalaSoft.MvvmLight.Views;
 
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -24,16 +25,19 @@ namespace TaxiApp.Core.ViewModel
         private IDictionary<MessageStatus, Action> registrationActions = null;
         private IDictionary<MessageStatus, Action> autorizationActions = null;
 
-        public AuthenticationViewModel()
+        private INavigationService _navigationService = null;
+
+        public AuthenticationViewModel(INavigationService NavigationService)
         {
+            this._navigationService = NavigationService;
 
             this.registrationActions = new Dictionary<MessageStatus, Action>();
             this.autorizationActions = new Dictionary<MessageStatus, Action>();
 
             this.registrationActions.Add(MessageStatus.Success, () =>
             {
-                Frame frame = Window.Current.Content as Frame;
-                //frame.Navigate(typeof(Views.AuthenticationPage));
+                this._navigationService.NavigateTo("Authentication");
+                
             });
 
             this.registrationActions.Add(MessageStatus.Faulted, () =>
@@ -44,14 +48,12 @@ namespace TaxiApp.Core.ViewModel
 
             this.autorizationActions.Add(MessageStatus.Success, () =>
             {
-                Frame frame = Window.Current.Content as Frame;
-                //frame.Navigate(typeof(Views.MainPage));
+                this._navigationService.NavigateTo("Main");
             });
 
             this.autorizationActions.Add(MessageStatus.Faulted, () =>
             {
-                Frame frame = Window.Current.Content as Frame;
-                //frame.Navigate(typeof(Views.RegistrationPage));
+                this._navigationService.NavigateTo("Registration");
             });
 
             this.LoginCmd = new RelayCommand(() =>

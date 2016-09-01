@@ -10,7 +10,7 @@ namespace TaxiApp.Core.UWP.Managers
     {
         private Windows.UI.Xaml.Controls.SplitView _splitmenu;
 
-        public Menu(Windows.UI.Xaml.Controls.SplitView splitmenu)
+        public void Init(Windows.UI.Xaml.Controls.SplitView splitmenu)
         {
             this._splitmenu = splitmenu;
         }
