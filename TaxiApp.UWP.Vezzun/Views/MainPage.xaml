@@ -6,8 +6,19 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    DataContext="{Binding EditOrderViewModel, Source={StaticResource Locator}}"
+    DataContext="{Binding MainViewModel, Source={StaticResource Locator}}"
+    
+    xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
+    xmlns:core="using:Microsoft.Xaml.Interactions.Core"
+    
     >
+
+    <interactivity:Interaction.Behaviors>
+        <core:EventTriggerBehavior EventName="DataContextChanged">
+            <core:InvokeCommandAction Command="{Binding ContextChangedCmd}" />
+        </core:EventTriggerBehavior>
+    </interactivity:Interaction.Behaviors>
+
 
     <SplitView
         IsPaneOpen="True"
@@ -22,7 +33,7 @@
                         VerticalAlignment="Top"
                         HorizontalAlignment="Stretch">
 
-                    <Button FontFamily="Segoe MDL2 Assets" Content="&#xE700;" Background="Transparent" Command="{Binding clickMenuBtn}"></Button>
+                    <Button FontFamily="Segoe MDL2 Assets" Content="&#xE700;" Background="Transparent" Command="{Binding ClickMenuCmd}"></Button>
 
                     <Button Content="My Orders" HorizontalContentAlignment="Left" Background="Transparent" HorizontalAlignment="Stretch"></Button>
                     <Button Content="Settings" HorizontalContentAlignment="Left" Background="Transparent" HorizontalAlignment="Stretch"></Button>
@@ -32,21 +43,12 @@
         </SplitView.Pane>
 
         <SplitView.Content>
-            <Grid>
 
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
-
-                <local:PageTitleControl Grid.Row="0"></local:PageTitleControl>
-
-                <Grid Grid.Row="1" x:Name="ContentRoot">
-
-                </Grid>
-            </Grid>
+            <Frame x:Name="mainFrame">
+            </Frame>
         </SplitView.Content>
-        
+
+
     </SplitView>
 
 </Page>

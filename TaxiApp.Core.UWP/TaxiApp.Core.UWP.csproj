@@ -113,6 +113,7 @@
     <Compile Include="Managers\Menu.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Route.cs" />
+    <Compile Include="ViewModel\NavigationFrameStrategy.cs" />
     <EmbeddedResource Include="Properties\TaxiApp.Core.UWP.rd.xml" />
   </ItemGroup>
   <ItemGroup>

@@ -37,17 +37,23 @@ namespace TaxiApp.ViewModel
 
             SimpleIoc.Default.Register<AuthenticationViewModel>();
             SimpleIoc.Default.Register<EditOrderViewModel>();
+            SimpleIoc.Default.Register<MainViewModel>();
 
+            SimpleIoc.Default.Register<IMenu, TaxiApp.Core.UWP.Managers.Menu>();
+            SimpleIoc.Default.Register<INavigationFrameStrategy, TaxiApp.Core.UWP.ViewModel.NavigationFrameStrategy>();
             SimpleIoc.Default.Register<INavigationService>(GetNavigationService);            
 
         }
 
         private static INavigationService GetNavigationService()
         {
-            var navigationService = new TaxiApp.Core.ViewModel.NavigationService();
+
+            INavigationFrameStrategy frameStrategy = ServiceLocator.Current.GetInstance<INavigationFrameStrategy>();
+            var navigationService = new TaxiApp.Core.ViewModel.NavigationService(frameStrategy);
 
             navigationService.Configure("Registration", typeof(Views.RegistrationPage));
             navigationService.Configure("Authentication", typeof(Views.AuthenticationPage));
+            navigationService.Configure("EditOrder", typeof(Views.EditOrderPage));
             navigationService.Configure("Main", typeof(Views.MainPage));
 
             return navigationService;
@@ -66,6 +72,14 @@ namespace TaxiApp.ViewModel
             get
             {
                 return ServiceLocator.Current.GetInstance<EditOrderViewModel>();
+            }
+        }
+
+        public MainViewModel MainViewModel
+        {
+            get
+            {
+                return ServiceLocator.Current.GetInstance<MainViewModel>();
             }
         }
 

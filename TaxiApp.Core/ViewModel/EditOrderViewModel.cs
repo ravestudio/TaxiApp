@@ -60,8 +60,6 @@ namespace TaxiApp.Core.ViewModel
 
         private TaxiApp.Core.Entities.Order _order = null;
 
-        private TaxiApp.Core.Managers.IMenu _menu = null;
-
         public ObservableCollection<OrderItem> OrderItemList
         {
             get
@@ -100,9 +98,8 @@ namespace TaxiApp.Core.ViewModel
             }
         }
 
-        public EditOrderViewModel(TaxiApp.Core.Managers.IMenu menu)
+        public EditOrderViewModel()
         {
-            this._menu = menu;
             this.Map = new MapViewModel();
             this.PriceInfo = new OrderPriceInfo();
 
@@ -207,11 +204,6 @@ namespace TaxiApp.Core.ViewModel
                     order.Selected = false;
                 }
                 SelectedOrder.Selected = true;
-            });
-
-            this.clickMenuBtn = new RelayCommand(() =>
-            {
-                this._menu.Open();
             });
 
             Messenger.Default.Register<OrderDeletedMessage>(this, (msg) => {

@@ -17,8 +17,11 @@ namespace TaxiApp.Core.ViewModel
 
         private Dictionary<string, Type> pageList;
 
-        public NavigationService()
+        private INavigationFrameStrategy _frameStrategy = null;
+
+        public NavigationService(INavigationFrameStrategy frameStrategy)
         {
+            this._frameStrategy = frameStrategy;
             this.pageList = new Dictionary<string, Type>();
         }
 
@@ -42,7 +45,7 @@ namespace TaxiApp.Core.ViewModel
 
         public void NavigateTo(string pageKey)
         {
-            Frame navigationFrame = GetDescendantFromName(Window.Current.Content, "mainFrame") as Frame;
+            Frame navigationFrame = this._frameStrategy.GetFrame();
 
             if (navigationFrame == null)
             {
@@ -50,37 +53,9 @@ namespace TaxiApp.Core.ViewModel
             }
 
             navigationFrame.Navigate(this.pageList[pageKey]);
+
         }
 
-        private static FrameworkElement GetDescendantFromName(DependencyObject parent, string name)
-        {
-            var count = VisualTreeHelper.GetChildrenCount(parent);
-
-            if (count < 1)
-            {
-                return null;
-            }
-
-            for (var i = 0; i < count; i++)
-            {
-                var frameworkElement = VisualTreeHelper.GetChild(parent, i) as FrameworkElement;
-                if (frameworkElement != null)
-                {
-                    if (frameworkElement.Name == name)
-                    {
-                        return frameworkElement;
-                    }
-
-                    frameworkElement = GetDescendantFromName(frameworkElement, name);
-                    if (frameworkElement != null)
-                    {
-                        return frameworkElement;
-                    }
-                }
-            }
-
-            return null;
-        }
 
         public void NavigateTo(string pageKey, object parameter)
         {

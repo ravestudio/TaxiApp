@@ -34,6 +34,7 @@
       <DependentUpon>AddPointPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)Views\AuthenticationPage.xaml.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Views\EditOrderPage.xaml.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\EditUserProfilePage.xaml.cs">
       <DependentUpon>EditUserProfilePage.xaml</DependentUpon>
     </Compile>
