@@ -34,7 +34,6 @@ namespace TaxiApp.Views
             this.InitializeComponent();
 
             menu.Init(this.panel_splitter);
-
         }
 
     }

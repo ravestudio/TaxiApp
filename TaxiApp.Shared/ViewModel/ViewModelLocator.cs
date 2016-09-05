@@ -44,7 +44,7 @@ namespace TaxiApp.ViewModel
 
         private static INavigationService GetNavigationService()
         {
-            var navigationService = new NavigationService();
+            var navigationService = new TaxiApp.Core.ViewModel.NavigationService();
 
             navigationService.Configure("Registration", typeof(Views.RegistrationPage));
             navigationService.Configure("Authentication", typeof(Views.AuthenticationPage));
