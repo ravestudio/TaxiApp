@@ -17,10 +17,8 @@
         </TransitionCollection>
     </Page.Transitions>
 
-    <Grid x:Name="LayoutRoot">
-        <Grid.Background>
-            <ImageBrush Stretch="Fill" ImageSource="ms-appx:///Assets/BackGroundBMW2.png"/>
-        </Grid.Background>
+    <Grid x:Name="LayoutRoot"
+          Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
         <Grid.ChildrenTransitions>
             <TransitionCollection>

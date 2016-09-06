@@ -16,6 +16,7 @@ namespace TaxiApp.Core.ViewModel
     {
 
         private Dictionary<string, Type> pageList;
+        private Dictionary<string, bool> splitPageList;
 
         private INavigationFrameStrategy _frameStrategy = null;
 
@@ -23,11 +24,13 @@ namespace TaxiApp.Core.ViewModel
         {
             this._frameStrategy = frameStrategy;
             this.pageList = new Dictionary<string, Type>();
+            this.splitPageList = new Dictionary<string, bool>();
         }
 
-        public void Configure(string key, Type type)
+        public void Configure(string key, Type type, bool splitFrame)
         {
             this.pageList.Add(key, type);
+            this.splitPageList.Add(key, splitFrame);
         }
 
         public string CurrentPageKey
@@ -45,7 +48,12 @@ namespace TaxiApp.Core.ViewModel
 
         public void NavigateTo(string pageKey)
         {
-            Frame navigationFrame = this._frameStrategy.GetFrame();
+            Frame navigationFrame = null;
+
+            if (this.splitPageList[pageKey])
+            {
+                navigationFrame = this._frameStrategy.GetFrame();
+            }
 
             if (navigationFrame == null)
             {

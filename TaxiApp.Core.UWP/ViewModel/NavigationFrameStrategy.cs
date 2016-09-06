@@ -15,11 +15,12 @@ namespace TaxiApp.Core.UWP.ViewModel
         {
             Frame frame = null;
 
-            SplitView split = TaxiApp.Core.Managers.ChildFinder.FindChild<SplitView>(Window.Current.Content, "panel_splitter");
+            SplitView split = TaxiApp.Core.Managers.ChildFinder.FindChild<SplitView>(Window.Current.Content, "panel_splitter");            
 
             if (split != null)
             {
-                frame = split.Content as Frame;
+                Grid grid = split.Content as Grid;
+                frame = TaxiApp.Core.Managers.ChildFinder.FindChild<Frame>(grid, "mainFrame");
             }
 
             return frame;

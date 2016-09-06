@@ -1,0 +1,31 @@
+﻿<Page
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:TaxiApp.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:Maps="using:Windows.UI.Xaml.Controls.Maps"
+    x:Class="TaxiApp.Views.AddPointPage"
+    mc:Ignorable="d"
+    xmlns:i="using:Microsoft.Xaml.Interactivity"
+    xmlns:core="using:Microsoft.Xaml.Interactions.Core"
+    DataContext="{Binding MainViewModel, Source={StaticResource Locator}}"
+    >
+
+
+    <Grid x:Name="LayoutRoot"
+          Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+        <AutoSuggestBox
+            VerticalAlignment="Top"
+            HorizontalAlignment="Stretch"
+            PlaceholderText="Enter location"
+            QueryIcon="Find"></AutoSuggestBox>
+        
+        <Maps:MapControl x:Name="RouteMapControl"
+                         HorizontalAlignment="Stretch"
+                         VerticalAlignment="Stretch"
+                         Margin="0,40,0,0"/>
+
+    </Grid>
+</Page>

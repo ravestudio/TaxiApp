@@ -22,10 +22,11 @@
 
     <SplitView
         IsPaneOpen="True"
-        CompactPaneLength="50"
+        CompactPaneLength="0"
         OpenPaneLength="200"
         DisplayMode="CompactOverlay"
-        x:Name="panel_splitter">
+        x:Name="panel_splitter"
+        Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <SplitView.Pane>
             <Grid>
                 <StackPanel
@@ -43,9 +44,16 @@
         </SplitView.Pane>
 
         <SplitView.Content>
-
-            <Frame x:Name="mainFrame">
-            </Frame>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="60"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                
+                <local:PageTitleControl Grid.Row="0"></local:PageTitleControl>
+                <Frame x:Name="mainFrame" Grid.Row="1">
+                </Frame>
+            </Grid>
         </SplitView.Content>
 
 

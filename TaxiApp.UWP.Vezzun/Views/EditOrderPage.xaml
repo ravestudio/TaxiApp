@@ -6,7 +6,10 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    DataContext="{Binding EditOrderViewModel, Source={StaticResource Locator}}">
+    xmlns:i="using:Microsoft.Xaml.Interactivity"
+    xmlns:core="using:Microsoft.Xaml.Interactions.Core"
+    DataContext="{Binding EditOrderViewModel, Source={StaticResource Locator}}"
+    >
 
     <Page.Resources>
 
@@ -15,8 +18,8 @@
             <StackPanel Margin="10,0,0,0" Orientation="Horizontal" Height="70">
                 <Image Source="{Binding IconSource}" Width="70" Margin="0,0,0,0"/>
                 <StackPanel Margin="15,0,0,0">
-                    <TextBlock Text="{Binding Title}" Style="{ThemeResource SubheaderTextBlockStyle}" Margin="0,10,0,0"/>
-                    <TextBlock Visibility="{Binding SubheaderVisible}" Text="{Binding Subtitle}" Style="{ThemeResource SubtitleTextBlockStyle}" Margin="0,0,0,0"/>
+                    <TextBlock Text="{Binding Title}" Margin="0,10,0,0"/>
+                    <TextBlock Visibility="{Binding SubheaderVisible}" Text="{Binding Subtitle}" Margin="0,0,0,0"/>
                 </StackPanel>
             </StackPanel>
         </DataTemplate>
@@ -28,6 +31,14 @@
         <ListView
             ItemsSource="{Binding OrderItemList}"
             ItemTemplate="{StaticResource OrderItemTemplate}">
+            
+            
+
+            <i:Interaction.Behaviors>
+                <core:EventTriggerBehavior EventName="ItemClick">
+                    <core:InvokeCommandAction Command="{Binding ClickOrderItem}"/>
+                </core:EventTriggerBehavior>
+            </i:Interaction.Behaviors>
 
         </ListView>
     </Grid>

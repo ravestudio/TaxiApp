@@ -8,18 +8,14 @@
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:core="using:Microsoft.Xaml.Interactions.Core"
     mc:Ignorable="d"
-    d:DesignHeight="87">
+    d:DesignHeight="60">
 
 
-    <StackPanel Orientation="Horizontal" Grid.Row="0" Margin="0,0,0,0" Background="#00a0e3">
-        <Image Source="ms-appx:///Assets/menuBtn.png" HorizontalAlignment="Left" Stretch="Uniform" Width="30" Margin="30,39,0,12">
-            <i:Interaction.Behaviors>
-                <core:EventTriggerBehavior EventName="Tapped">
-                    <core:InvokeCommandAction Command="{Binding ShowMenuCmd}"/>
-                </core:EventTriggerBehavior>
-            </i:Interaction.Behaviors>
-        </Image>
-        <TextBlock Text="VEZZUN" Margin="35,39,0,12"/>
+    <StackPanel Orientation="Horizontal">
+
+        <Button FontFamily="Segoe MDL2 Assets" Content="&#xE700;" Background="Transparent" Command="{Binding ClickMenuCmd}"></Button>
+        
+        <TextBlock Text="VEZZUN" Margin="20,20,0,0"/>
     </StackPanel>
 
 </UserControl>

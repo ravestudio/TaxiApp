@@ -101,6 +101,11 @@
     <None Include="TaxiApp.UWP.Vezzun_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assets\AddressPoint.png" />
+    <Content Include="Assets\AddressPointTo.png" />
+    <Content Include="Assets\options.png" />
+    <Content Include="Assets\service.png" />
+    <Content Include="Assets\time.png" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
     <Content Include="Assets\SplashScreen.scale-200.png" />
@@ -117,6 +122,10 @@
     </ApplicationDefinition>
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Views\AddPointPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Views\AuthenticationPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

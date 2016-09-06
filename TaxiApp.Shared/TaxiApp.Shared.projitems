@@ -30,9 +30,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)ViewModel\SendRatingViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModel\ViewModelFactory.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModel\ViewModelLocator.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Views\AddPointPage.xaml.cs">
-      <DependentUpon>AddPointPage.xaml</DependentUpon>
-    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Views\AddPointPage.xaml.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\AuthenticationPage.xaml.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\EditOrderPage.xaml.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\EditUserProfilePage.xaml.cs">
@@ -59,10 +57,6 @@
     <Content Include="$(MSBuildThisFileDirectory)DataModel\SampleData.json" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="$(MSBuildThisFileDirectory)Views\AddPointPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="$(MSBuildThisFileDirectory)Views\EditUserProfilePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

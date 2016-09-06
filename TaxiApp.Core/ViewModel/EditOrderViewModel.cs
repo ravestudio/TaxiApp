@@ -12,6 +12,7 @@ using Windows.Devices.Geolocation;
 
 using GalaSoft.MvvmLight.Messaging;
 using GalaSoft.MvvmLight.Command;
+using GalaSoft.MvvmLight.Views;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
@@ -22,7 +23,7 @@ namespace TaxiApp.Core.ViewModel
         public OrderModel OrderModel { get; set; }
         public SearchModel SearchModel { get; set; }
 
-        public RelayCommand<object> ClickOrderItem { get; set; }
+        public RelayCommand ClickOrderItem { get; set; }
         public RelayCommand<object> SelectLocationItem { get; set; }
         public RelayCommand SelectServicesCmd { get; set; }
         public RelayCommand CancelOrderCmd { get; set; }
@@ -59,6 +60,8 @@ namespace TaxiApp.Core.ViewModel
         public MapViewModel Map { get; set; }
 
         private TaxiApp.Core.Entities.Order _order = null;
+
+        private INavigationService _navigationServie = null;
 
         public ObservableCollection<OrderItem> OrderItemList
         {
@@ -98,8 +101,10 @@ namespace TaxiApp.Core.ViewModel
             }
         }
 
-        public EditOrderViewModel()
+        public EditOrderViewModel(INavigationService navigationService)
         {
+            this._navigationServie = navigationService;
+
             this.Map = new MapViewModel();
             this.PriceInfo = new OrderPriceInfo();
 
@@ -117,8 +122,9 @@ namespace TaxiApp.Core.ViewModel
                 });
             }, (text) => { return (text.Length > 5); });
 
-            this.ClickOrderItem = new RelayCommand<object>((parameter) =>
+            this.ClickOrderItem = new RelayCommand(() =>
             {
+                object parameter = null;
                 Windows.UI.Xaml.Controls.ItemClickEventArgs e = (Windows.UI.Xaml.Controls.ItemClickEventArgs)parameter;
                 TaxiApp.Core.DataModel.Order.OrderItem orderItem = (TaxiApp.Core.DataModel.Order.OrderItem)e.ClickedItem;
 
@@ -290,6 +296,10 @@ namespace TaxiApp.Core.ViewModel
                 Frame rootFrame = Window.Current.Content as Frame;
 
                 viewModel.SearchModel.SelectedPoint = orderPoint;
+
+
+                this._navigationServie.NavigateTo("AddPoint");
+
                 //rootFrame.Navigate(typeof(Views.AddPointPage));
             });
 
