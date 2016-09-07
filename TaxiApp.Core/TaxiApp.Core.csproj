@@ -138,7 +138,8 @@
     <Compile Include="ViewModel\Command\NavigateToOrderListCommand.cs" />
     <Compile Include="ViewModel\Command\ShowMenuCommand.cs" />
     <Compile Include="ViewModel\EditOrderViewModel.cs" />
-    <Compile Include="ViewModel\INavigationFrameStrategy.cs" />
+    <Compile Include="ViewModel\IInitializationFrameStrategy.cs" />
+    <Compile Include="ViewModel\InitializationFrameStrategy.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\MapViewModel.cs" />
     <Compile Include="ViewModel\NavigationService.cs" />

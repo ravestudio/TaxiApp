@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace TaxiApp.Core.Messages
 {
+    /// <summary>
+    /// Заказ удален
+    /// </summary>
     public class OrderDeletedMessage
     {
         public int OrderId { get; set; }

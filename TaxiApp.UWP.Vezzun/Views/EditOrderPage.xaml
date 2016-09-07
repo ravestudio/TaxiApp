@@ -30,7 +30,8 @@
 
         <ListView
             ItemsSource="{Binding OrderItemList}"
-            ItemTemplate="{StaticResource OrderItemTemplate}">
+            ItemTemplate="{StaticResource OrderItemTemplate}"
+            IsItemClickEnabled="True">
             
             
 

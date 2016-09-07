@@ -9,7 +9,7 @@ using Windows.UI.Xaml.Controls;
 
 namespace TaxiApp.Core.UWP.ViewModel
 {
-    public class NavigationFrameStrategy : INavigationFrameStrategy
+    public class InitializationFrameStrategy : IInitializationFrameStrategy
     {
         public Frame GetFrame()
         {

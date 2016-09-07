@@ -23,7 +23,7 @@ namespace TaxiApp.Core.ViewModel
         public OrderModel OrderModel { get; set; }
         public SearchModel SearchModel { get; set; }
 
-        public RelayCommand ClickOrderItem { get; set; }
+        public RelayCommand<object> ClickOrderItem { get; set; }
         public RelayCommand<object> SelectLocationItem { get; set; }
         public RelayCommand SelectServicesCmd { get; set; }
         public RelayCommand CancelOrderCmd { get; set; }
@@ -50,7 +50,7 @@ namespace TaxiApp.Core.ViewModel
         public OrderPriceInfo PriceInfo { get; set; }
         public bool LocationReady { get; set; }
 
-        public Dictionary<string, Action<EditOrderViewModel, TaxiApp.Core.DataModel.Order.OrderItem>> Actions = null;
+        public Dictionary<string, Action<TaxiApp.Core.DataModel.Order.OrderItem>> Actions = null;
 
         public ObservableCollection<Core.Entities.Order> OrderList { get; set; }
 
@@ -122,13 +122,13 @@ namespace TaxiApp.Core.ViewModel
                 });
             }, (text) => { return (text.Length > 5); });
 
-            this.ClickOrderItem = new RelayCommand(() =>
+            this.ClickOrderItem = new RelayCommand<object>((parameter) =>
             {
-                object parameter = null;
+
                 Windows.UI.Xaml.Controls.ItemClickEventArgs e = (Windows.UI.Xaml.Controls.ItemClickEventArgs)parameter;
                 TaxiApp.Core.DataModel.Order.OrderItem orderItem = (TaxiApp.Core.DataModel.Order.OrderItem)e.ClickedItem;
 
-                this.Actions[orderItem.Cmd].Invoke(this, orderItem);
+                this.Actions[orderItem.Cmd].Invoke(orderItem);
             });
             
             this.SelectLocationItem = new RelayCommand<object>((parameter) =>
@@ -288,38 +288,33 @@ namespace TaxiApp.Core.ViewModel
             //    //IconSource = new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///Assets/carclass.png"))
             //});
 
-            this.Actions = new Dictionary<string, Action<EditOrderViewModel, TaxiApp.Core.DataModel.Order.OrderItem>>();
+            this.Actions = new Dictionary<string, Action<TaxiApp.Core.DataModel.Order.OrderItem>>();
 
-            this.Actions.Add("Point", (viewModel, item) => {
+            this.Actions.Add("Point", (item) => {
                 TaxiApp.Core.DataModel.Order.OrderPoint orderPoint = (TaxiApp.Core.DataModel.Order.OrderPoint)item;
 
-                Frame rootFrame = Window.Current.Content as Frame;
-
-                viewModel.SearchModel.SelectedPoint = orderPoint;
-
+                SearchModel.SelectedPoint = orderPoint;
 
                 this._navigationServie.NavigateTo("AddPoint");
-
-                //rootFrame.Navigate(typeof(Views.AddPointPage));
             });
 
-            this.Actions.Add("Services", (viewModel, item) =>
+            this.Actions.Add("Services", (item) =>
             {
                 //viewModel.ServicePicker.ShowAt(viewModel.Page);
 
             });
 
-            this.Actions.Add("Date", (viewModel, item) =>
+            this.Actions.Add("Date", (item) =>
             {
                 //viewModel.DatePicker.ShowAt(viewModel.Page);
             });
 
-            this.Actions.Add("Now", (viewModel, item) =>
+            this.Actions.Add("Now", (item) =>
             {
                 //viewModel.TimePicker.ShowAt(viewModel.Page);
             });
 
-            this.Actions.Add("Car", (viewModel, item) =>
+            this.Actions.Add("Car", (item) =>
             {
                 //viewModel.CarPicker.ShowAt(viewModel.Page);
             });

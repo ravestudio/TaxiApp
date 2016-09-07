@@ -16,12 +16,14 @@ namespace TaxiApp.Core.ViewModel
 
 
         private TaxiApp.Core.Managers.IMenu _menu = null;
-        private INavigationService _navigationServie = null;
+        private INavigationService _appNavigationServie = null;
+        private INavigationService _childNavigationServie = null;
 
-        public MainViewModel(TaxiApp.Core.Managers.IMenu menu, INavigationService navigationService)
+        public MainViewModel(TaxiApp.Core.Managers.IMenu menu, INavigationService appNavigationService, INavigationService childNavigationService)
         {
             this._menu = menu;
-            this._navigationServie = navigationService;
+            this._appNavigationServie = appNavigationService;
+            this._childNavigationServie = childNavigationService;
 
             this.ClickMenuCmd = new RelayCommand(() =>
             {
@@ -30,7 +32,7 @@ namespace TaxiApp.Core.ViewModel
 
             this.ContextChangedCmd = new RelayCommand(() =>
             {
-                this._navigationServie.NavigateTo("EditOrder");
+                this._childNavigationServie.NavigateTo("EditOrder");
             });
 
             

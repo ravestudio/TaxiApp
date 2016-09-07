@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace TaxiApp.Core.Messages
 {
+    /// <summary>
+    /// Зарегистрировать пользователя
+    /// </summary>
     public class RegisterUserMessage
     {
         public string PhoneNumber { get; set; }

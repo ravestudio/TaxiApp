@@ -7,7 +7,7 @@ using Windows.UI.Xaml.Controls;
 
 namespace TaxiApp.Core.ViewModel
 {
-    public interface INavigationFrameStrategy
+    public interface IInitializationFrameStrategy
     {
         Frame GetFrame();
     }

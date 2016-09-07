@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace TaxiApp.Core.Messages
 {
+    /// <summary>
+    /// Результат авторизации пользователя
+    /// </summary>
     public class UserAutorizationResultMessage
     {
         public MessageStatus Status { get; set; }
