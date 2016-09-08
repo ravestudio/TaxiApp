@@ -214,7 +214,8 @@ namespace TaxiApp.Core.DataModel.Order
 
             int thread = Environment.CurrentManagedThreadId;
 
-            Managers.LocationManager locationMG = Managers.ManagerFactory.Instance.GetLocationManager();
+            Managers.LocationManager locationMG = null;
+            //Managers.LocationManager locationMG = Managers.ManagerFactory.Instance.GetLocationManager();
 
             if (geopoints.Count() > 1)
             {

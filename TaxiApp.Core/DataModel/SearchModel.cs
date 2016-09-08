@@ -8,7 +8,6 @@ using Windows.Devices.Geolocation;
 using TaxiApp.Core.Managers;
 using TaxiApp.Core.Messages;
 
-using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 
 namespace TaxiApp.Core.DataModel
@@ -16,7 +15,6 @@ namespace TaxiApp.Core.DataModel
     public class SearchModel
     {
         private LocationManager _locationMg = null;
-        private RelayCommand<string> searchCmd = null;
         private string _searchText = null;
 
         //private Object thisLock = new Object();

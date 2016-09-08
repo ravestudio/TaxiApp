@@ -35,7 +35,7 @@ namespace TaxiApp.Core.ViewModel
         public RelayCommand<object> SelectMyOrderCmd { get; set; }
         public RelayCommand clickMenuBtn { get; set; }
 
-        private RelayCommand<string> searchCmd {get; set; }
+        
         public IDictionary<Type, Windows.UI.Xaml.Controls.Grid> LayoutRootList { get; set; }
 
         public bool MenuState { get; set; }
@@ -112,12 +112,6 @@ namespace TaxiApp.Core.ViewModel
 
             this.Locations = new ObservableCollection<LocationItem>();
             this.OrderList = new ObservableCollection<Core.Entities.Order>();
-            
-            this.searchCmd = new RelayCommand<string>((text) => {
-                Messenger.Default.Send<SearchLocationMessage>(new SearchLocationMessage() { 
-                  Text = text
-                });
-            }, (text) => { return (text.Length > 5); });
 
             this.ClickOrderItem = new RelayCommand<object>((parameter) =>
             {

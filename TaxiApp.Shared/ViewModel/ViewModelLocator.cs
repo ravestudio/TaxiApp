@@ -10,6 +10,8 @@ using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Ioc;
 using GalaSoft.MvvmLight.Views;
 using Microsoft.Practices.ServiceLocation;
+using GalaSoft.MvvmLight.Command;
+using Windows.UI.Xaml.Controls;
 
 namespace TaxiApp.ViewModel
 {
@@ -33,7 +35,10 @@ namespace TaxiApp.ViewModel
             SimpleIoc.Default.Register<TaxiApp.Core.WebApiClient>();
             SimpleIoc.Default.Register<UserRepository>();
             SimpleIoc.Default.Register<SystemManager>();
+            SimpleIoc.Default.Register<ILocationService, Core.UWP.Managers.LocationService>();
+            SimpleIoc.Default.Register<LocationManager>();
             SimpleIoc.Default.Register<DataModel.LoginModel>(true);
+            SimpleIoc.Default.Register<Core.DataModel.SearchModel>(true);
 
             SimpleIoc.Default.Register<AuthenticationViewModel>(() => {
                 return new AuthenticationViewModel(ServiceLocator.Current.GetInstance<INavigationService>("base"));
@@ -50,7 +55,17 @@ namespace TaxiApp.ViewModel
 
             SimpleIoc.Default.Register<MapViewModel>(() =>
             {
-                return new MapViewModel();
+                var vm = new MapViewModel();
+
+                vm.SetTextChangedCmd(new RelayCommand<AutoSuggestBoxTextChangedEventArgs>((args) =>
+                {
+                    if (args.Reason == AutoSuggestionBoxTextChangeReason.UserInput)
+                    {
+                        vm.ExecuteQuery();
+                    }
+                }));
+
+                return vm;
             });
 
             SimpleIoc.Default.Register<IMenu, TaxiApp.Core.UWP.Managers.Menu>();

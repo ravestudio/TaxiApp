@@ -27,8 +27,9 @@ namespace TaxiApp.Core.Managers
             set;
         }
 
-        public LocationManager()
+        public LocationManager(ILocationService locationService)
         {
+            this._locationService = locationService;
             this.LocationReady = false;
             //this.Init();
         }

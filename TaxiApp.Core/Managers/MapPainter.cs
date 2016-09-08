@@ -20,7 +20,8 @@ namespace TaxiApp.Core.Managers
 
         public async Task ShowMyPossitionAsync()
         {
-            TaxiApp.Core.Managers.LocationManager locationMG = TaxiApp.Core.Managers.ManagerFactory.Instance.GetLocationManager();
+            TaxiApp.Core.Managers.LocationManager locationMG = null;
+            //TaxiApp.Core.Managers.LocationManager locationMG = TaxiApp.Core.Managers.ManagerFactory.Instance.GetLocationManager();
 
             Geopoint myGeopoint = await locationMG.GetCurrentGeopoint();
 

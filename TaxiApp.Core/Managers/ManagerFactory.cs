@@ -12,15 +12,15 @@ namespace TaxiApp.Core.Managers
         private MapPainter mapPainter = null;
         private SystemManager systemMG = null;
 
-        public LocationManager GetLocationManager()
-        {
-            if (this.locationMG == null)
-            {
-                this.locationMG = new LocationManager();
-            }
+        //public LocationManager GetLocationManager()
+        //{
+        //    if (this.locationMG == null)
+        //    {
+        //        this.locationMG = new LocationManager();
+        //    }
 
-            return this.locationMG;
-        }
+        //    return this.locationMG;
+        //}
 
         //public MapPainter GetMapPainter(MapControl mapControl)
         //{
