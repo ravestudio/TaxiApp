@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GalaSoft.MvvmLight.Command;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,6 +7,7 @@ using System.Threading.Tasks;
 
 using TaxiApp.Core.DataModel;
 using TaxiApp.Core.DataModel.Order;
+using Windows.UI.Xaml.Controls;
 
 namespace TaxiApp.Core.ViewModel
 {
@@ -17,6 +19,10 @@ namespace TaxiApp.Core.ViewModel
         public OrderModel OrderModel { get; set; }
 
         private TaxiApp.Core.IRoute mapRoute = null;
+
+        public RelayCommand<object> SuggestTextChangedCmd { get; set; }
+
+        public string SearchText { get; set; }
 
         public TaxiApp.Core.IRoute MapRoute
         {
@@ -54,6 +60,12 @@ namespace TaxiApp.Core.ViewModel
 
                 this.OrderModel.ShowRoute(this.mapRoute);
 
+            });
+
+            this.SuggestTextChangedCmd = new RelayCommand<object>((args) =>
+            {
+                
+                string query = this.SearchText;
             });
         }
     }

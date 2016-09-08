@@ -9,7 +9,7 @@
     mc:Ignorable="d"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:core="using:Microsoft.Xaml.Interactions.Core"
-    DataContext="{Binding MainViewModel, Source={StaticResource Locator}}"
+    DataContext="{Binding MapViewModel, Source={StaticResource Locator}}"
     >
 
 
@@ -20,7 +20,16 @@
             VerticalAlignment="Top"
             HorizontalAlignment="Stretch"
             PlaceholderText="Enter location"
-            QueryIcon="Find"></AutoSuggestBox>
+            QueryIcon="Find"
+            Text="{Binding SearchText, Mode=TwoWay}">
+
+            <i:Interaction.Behaviors>
+                <core:EventTriggerBehavior EventName="TextChanged">
+                    <core:InvokeCommandAction Command="{Binding SuggestTextChangedCmd}" />
+                </core:EventTriggerBehavior>
+            </i:Interaction.Behaviors>
+
+        </AutoSuggestBox>
         
         <Maps:MapControl x:Name="RouteMapControl"
                          HorizontalAlignment="Stretch"

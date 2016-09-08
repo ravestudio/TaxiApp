@@ -107,6 +107,7 @@
     <Compile Include="Managers\MapPainter.cs" />
     <Compile Include="Managers\SMSManager.cs" />
     <Compile Include="Managers\SystemManager.cs" />
+    <Compile Include="Messages\FillRoutePointMessage.cs" />
     <Compile Include="Messages\FoundLocationsMessage.cs" />
     <Compile Include="Messages\LocationChangedMessage.cs" />
     <Compile Include="Messages\LoginUserMessage.cs" />

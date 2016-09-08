@@ -60,8 +60,7 @@ namespace TaxiApp.Core.ViewModel
         public MapViewModel Map { get; set; }
 
         private TaxiApp.Core.Entities.Order _order = null;
-
-        private INavigationService _navigationServie = null;
+        
 
         public ObservableCollection<OrderItem> OrderItemList
         {
@@ -101,10 +100,8 @@ namespace TaxiApp.Core.ViewModel
             }
         }
 
-        public EditOrderViewModel(INavigationService navigationService)
+        public EditOrderViewModel()
         {
-            this._navigationServie = navigationService;
-
             this.Map = new MapViewModel();
             this.PriceInfo = new OrderPriceInfo();
 
@@ -293,9 +290,14 @@ namespace TaxiApp.Core.ViewModel
             this.Actions.Add("Point", (item) => {
                 TaxiApp.Core.DataModel.Order.OrderPoint orderPoint = (TaxiApp.Core.DataModel.Order.OrderPoint)item;
 
-                SearchModel.SelectedPoint = orderPoint;
+                //SearchModel.SelectedPoint = orderPoint;
 
-                this._navigationServie.NavigateTo("AddPoint");
+                //this._navigationServie.NavigateTo("AddPoint");
+
+                Messenger.Default.Send<FillRoutePointMessage>(new FillRoutePointMessage()
+                {
+                    Point = orderPoint
+                });
             });
 
             this.Actions.Add("Services", (item) =>

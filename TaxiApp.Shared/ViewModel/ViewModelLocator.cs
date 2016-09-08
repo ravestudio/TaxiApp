@@ -39,10 +39,8 @@ namespace TaxiApp.ViewModel
                 return new AuthenticationViewModel(ServiceLocator.Current.GetInstance<INavigationService>("base"));
             });
 
-            SimpleIoc.Default.Register<EditOrderViewModel>(() =>
-            {
-                return new EditOrderViewModel(ServiceLocator.Current.GetInstance<INavigationService>("split"));
-            });
+            SimpleIoc.Default.Register<EditOrderViewModel>();
+
             SimpleIoc.Default.Register<MainViewModel>(() =>
             {
                 return new MainViewModel(ServiceLocator.Current.GetInstance<IMenu>(),

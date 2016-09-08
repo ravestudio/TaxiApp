@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Views;
+using GalaSoft.MvvmLight.Messaging;
+using TaxiApp.Core.Messages;
 
 namespace TaxiApp.Core.ViewModel
 {
@@ -35,7 +37,11 @@ namespace TaxiApp.Core.ViewModel
                 this._childNavigationServie.NavigateTo("EditOrder");
             });
 
-            
+            Messenger.Default.Register<FillRoutePointMessage>(this, (msg) => {
+
+                this._appNavigationServie.NavigateTo("AddPoint");
+
+            });
 
         }
     }
