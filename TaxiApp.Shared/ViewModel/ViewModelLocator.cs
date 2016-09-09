@@ -55,19 +55,13 @@ namespace TaxiApp.ViewModel
 
             SimpleIoc.Default.Register<MapViewModel>(() =>
             {
-                var vm = new MapViewModel();
-
-                vm.SetTextChangedCmd(new RelayCommand<AutoSuggestBoxTextChangedEventArgs>((args) =>
-                {
-                    if (args.Reason == AutoSuggestionBoxTextChangeReason.UserInput)
-                    {
-                        vm.ExecuteQuery();
-                    }
-                }));
+                ISuggestBox suggestBox = ServiceLocator.Current.GetInstance<ISuggestBox>();
+                var vm = new MapViewModel(suggestBox);
 
                 return vm;
             });
 
+            SimpleIoc.Default.Register<ISuggestBox, TaxiApp.Core.UWP.Managers.SuggestBox>();
             SimpleIoc.Default.Register<IMenu, TaxiApp.Core.UWP.Managers.Menu>();
             SimpleIoc.Default.Register<IInitializationFrameStrategy>(() => { return new TaxiApp.Core.ViewModel.InitializationFrameStrategy(); }, "base");
             SimpleIoc.Default.Register<IInitializationFrameStrategy>(() => { return new TaxiApp.Core.UWP.ViewModel.InitializationFrameStrategy(); }, "split");

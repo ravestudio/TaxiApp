@@ -17,15 +17,16 @@
           Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
         <AutoSuggestBox
+            x:Name="suggest_box"
             VerticalAlignment="Top"
             HorizontalAlignment="Stretch"
             PlaceholderText="Enter location"
             QueryIcon="Find"
-            Text="{Binding SearchText, Mode=TwoWay}">
+            IsSuggestionListOpen="True">
 
             <i:Interaction.Behaviors>
                 <core:EventTriggerBehavior EventName="TextChanged">
-                    <core:InvokeCommandAction Command="{Binding SuggestTextChangedCmd}" />
+                    <core:InvokeCommandAction Command="{Binding SuggestTextChangedCmd}" CommandParameter="{Binding Text, ElementName=suggest_box}" />
                 </core:EventTriggerBehavior>
             </i:Interaction.Behaviors>
 

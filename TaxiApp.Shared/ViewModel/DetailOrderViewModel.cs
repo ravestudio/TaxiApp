@@ -69,7 +69,8 @@ namespace TaxiApp.ViewModel
 
         public DetailOrderViewModel()
         {
-            this.Map = new MapViewModel();
+            this.Map = null;
+            //this.Map = new MapViewModel();
 
             this._services = new List<OrderOption>();
 

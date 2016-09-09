@@ -54,7 +54,7 @@ namespace TaxiApp.Core.ViewModel
 
         public ObservableCollection<Core.Entities.Order> OrderList { get; set; }
 
-        public ObservableCollection<LocationItem> Locations { get; set; }
+        
         private ObservableCollection<OrderItem> _orderItemList = null;
 
         public MapViewModel Map { get; set; }
@@ -102,7 +102,6 @@ namespace TaxiApp.Core.ViewModel
 
         public EditOrderViewModel()
         {
-            this.Map = new MapViewModel();
             this.PriceInfo = new OrderPriceInfo();
 
             this._EndDate = DateTime.Now;
@@ -110,7 +109,7 @@ namespace TaxiApp.Core.ViewModel
 
             this.SelectedServices = new List<OrderOption>();
 
-            this.Locations = new ObservableCollection<LocationItem>();
+            
             this.OrderList = new ObservableCollection<Core.Entities.Order>();
 
             this.ClickOrderItem = new RelayCommand<object>((parameter) =>
@@ -216,14 +215,6 @@ namespace TaxiApp.Core.ViewModel
                 this.NotifyPropertyChanged("LocationReady");
             });
             
-            Messenger.Default.Register<FoundLocationsMessage>(this, (msg) => {
-                this.Locations.Clear();
-
-                foreach (LocationItem item in msg.LocationItems)
-                {
-                    this.Locations.Add(item);
-                }
-            });
 
             this.LayoutRootList = new Dictionary<Type, Windows.UI.Xaml.Controls.Grid>();
 

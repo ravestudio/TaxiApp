@@ -2,12 +2,14 @@
 using GalaSoft.MvvmLight.Messaging;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using TaxiApp.Core.DataModel;
 using TaxiApp.Core.DataModel.Order;
+using TaxiApp.Core.Managers;
 using TaxiApp.Core.Messages;
 using Windows.UI.Xaml.Controls;
 
@@ -22,10 +24,13 @@ namespace TaxiApp.Core.ViewModel
 
         private TaxiApp.Core.IRoute mapRoute = null;
 
-        public ICommand SuggestTextChangedCmd { get; set; }
+        private ISuggestBox _suggestBox = null;
+
+        public RelayCommand<string> SuggestTextChangedCmd { get; set; }
         private RelayCommand<string> searchCmd { get; set; }
 
         public string SearchText { get; set; }
+        
 
         public TaxiApp.Core.IRoute MapRoute
         {
@@ -49,8 +54,10 @@ namespace TaxiApp.Core.ViewModel
             }
         }
 
-        public MapViewModel()
+        public MapViewModel(ISuggestBox suggestBox)
         {
+            this._suggestBox = suggestBox;
+            
 
             this.RouteChanged = new RouteChangeHandler(() =>
             {
@@ -65,7 +72,22 @@ namespace TaxiApp.Core.ViewModel
 
             });
 
+            Messenger.Default.Register<FoundLocationsMessage>(this, (msg) => {
+
+                this._suggestBox.SetListItems(msg.LocationItems);
+
+                this._suggestBox.Open();
+            });
+
+            this.SuggestTextChangedCmd = new RelayCommand<String>((text) =>
+            {
+                searchCmd.Execute(text);
+            });
+
             this.searchCmd = new RelayCommand<string>((text) => {
+
+                this._suggestBox.ClearListItems();
+
                 Messenger.Default.Send<SearchLocationMessage>(new SearchLocationMessage()
                 {
                     Text = text
@@ -74,15 +96,5 @@ namespace TaxiApp.Core.ViewModel
 
         }
 
-        public void SetTextChangedCmd(ICommand cmd)
-        {
-            this.SuggestTextChangedCmd = cmd;
-        }
-
-        public void ExecuteQuery()
-        {
-            searchCmd.Execute(SearchText);
-
-        }
     }
 }
