@@ -79,7 +79,7 @@ namespace TaxiApp.Core.DataModel
 
                 if (SearchResults != null)
                 {
-                    foreach (ILocation location in SearchResults)
+                    foreach (ILocation location in SearchResults.Where(l => !string.IsNullOrEmpty(l.Street)))
                     {
                         locations.Add(new LocationItem(location));
                     }
@@ -99,14 +99,23 @@ namespace TaxiApp.Core.DataModel
 
         public LocationItem(ILocation location)
         {
-            this.Address = string.Format("{0}, {1}", location.Street, location.StreetNumber);
+
+            System.Text.StringBuilder addrbuilder = new StringBuilder();
+            addrbuilder.Append(location.Street);
+
+            if (!string.IsNullOrEmpty(location.StreetNumber))
+            {
+                addrbuilder.Append(string.Format(", {0}", location.StreetNumber));
+            }
+
+            this.Address = addrbuilder.ToString();
+
             this.FullAddress = string.Format("{0}, {1}, {2}", location.Town, location.Region, location.PostCode);
 
             this.Latitude = location.Latitude;
             this.Longitude = location.Longitude;
 
             this.Location = location;
-
             this.Ready = true;
         }
 

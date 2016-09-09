@@ -27,14 +27,7 @@ namespace TaxiApp.Core.UWP.Managers
 
         public void SetListItems(IList<LocationItem> items)
         {
-            IList<string> suggestlist = new List<string>();
-
-            foreach(LocationItem item in items)
-            {
-                suggestlist.Add(string.Format("{0}, {1}", item.Address, item.FullAddress));
-            }
-
-            this.GetSuggestBox().ItemsSource = suggestlist;
+            this.GetSuggestBox().ItemsSource = items;
         }
 
         private AutoSuggestBox GetSuggestBox()

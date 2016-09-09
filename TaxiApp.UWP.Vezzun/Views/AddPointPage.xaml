@@ -30,6 +30,12 @@
                 </core:EventTriggerBehavior>
             </i:Interaction.Behaviors>
 
+            <AutoSuggestBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Address}" Margin="5,15"/>
+                </DataTemplate>
+            </AutoSuggestBox.ItemTemplate>
+
         </AutoSuggestBox>
         
         <Maps:MapControl x:Name="RouteMapControl"
