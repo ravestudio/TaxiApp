@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using TaxiApp.Core.Common;
 using TaxiApp.Core.DataModel;
 using TaxiApp.Core.DataModel.Order;
 using TaxiApp.Core.Managers;
@@ -25,9 +26,12 @@ namespace TaxiApp.Core.ViewModel
         private TaxiApp.Core.IRoute mapRoute = null;
 
         private ISuggestBox _suggestBox = null;
+        private Managers.MapPainter _painter = null;
 
-        public RelayCommand<string> SuggestTextChangedCmd { get; set; }
+        public RelayCommand<SuggestTextChangedArgs> SuggestTextChangedCmd { get; set; }
         private RelayCommand<string> searchCmd { get; set; }
+
+        public RelayCommand ContextChangedCmd { get; set; }
 
         public string SearchText { get; set; }
         
@@ -54,9 +58,10 @@ namespace TaxiApp.Core.ViewModel
             }
         }
 
-        public MapViewModel(ISuggestBox suggestBox)
+        public MapViewModel(ISuggestBox suggestBox, Managers.MapPainter painter)
         {
             this._suggestBox = suggestBox;
+            this._painter = painter;
             
 
             this.RouteChanged = new RouteChangeHandler(() =>
@@ -79,9 +84,17 @@ namespace TaxiApp.Core.ViewModel
                 this._suggestBox.Open();
             });
 
-            this.SuggestTextChangedCmd = new RelayCommand<String>((text) =>
+            this.ContextChangedCmd = new RelayCommand(() =>
             {
-                searchCmd.Execute(text);
+                _painter.ShowMyPossitionAsync();
+            });
+
+            this.SuggestTextChangedCmd = new RelayCommand<SuggestTextChangedArgs>((args) =>
+            {
+                if (args.ByUser)
+                {
+                    searchCmd.Execute(SearchText);
+                }
             });
 
             this.searchCmd = new RelayCommand<string>((text) => {

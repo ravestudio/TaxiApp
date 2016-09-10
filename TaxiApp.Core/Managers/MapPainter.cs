@@ -11,23 +11,20 @@ namespace TaxiApp.Core.Managers
     public class MapPainter
     {
         private IMap _mapImpl = null;
+        private TaxiApp.Core.Managers.LocationManager _locationMG = null;
 
-        public MapPainter(IMap map)
+        public MapPainter(IMap map, TaxiApp.Core.Managers.LocationManager locationMG)
         {
             _mapImpl = map;
+            _locationMG = locationMG;
         }
 
 
-        public async Task ShowMyPossitionAsync()
+        public async void ShowMyPossitionAsync()
         {
-            TaxiApp.Core.Managers.LocationManager locationMG = null;
-            //TaxiApp.Core.Managers.LocationManager locationMG = TaxiApp.Core.Managers.ManagerFactory.Instance.GetLocationManager();
-
-            Geopoint myGeopoint = await locationMG.GetCurrentGeopoint();
+            Geopoint myGeopoint = await _locationMG.GetCurrentGeopoint();
 
             _mapImpl.ShowMyPossition(myGeopoint);
-
-
         }
 
         public void ShowRoute(IRoute route)

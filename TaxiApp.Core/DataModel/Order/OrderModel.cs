@@ -227,12 +227,6 @@ namespace TaxiApp.Core.DataModel.Order
             return route;
         }
 
-        public async Task ShowMyPossitionAsync()
-        {
-            Managers.MapPainter painter = null;
-            await painter.ShowMyPossitionAsync();
-        }
-
         //public void ShowServices()
         //{
         //    this.ServicePopup.IsOpen = true;

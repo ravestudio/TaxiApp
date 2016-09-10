@@ -35,6 +35,7 @@ namespace TaxiApp.ViewModel
             SimpleIoc.Default.Register<TaxiApp.Core.WebApiClient>();
             SimpleIoc.Default.Register<UserRepository>();
             SimpleIoc.Default.Register<SystemManager>();
+            SimpleIoc.Default.Register<MapPainter>();
             SimpleIoc.Default.Register<ILocationService, Core.UWP.Managers.LocationService>();
             SimpleIoc.Default.Register<LocationManager>();
             SimpleIoc.Default.Register<DataModel.LoginModel>(true);
@@ -56,12 +57,14 @@ namespace TaxiApp.ViewModel
             SimpleIoc.Default.Register<MapViewModel>(() =>
             {
                 ISuggestBox suggestBox = ServiceLocator.Current.GetInstance<ISuggestBox>();
-                var vm = new MapViewModel(suggestBox);
+                MapPainter painter = ServiceLocator.Current.GetInstance<MapPainter>();
+                var vm = new MapViewModel(suggestBox, painter);
 
                 return vm;
             });
 
             SimpleIoc.Default.Register<ISuggestBox, TaxiApp.Core.UWP.Managers.SuggestBox>();
+            SimpleIoc.Default.Register<IMap, TaxiApp.Core.UWP.Managers.Map>();
             SimpleIoc.Default.Register<IMenu, TaxiApp.Core.UWP.Managers.Menu>();
             SimpleIoc.Default.Register<IInitializationFrameStrategy>(() => { return new TaxiApp.Core.ViewModel.InitializationFrameStrategy(); }, "base");
             SimpleIoc.Default.Register<IInitializationFrameStrategy>(() => { return new TaxiApp.Core.UWP.ViewModel.InitializationFrameStrategy(); }, "split");

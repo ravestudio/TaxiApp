@@ -81,6 +81,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Common\DateTimeToDateTimeOffsetConverter.cs" />
+    <Compile Include="Common\SuggestTextChangedArgs.cs" />
     <Compile Include="DataModel\LoginModel.cs" />
     <Compile Include="DataModel\ModelFactory.cs" />
     <Compile Include="DataModel\Order\OrderItem.cs" />
