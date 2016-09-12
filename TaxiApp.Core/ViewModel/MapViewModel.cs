@@ -33,6 +33,9 @@ namespace TaxiApp.Core.ViewModel
         public RelayCommand<SuggestionChosenArgs> SelectLocationItem { get; set; }
 
         public string SearchText { get; set; }
+
+        private OrderPoint _currentPoint = null;
+
         
 
         public TaxiApp.Core.IRoute MapRoute
@@ -109,12 +112,19 @@ namespace TaxiApp.Core.ViewModel
                 {
                     LocationItem = location
                 });
+
+                this._currentPoint.Location = location;
                 //Frame rootFrame = Window.Current.Content as Frame;
 
                 //this.UpdatePoints();
                 //rootFrame.GoBack();
             });
 
+        }
+
+        public void SetOrderPoint(OrderPoint point)
+        {
+            this._currentPoint = point;
         }
 
         public void Refresh()

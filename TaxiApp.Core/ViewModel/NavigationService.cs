@@ -45,17 +45,17 @@ namespace TaxiApp.Core.ViewModel
 
         public void NavigateTo(string pageKey)
         {
-            Frame navigationFrame = null;
-
-            navigationFrame = this._frameStrategy.GetFrame();
-
-            navigationFrame.Navigate(this.pageList[pageKey]);
+            NavigateTo(pageKey, null);
         }
 
 
         public void NavigateTo(string pageKey, object parameter)
         {
-            throw new NotImplementedException();
+            Frame navigationFrame = null;
+
+            navigationFrame = this._frameStrategy.GetFrame();
+
+            navigationFrame.Navigate(this.pageList[pageKey], parameter);
         }
     }
 }

@@ -39,7 +39,7 @@ namespace TaxiApp.Core.ViewModel
 
             Messenger.Default.Register<FillRoutePointMessage>(this, (msg) => {
 
-                this._appNavigationServie.NavigateTo("AddPoint");
+                this._appNavigationServie.NavigateTo("AddPoint", msg.Point);
 
             });
 
