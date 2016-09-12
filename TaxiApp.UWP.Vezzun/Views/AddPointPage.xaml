@@ -20,7 +20,8 @@
     </i:Interaction.Behaviors>
 
     <Page.Resources>
-        <converters:SuggestTextChangedParameterConverter x:Key="ArgsConverter" />
+        <converters:SuggestTextChangedParameterConverter x:Key="TextChangedConverter" />
+        <converters:SuggestionChosenParameterConverter x:Key="SuggestionChosenConverter" />
     </Page.Resources>
 
 
@@ -33,13 +34,21 @@
             HorizontalAlignment="Stretch"
             PlaceholderText="Enter location"
             QueryIcon="Find"
-            Text="{Binding SearchText, Mode=TwoWay}">
+            Text="{Binding SearchText, Mode=TwoWay}"
+            
+            >
 
             <i:Interaction.Behaviors>
                 <core:EventTriggerBehavior EventName="TextChanged">
                     <core:InvokeCommandAction Command="{Binding SuggestTextChangedCmd}"
-                                              InputConverter="{StaticResource ArgsConverter}"/>
+                                              InputConverter="{StaticResource TextChangedConverter}"/>
                 </core:EventTriggerBehavior>
+
+                <core:EventTriggerBehavior EventName="SuggestionChosen">
+                    <core:InvokeCommandAction Command="{Binding SelectLocationItem}"
+                                              InputConverter="{StaticResource SuggestionChosenConverter}"/>
+                </core:EventTriggerBehavior>
+                
             </i:Interaction.Behaviors>
 
             <AutoSuggestBox.ItemTemplate>

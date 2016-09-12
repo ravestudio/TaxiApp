@@ -30,6 +30,7 @@ namespace TaxiApp.Core.ViewModel
 
         public RelayCommand<SuggestTextChangedArgs> SuggestTextChangedCmd { get; set; }
         private RelayCommand<string> searchCmd { get; set; }
+        public RelayCommand<SuggestionChosenArgs> SelectLocationItem { get; set; }
 
         public RelayCommand ContextChangedCmd { get; set; }
 
@@ -106,6 +107,20 @@ namespace TaxiApp.Core.ViewModel
                     Text = text
                 });
             }, (text) => { return (text.Length > 5); });
+
+            this.SelectLocationItem = new RelayCommand<SuggestionChosenArgs>((parameter) =>
+            {
+                LocationItem location = parameter.Selectedlocation;
+
+                Messenger.Default.Send<SelectLocationMessage>(new SelectLocationMessage()
+                {
+                    LocationItem = location
+                });
+                //Frame rootFrame = Window.Current.Content as Frame;
+
+                //this.UpdatePoints();
+                //rootFrame.GoBack();
+            });
 
         }
 

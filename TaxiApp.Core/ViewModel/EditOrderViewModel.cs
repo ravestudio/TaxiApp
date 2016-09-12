@@ -24,7 +24,7 @@ namespace TaxiApp.Core.ViewModel
         public SearchModel SearchModel { get; set; }
 
         public RelayCommand<object> ClickOrderItem { get; set; }
-        public RelayCommand<object> SelectLocationItem { get; set; }
+        
         public RelayCommand SelectServicesCmd { get; set; }
         public RelayCommand CancelOrderCmd { get; set; }
         public RelayCommand CreateOrderCmd { get; set; }
@@ -121,19 +121,6 @@ namespace TaxiApp.Core.ViewModel
                 this.Actions[orderItem.Cmd].Invoke(orderItem);
             });
             
-            this.SelectLocationItem = new RelayCommand<object>((parameter) =>
-            {
-                Windows.UI.Xaml.Controls.ItemClickEventArgs e = (Windows.UI.Xaml.Controls.ItemClickEventArgs)parameter;
-                LocationItem location = (LocationItem)e.ClickedItem;
-                
-                Messenger.Default.Send<SelectLocationMessage>(new SelectLocationMessage() {
-                    LocationItem = location
-                });
-                Frame rootFrame = Window.Current.Content as Frame;
-
-                this.UpdatePoints();
-                rootFrame.GoBack();
-            });
             
             this.SelectServicesCmd = new RelayCommand(() =>
             {

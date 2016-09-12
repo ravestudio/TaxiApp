@@ -107,6 +107,7 @@
     <None Include="project.json" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Common\SuggestionChosenParameterConverter.cs" />
     <Compile Include="Common\SuggestTextChangedParameterConverter.cs" />
     <Compile Include="Location.cs" />
     <Compile Include="Managers\LocationService.cs" />
