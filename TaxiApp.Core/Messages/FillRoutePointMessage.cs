@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TaxiApp.Core.DataModel.Order;
 
 namespace TaxiApp.Core.Messages
 {
@@ -12,6 +13,6 @@ namespace TaxiApp.Core.Messages
     /// </summary>
     public class FillRoutePointMessage
     {
-        public TaxiApp.Core.DataModel.Order.OrderPoint Point { get; set; }
+        public OrderPoint Point { get; set; }
     }
 }

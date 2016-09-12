@@ -103,6 +103,9 @@
   <ItemGroup>
     <Content Include="Assets\AddressPoint.png" />
     <Content Include="Assets\AddressPointTo.png" />
+    <Content Include="Assets\marker_my_location.png" />
+    <Content Include="Assets\marker_next.png" />
+    <Content Include="Assets\mfinish.png" />
     <Content Include="Assets\options.png" />
     <Content Include="Assets\service.png" />
     <Content Include="Assets\time.png" />

@@ -32,8 +32,6 @@ namespace TaxiApp.Core.ViewModel
         private RelayCommand<string> searchCmd { get; set; }
         public RelayCommand<SuggestionChosenArgs> SelectLocationItem { get; set; }
 
-        public RelayCommand ContextChangedCmd { get; set; }
-
         public string SearchText { get; set; }
         
 
@@ -85,11 +83,6 @@ namespace TaxiApp.Core.ViewModel
                 this._suggestBox.Open();
             });
 
-            this.ContextChangedCmd = new RelayCommand(() =>
-            {
-                _painter.ShowMyPossitionAsync();
-            });
-
             this.SuggestTextChangedCmd = new RelayCommand<SuggestTextChangedArgs>((args) =>
             {
                 if (args.ByUser)
@@ -122,6 +115,11 @@ namespace TaxiApp.Core.ViewModel
                 //rootFrame.GoBack();
             });
 
+        }
+
+        public void Refresh()
+        {
+            _painter.ShowMyPossitionAsync();
         }
 
     }

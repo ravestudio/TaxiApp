@@ -19,7 +19,6 @@ namespace TaxiApp.Core.DataModel
 
         //private Object thisLock = new Object();
 
-        public Order.OrderPoint SelectedPoint { get; set; }
 
         //public Windows.UI.Core.CoreDispatcher Dispatcher { get; set; }
 

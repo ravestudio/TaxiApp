@@ -264,8 +264,6 @@ namespace TaxiApp.Core.ViewModel
 
                 //SearchModel.SelectedPoint = orderPoint;
 
-                //this._navigationServie.NavigateTo("AddPoint");
-
                 Messenger.Default.Send<FillRoutePointMessage>(new FillRoutePointMessage()
                 {
                     Point = orderPoint
