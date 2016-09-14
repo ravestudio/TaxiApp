@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.Devices.Geolocation;
 
 namespace TaxiApp.Core
 {
@@ -16,6 +17,8 @@ namespace TaxiApp.Core
         string StreetNumber { get; }
 
         double Latitude { get; }
-        double Longitude { get; } 
+        double Longitude { get; }
+
+        Geopoint GetGeopoint();
     }
 }

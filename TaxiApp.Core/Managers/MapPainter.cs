@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using TaxiApp.Core.DataModel;
 using Windows.Devices.Geolocation;
 
 namespace TaxiApp.Core.Managers
@@ -25,6 +25,11 @@ namespace TaxiApp.Core.Managers
             Geopoint myGeopoint = await _locationMG.GetCurrentGeopoint();
 
             _mapImpl.ShowMyPossition(myGeopoint);
+        }
+
+        public void ShowMarker(ILocation location)
+        {
+            _mapImpl.ShowMarker(location.GetGeopoint());
         }
 
         public void ShowRoute(IRoute route)

@@ -34,12 +34,15 @@ namespace TaxiApp.ViewModel
 
             SimpleIoc.Default.Register<TaxiApp.Core.WebApiClient>();
             SimpleIoc.Default.Register<UserRepository>();
+            SimpleIoc.Default.Register<DriverRepository>();
+            SimpleIoc.Default.Register<OrderRepository>();
             SimpleIoc.Default.Register<SystemManager>();
             SimpleIoc.Default.Register<MapPainter>();
             SimpleIoc.Default.Register<ILocationService, Core.UWP.Managers.LocationService>();
             SimpleIoc.Default.Register<LocationManager>();
             SimpleIoc.Default.Register<DataModel.LoginModel>(true);
             SimpleIoc.Default.Register<Core.DataModel.SearchModel>(true);
+            SimpleIoc.Default.Register<Core.DataModel.Order.OrderModel>(true);
 
             SimpleIoc.Default.Register<AuthenticationViewModel>(() => {
                 return new AuthenticationViewModel(ServiceLocator.Current.GetInstance<INavigationService>("base"));
@@ -58,7 +61,8 @@ namespace TaxiApp.ViewModel
             {
                 ISuggestBox suggestBox = ServiceLocator.Current.GetInstance<ISuggestBox>();
                 MapPainter painter = ServiceLocator.Current.GetInstance<MapPainter>();
-                var vm = new MapViewModel(suggestBox, painter);
+                INavigationService navigationService = ServiceLocator.Current.GetInstance<INavigationService>("base");
+                var vm = new MapViewModel(navigationService, suggestBox, painter);
 
                 return vm;
             });

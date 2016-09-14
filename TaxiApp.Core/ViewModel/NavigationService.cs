@@ -40,7 +40,7 @@ namespace TaxiApp.Core.ViewModel
 
         public void GoBack()
         {
-            throw new NotImplementedException();
+            this._frameStrategy.GetFrame().GoBack();
         }
 
         public void NavigateTo(string pageKey)

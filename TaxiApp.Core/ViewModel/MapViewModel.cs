@@ -1,5 +1,6 @@
 ﻿using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
+using GalaSoft.MvvmLight.Views;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -31,12 +32,17 @@ namespace TaxiApp.Core.ViewModel
         public RelayCommand<SuggestTextChangedArgs> SuggestTextChangedCmd { get; set; }
         private RelayCommand<string> searchCmd { get; set; }
         public RelayCommand<SuggestionChosenArgs> SelectLocationItem { get; set; }
+        public RelayCommand confirmCmd { get; set; }
 
         public string SearchText { get; set; }
 
         private OrderPoint _currentPoint = null;
 
-        
+        private LocationItem _templocationItem = null;
+
+        private INavigationService _appNavigationServie = null;
+
+
 
         public TaxiApp.Core.IRoute MapRoute
         {
@@ -60,8 +66,10 @@ namespace TaxiApp.Core.ViewModel
             }
         }
 
-        public MapViewModel(ISuggestBox suggestBox, Managers.MapPainter painter)
+        public MapViewModel(INavigationService appNavigationService, ISuggestBox suggestBox, Managers.MapPainter painter)
         {
+            this._appNavigationServie = appNavigationService;
+
             this._suggestBox = suggestBox;
             this._painter = painter;
             
@@ -86,6 +94,10 @@ namespace TaxiApp.Core.ViewModel
                 this._suggestBox.Open();
             });
 
+            Messenger.Default.Register<RouteChangedMessage>(this, (msg) => {
+                this._painter.ShowRoute(msg.route);
+            });
+
             this.SuggestTextChangedCmd = new RelayCommand<SuggestTextChangedArgs>((args) =>
             {
                 if (args.ByUser)
@@ -104,16 +116,24 @@ namespace TaxiApp.Core.ViewModel
                 });
             }, (text) => { return (text.Length > 5); });
 
+            this.confirmCmd = new RelayCommand(() =>
+            {
+                this._currentPoint.Location = this._templocationItem;
+                this._appNavigationServie.GoBack();
+            });
+
             this.SelectLocationItem = new RelayCommand<SuggestionChosenArgs>((parameter) =>
             {
-                LocationItem location = parameter.Selectedlocation;
+                LocationItem locationItem = parameter.Selectedlocation;
 
                 Messenger.Default.Send<SelectLocationMessage>(new SelectLocationMessage()
                 {
-                    LocationItem = location
+                    Priority = this._currentPoint.Priority,
+                    LocationItem = locationItem
                 });
 
-                this._currentPoint.Location = location;
+                this._templocationItem = locationItem;
+                this._painter.ShowMarker(locationItem.Location);
                 //Frame rootFrame = Window.Current.Content as Frame;
 
                 //this.UpdatePoints();

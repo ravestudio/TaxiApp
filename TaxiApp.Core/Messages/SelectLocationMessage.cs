@@ -8,6 +8,8 @@ namespace TaxiApp.Core.Messages
     /// </summary>
     public class SelectLocationMessage
     {
-		  public TaxiApp.Core.DataModel.LocationItem LocationItem { get; set; }
+        public int Priority { get; set; }
+
+        public TaxiApp.Core.DataModel.LocationItem LocationItem { get; set; }
     }
 }

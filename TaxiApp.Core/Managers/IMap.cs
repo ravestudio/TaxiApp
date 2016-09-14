@@ -12,6 +12,8 @@ namespace TaxiApp.Core.Managers
     {
         void ShowMyPossition(Geopoint myGeopoint);
 
+        void ShowMarker(Geopoint geopoint);
+
         void ShowRoute(IRoute route);
     }
 }

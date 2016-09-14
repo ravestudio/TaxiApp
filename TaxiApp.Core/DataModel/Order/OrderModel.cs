@@ -10,6 +10,7 @@ using TaxiApp.Core.Repository;
 using TaxiApp.Core.Messages;
 using Windows.Devices.Geolocation;
 using GalaSoft.MvvmLight.Messaging;
+using TaxiApp.Core.Managers;
 
 namespace TaxiApp.Core.DataModel.Order
 {
@@ -26,6 +27,7 @@ namespace TaxiApp.Core.DataModel.Order
         private TaxiApp.Core.SocketClient SocketClient = new Core.SocketClient();
         private TaxiApp.Core.Socket.SocketManager socketMG = null;
 
+        private IList<LocationItem> tempLocations = null;
 
         public TaxiApp.Core.Entities.Order Detailed { get; set; }
         //public Windows.UI.Core.CoreDispatcher Dispatcher { get; set; }
@@ -35,11 +37,15 @@ namespace TaxiApp.Core.DataModel.Order
 
         private OrderRepository _orderRepository = null;
         private DriverRepository _driverRepository = null;
+        private LocationManager _locationMG = null;
 
-        public OrderModel(OrderRepository orderRepository, DriverRepository driverRepository)
+        public OrderModel(OrderRepository orderRepository, DriverRepository driverRepository, LocationManager locationManager)
         {
+            this.tempLocations = new List<LocationItem>();
+
             this._orderRepository = orderRepository;
             this._driverRepository = driverRepository;
+            this._locationMG = locationManager;
             
             socketMG = new Core.Socket.SocketManager(this.SocketClient);
 
@@ -54,13 +60,13 @@ namespace TaxiApp.Core.DataModel.Order
             string Host = "178.208.77.21";
             string Port = "9090";
 
-            SocketClient.ConnectAsync(Host, Port).ContinueWith(t =>
-            {
-                string res = "ok";
+            //SocketClient.ConnectAsync(Host, Port).ContinueWith(t =>
+            //{
+            //    string res = "ok";
 
-                socketMG.Start();
+            //    socketMG.Start();
 
-            });
+            //});
 
             SocketClient.OnMessage += SocketClient_OnMessage;
             
@@ -82,6 +88,24 @@ namespace TaxiApp.Core.DataModel.Order
             Messenger.Default.Register<SelectOrderMessage>(this, (msg) => {
                     this.Detailed = msg.Order;
                 });
+
+            Messenger.Default.Register<SelectLocationMessage>(this, async (msg) =>
+            {
+                this.tempLocations.Add(msg.LocationItem);
+
+                IEnumerable<Geopoint> geopoints = this.tempLocations.Select(p => new Geopoint(new BasicGeoposition()
+                {
+                    Latitude = p.Location.Latitude,
+                    Longitude = p.Location.Longitude
+                }));
+
+                IRoute route = await this.FindRoute(geopoints);
+
+                Messenger.Default.Send<RouteChangedMessage>(new RouteChangedMessage()
+                {
+                    route = route
+                });
+            });
         }
 
         void SocketClient_OnMessage(object sender, EventArgs e)
@@ -208,23 +232,20 @@ namespace TaxiApp.Core.DataModel.Order
             }
         }
 
-        public async Task<IRoute> FindRoute(IEnumerable<Geopoint> geopoints)
+        public Task<IRoute> FindRoute(IEnumerable<Geopoint> geopoints)
         {
-            IRoute route = null;
+            Task<IRoute> task = null;
 
             int thread = Environment.CurrentManagedThreadId;
 
-            Managers.LocationManager locationMG = null;
             //Managers.LocationManager locationMG = Managers.ManagerFactory.Instance.GetLocationManager();
 
             if (geopoints.Count() > 1)
             {
-                Task<IRoute> routeTask = locationMG.GetRoute(geopoints);
-
-                route = await routeTask;
+                task = this._locationMG.GetRoute(geopoints);
             }
 
-            return route;
+            return task;
         }
 
         //public void ShowServices()

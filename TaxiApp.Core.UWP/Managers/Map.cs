@@ -44,7 +44,18 @@ namespace TaxiApp.Core.UWP.Managers
             mapControl.ZoomLevel = 12;
             mapControl.LandmarksVisible = true;
 
-            AddMapIcon(myGeopoint);
+            Windows.UI.Xaml.Shapes.Ellipse fence = new Windows.UI.Xaml.Shapes.Ellipse();
+            fence.Fill = new Windows.UI.Xaml.Media.SolidColorBrush(Windows.UI.Color.FromArgb(255, 50, 120, 90));
+
+            fence.Width = 15;
+            fence.Height = 15;
+
+            AddMapIcon(myGeopoint, fence);
+        }
+
+        public void ShowMarker(Geopoint geopoint)
+        {
+            AddOrderPoint(geopoint);
         }
 
         public void ShowRoute(IRoute route)
@@ -59,32 +70,32 @@ namespace TaxiApp.Core.UWP.Managers
 
             // Add the new MapRouteView to the Routes collection
             // of the MapControl.
+
             mapControl.Routes.Add(viewOfRoute);
 
         }
 
-        private void AddMapIcon(Geopoint point)
+        private void AddOrderPoint(Geopoint point)
+        {
+            var icon = new Windows.UI.Xaml.Controls.Image()
+            {
+                Source = new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///Assets/marker_next.png")),
+                Width = 50,
+                Height = 50
+            };
+
+            AddMapIcon(point, icon);
+        }
+
+        private void AddMapIcon(Geopoint point, DependencyObject obj)
         {
             MapControl mapControl = GetMapControl();
 
-            Windows.UI.Xaml.Shapes.Ellipse fence = new Windows.UI.Xaml.Shapes.Ellipse();
-            fence.Fill = new Windows.UI.Xaml.Media.SolidColorBrush(Windows.UI.Color.FromArgb(255, 50, 120, 90));
+            Windows.UI.Xaml.Controls.Maps.MapControl.SetLocation(obj, point);
+            Windows.UI.Xaml.Controls.Maps.MapControl.SetNormalizedAnchorPoint(obj, new Windows.Foundation.Point(0.5, 0.5));
 
-            fence.Width = 15;
-            fence.Height = 15;
-
-            //MapIcon MapIcon1 = new MapIcon();
-            //MapIcon1.Title = "Space Needle";
-
-            //var childObj = new Windows.UI.Xaml.Controls.Image
-            //{
-            //    Source = new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///Assets/point.png"))
-            //};
-
-            Windows.UI.Xaml.Controls.Maps.MapControl.SetLocation(fence, point);
-            Windows.UI.Xaml.Controls.Maps.MapControl.SetNormalizedAnchorPoint(fence, new Windows.Foundation.Point(0.5, 0.5));
-
-            mapControl.Children.Add(fence);
+            mapControl.Children.Add(obj);
         }
+
     }
 }

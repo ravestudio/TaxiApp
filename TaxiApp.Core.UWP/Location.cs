@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.Devices.Geolocation;
 using Windows.Services.Maps;
 
 namespace TaxiApp.Core.UWP
@@ -30,6 +31,9 @@ namespace TaxiApp.Core.UWP
         public double Latitude { get { return MapLocation.Point.Position.Latitude; } }
         public double Longitude { get { return MapLocation.Point.Position.Longitude; } }
 
-
+        public Geopoint GetGeopoint()
+        {
+            return this.MapLocation.Point;
+        }
     }
 }
