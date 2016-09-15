@@ -11,7 +11,16 @@
     <Page.BottomAppBar>
         <CommandBar>
 
-            <AppBarButton Icon="Accept" Label="appbarbutton" Command="{Binding RegisterCmd}"/>
+            <CommandBar.PrimaryCommands>
+                
+                <AppBarButton Icon="Accept" Label="appbarbutton" Command="{Binding RegisterCmd}"/>
+
+                
+            </CommandBar.PrimaryCommands>
+            <CommandBar.SecondaryCommands>
+                <AppBarButton Icon="Add" Label="xxx"></AppBarButton>
+                <AppBarButton Icon="Add" Label="xxx"></AppBarButton>
+            </CommandBar.SecondaryCommands>
         </CommandBar>
     </Page.BottomAppBar>
 

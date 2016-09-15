@@ -1,6 +1,9 @@
-﻿using GalaSoft.MvvmLight.Command;
+﻿using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.Command;
+using GalaSoft.MvvmLight.Ioc;
 using GalaSoft.MvvmLight.Messaging;
 using GalaSoft.MvvmLight.Views;
+using Microsoft.Practices.ServiceLocation;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -17,7 +20,7 @@ using Windows.UI.Xaml.Controls;
 
 namespace TaxiApp.Core.ViewModel
 {
-    public class MapViewModel
+    public class MapViewModel : ViewModelBase
     {
         public delegate void RouteChangeHandler();
         public RouteChangeHandler RouteChanged;
@@ -95,7 +98,11 @@ namespace TaxiApp.Core.ViewModel
             });
 
             Messenger.Default.Register<RouteChangedMessage>(this, (msg) => {
-                this._painter.ShowRoute(msg.route);
+
+                if (msg.route != null)
+                {
+                    this._painter.ShowRoute(msg.route);
+                }
             });
 
             this.SuggestTextChangedCmd = new RelayCommand<SuggestTextChangedArgs>((args) =>
@@ -150,6 +157,19 @@ namespace TaxiApp.Core.ViewModel
         public void Refresh()
         {
             _painter.ShowMyPossitionAsync();
+        }
+
+        public override void Cleanup()
+        {
+            base.Cleanup();
+
+            Messenger.Default.Send<CleanupMessage>(new CleanupMessage()
+            {
+                 view = 1
+            });
+
+            //MapViewModel mapVM = ServiceLocator.Current.GetInstance<MapViewModel>();
+            //SimpleIoc.Default.Unregister<MapViewModel>(mapVM);
         }
 
     }

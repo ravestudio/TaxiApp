@@ -39,6 +39,11 @@ namespace TaxiApp.Views
 
         }
 
+        protected override void OnNavigatedFrom(NavigationEventArgs e)
+        {
+            ((MapViewModel)this.DataContext).Cleanup();
+        }
+
 
     }
 }

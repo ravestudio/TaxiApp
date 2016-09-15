@@ -42,5 +42,9 @@
             </i:Interaction.Behaviors>
 
         </ListView>
+
+        <Button Content="GO" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,50" Command="{Binding CreateOrderCmd}"></Button>
     </Grid>
+
+
 </Page>

@@ -12,6 +12,8 @@ using GalaSoft.MvvmLight.Views;
 using Microsoft.Practices.ServiceLocation;
 using GalaSoft.MvvmLight.Command;
 using Windows.UI.Xaml.Controls;
+using GalaSoft.MvvmLight.Messaging;
+using TaxiApp.Core.Messages;
 
 namespace TaxiApp.ViewModel
 {
@@ -44,7 +46,8 @@ namespace TaxiApp.ViewModel
             SimpleIoc.Default.Register<Core.DataModel.SearchModel>(true);
             SimpleIoc.Default.Register<Core.DataModel.Order.OrderModel>(true);
 
-            SimpleIoc.Default.Register<AuthenticationViewModel>(() => {
+            SimpleIoc.Default.Register<AuthenticationViewModel>(() =>
+            {
                 return new AuthenticationViewModel(ServiceLocator.Current.GetInstance<INavigationService>("base"));
             });
 
@@ -74,8 +77,19 @@ namespace TaxiApp.ViewModel
             SimpleIoc.Default.Register<IInitializationFrameStrategy>(() => { return new TaxiApp.Core.UWP.ViewModel.InitializationFrameStrategy(); }, "split");
             SimpleIoc.Default.Register<INavigationService>(GetBaseNavigationService, "base");
             SimpleIoc.Default.Register<INavigationService>(GetSplitNavigationService, "split");
+        }
+
+        public ViewModelLocator()
+        {
+            Messenger.Default.Register<CleanupMessage>(this, (msg) =>
+            {
+                ViewModelLocator.Cleanup();
+
+            });
 
         }
+
+
 
         private static INavigationService GetBaseNavigationService()
         {
@@ -140,6 +154,16 @@ namespace TaxiApp.ViewModel
         /// </summary>
         public static void Cleanup()
         {
+            MapViewModel mapVM = ServiceLocator.Current.GetInstance<MapViewModel>();
+            ISuggestBox suggestBox = ServiceLocator.Current.GetInstance<ISuggestBox>();
+            IMap map = ServiceLocator.Current.GetInstance<IMap>();
+            MapPainter painter = ServiceLocator.Current.GetInstance<MapPainter>();
+
+            SimpleIoc.Default.Unregister<MapViewModel>(mapVM);
+            SimpleIoc.Default.Unregister<ISuggestBox>(suggestBox);
+            SimpleIoc.Default.Unregister<MapPainter>(painter);
+            SimpleIoc.Default.Unregister<IMap>(map);
+            
         }
     }
 }

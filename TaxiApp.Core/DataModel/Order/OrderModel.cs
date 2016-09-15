@@ -27,7 +27,7 @@ namespace TaxiApp.Core.DataModel.Order
         private TaxiApp.Core.SocketClient SocketClient = new Core.SocketClient();
         private TaxiApp.Core.Socket.SocketManager socketMG = null;
 
-        private IList<LocationItem> tempLocations = null;
+        private IDictionary<int,LocationItem> tempLocations = null;
 
         public TaxiApp.Core.Entities.Order Detailed { get; set; }
         //public Windows.UI.Core.CoreDispatcher Dispatcher { get; set; }
@@ -41,7 +41,7 @@ namespace TaxiApp.Core.DataModel.Order
 
         public OrderModel(OrderRepository orderRepository, DriverRepository driverRepository, LocationManager locationManager)
         {
-            this.tempLocations = new List<LocationItem>();
+            this.tempLocations = new Dictionary<int, LocationItem>();
 
             this._orderRepository = orderRepository;
             this._driverRepository = driverRepository;
@@ -91,9 +91,17 @@ namespace TaxiApp.Core.DataModel.Order
 
             Messenger.Default.Register<SelectLocationMessage>(this, async (msg) =>
             {
-                this.tempLocations.Add(msg.LocationItem);
+                if (this.tempLocations.ContainsKey(msg.Priority))
+                {
+                    this.tempLocations[msg.Priority] = msg.LocationItem;
+                }
+                else
+                {
+                    this.tempLocations.Add(msg.Priority, msg.LocationItem);
+                }
 
-                IEnumerable<Geopoint> geopoints = this.tempLocations.Select(p => new Geopoint(new BasicGeoposition()
+                IEnumerable<Geopoint> geopoints = this.tempLocations.Values
+                .Select(p => new Geopoint(new BasicGeoposition()
                 {
                     Latitude = p.Location.Latitude,
                     Longitude = p.Location.Longitude
@@ -234,7 +242,7 @@ namespace TaxiApp.Core.DataModel.Order
 
         public Task<IRoute> FindRoute(IEnumerable<Geopoint> geopoints)
         {
-            Task<IRoute> task = null;
+            TaskCompletionSource<IRoute> TCS = new TaskCompletionSource<IRoute>();
 
             int thread = Environment.CurrentManagedThreadId;
 
@@ -242,10 +250,14 @@ namespace TaxiApp.Core.DataModel.Order
 
             if (geopoints.Count() > 1)
             {
-                task = this._locationMG.GetRoute(geopoints);
+                TCS.SetResult(this._locationMG.GetRoute(geopoints).Result);
+            }
+            else
+            {
+                TCS.SetResult(null);
             }
 
-            return task;
+            return TCS.Task;
         }
 
         //public void ShowServices()
