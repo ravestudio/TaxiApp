@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace TaxiApp.Core.Messages
 {
+    /// <summary>
+    /// почисть контейнер
+    /// </summary>
     public class CleanupMessage
     {
         public int view { get; set; }

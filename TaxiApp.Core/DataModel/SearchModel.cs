@@ -70,7 +70,9 @@ namespace TaxiApp.Core.DataModel
 
                 ILocation currentLocation = this._locationMg.GetCurrentLocation();
 
-                string town = currentLocation.Town;
+                //string town = currentLocation.Town;
+
+                string town = "Южно-Сахалинск";
 
                 string searchQuery = string.Format("{0} {1}", town, text);
 

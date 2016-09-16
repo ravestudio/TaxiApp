@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 namespace TaxiApp.Core.Messages
 {
     /// <summary>
-    /// Маршрут изменен
+    /// Список заказов загружен
     /// </summary>
-    public class RouteChangedMessage
+    public class OrderListloadedMessage
     {
-        public IRoute route { get; set; }
+        public IList<TaxiApp.Core.Entities.Order> orderList { get; set; }
     }
 }

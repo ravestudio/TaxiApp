@@ -69,9 +69,21 @@ namespace TaxiApp.Core.DataModel.Order
             //});
 
             SocketClient.OnMessage += SocketClient_OnMessage;
+
+            Messenger.Default.Register<LoadOrderListMessage>(this, async (msg) =>
+            {
+                TaxiApp.Core.Entities.IUser user = TaxiApp.Core.Session.Instance.GetUser();
+
+                IList<TaxiApp.Core.Entities.Order> orderList = await this._orderRepository.GetUserOrders(user);
+
+                Messenger.Default.Send<OrderListloadedMessage>(new OrderListloadedMessage()
+                {
+                    orderList = orderList
+                });
+            });
             
             Messenger.Default.Register<CreateOrderMessage>(this, async (msg) => {
-                    string data = await this.CreateOrder(msg.Order);
+                    string data = await this._orderRepository.CreateOrder(msg.Order);
                 });
                 
             Messenger.Default.Register<DeleteOrderMessage>(this, async (msg) => {
@@ -269,27 +281,6 @@ namespace TaxiApp.Core.DataModel.Order
         //{
         //    this.DateTimePopup.IsOpen = true;
         //}
-
-        public Task<string> CreateOrder(TaxiApp.Core.Entities.Order order)
-        {
-            var tcs = new TaskCompletionSource<string>();
-            
-            TaxiApp.Core.Entities.IUser user = TaxiApp.Core.Session.Instance.GetUser();
-
-            var postData = order.ConverToKeyValue();
-
-            //var postData = new List<KeyValuePair<string, string>>();
-
-            postData.Add(new KeyValuePair<string, string>("idpassenger", user.Id.ToString()));
-            postData.Add(new KeyValuePair<string, string>("token", user.token));
-            postData.Add(new KeyValuePair<string, string>("idcompany", "1"));
-
-            TaxiApp.Core.WebApiClient client = new TaxiApp.Core.WebApiClient();
-
-            string url = "http://serv.cabswap.com/api/passenger_setorder/";
-
-            return client.GetData(url, postData);
-        }
         
 
         public Task<Entities.Driver> GetDriver(int DriverId)

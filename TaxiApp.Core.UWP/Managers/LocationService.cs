@@ -10,6 +10,10 @@ namespace TaxiApp.Core.UWP.Managers
 {
     public class LocationService : TaxiApp.Core.Managers.ILocationService
     {
+        public LocationService()
+        {
+            MapService.ServiceToken = "I0cGrslTbQ3DHrRQvFQx~QJpA302VeNqZlqFjzOu2EA~Al43aNX3jPD5U_v91nVr3mXF6RGb6O8SPJgkJJSqns-1DDS8DxfhmQyoxg3aYqeu";
+        }
         public Task<ILocation> GetLocation(Geopoint hintPoint)
         {
             TaskCompletionSource<ILocation> TCS = new TaskCompletionSource<ILocation>();
@@ -55,6 +59,8 @@ namespace TaxiApp.Core.UWP.Managers
         public Task<IRoute> GetRoute(IEnumerable<Geopoint> points)
         {
             TaskCompletionSource<IRoute> TCS = new TaskCompletionSource<IRoute>();
+
+            
 
             Task<MapRouteFinderResult> routeTask =
                 MapRouteFinder.GetDrivingRouteFromWaypointsAsync(

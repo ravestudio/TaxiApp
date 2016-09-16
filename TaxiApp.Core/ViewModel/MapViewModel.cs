@@ -77,19 +77,6 @@ namespace TaxiApp.Core.ViewModel
             this._painter = painter;
             
 
-            this.RouteChanged = new RouteChangeHandler(() =>
-            {
-                //Windows.Foundation.IAsyncAction action =
-                //RouteMapControl.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
-                //{
-
-                //    this.OrderModel.ShowRoute(this.mapRoute);
-                //});
-
-                this.OrderModel.ShowRoute(this.mapRoute);
-
-            });
-
             Messenger.Default.Register<FoundLocationsMessage>(this, (msg) => {
 
                 this._suggestBox.SetListItems(msg.LocationItems);
@@ -167,9 +154,6 @@ namespace TaxiApp.Core.ViewModel
             {
                  view = 1
             });
-
-            //MapViewModel mapVM = ServiceLocator.Current.GetInstance<MapViewModel>();
-            //SimpleIoc.Default.Unregister<MapViewModel>(mapVM);
         }
 
     }

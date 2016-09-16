@@ -62,7 +62,9 @@
         <Maps:MapControl x:Name="RouteMapControl"
                          HorizontalAlignment="Stretch"
                          VerticalAlignment="Stretch"
-                         Margin="0,40,0,0"/>
+                         Margin="0,40,0,0"
+                         MapServiceToken="I0cGrslTbQ3DHrRQvFQx~QJpA302VeNqZlqFjzOu2EA~Al43aNX3jPD5U_v91nVr3mXF6RGb6O8SPJgkJJSqns-1DDS8DxfhmQyoxg3aYqeu"
+                         />
 
         <Button Content="OK" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,50" Command="{Binding confirmCmd}"></Button>
 

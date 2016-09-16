@@ -15,6 +15,7 @@ using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Views;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using TaxiApp.Core;
 
 namespace TaxiApp.Core.ViewModel
 {
@@ -57,9 +58,9 @@ namespace TaxiApp.Core.ViewModel
         
         private ObservableCollection<OrderItem> _orderItemList = null;
 
-        public MapViewModel Map { get; set; }
-
         private TaxiApp.Core.Entities.Order _order = null;
+
+        private IRoute _route = null;
         
 
         public ObservableCollection<OrderItem> OrderItemList
@@ -201,7 +202,11 @@ namespace TaxiApp.Core.ViewModel
                 this.LocationReady = msg.Ready;
                 this.NotifyPropertyChanged("LocationReady");
             });
-            
+
+            Messenger.Default.Register<RouteChangedMessage>(this, (msg) => {
+
+                this._route = msg.route;
+            });
 
             this.LayoutRootList = new Dictionary<Type, Windows.UI.Xaml.Controls.Grid>();
 
@@ -405,7 +410,7 @@ namespace TaxiApp.Core.ViewModel
                 if (t.Status == TaskStatus.RanToCompletion)
                 {
 
-                    this.Map.MapRoute = t.Result;
+                    //this.Map.MapRoute = t.Result;
 
                     Windows.Foundation.IAsyncAction action =
                     this.Page.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
@@ -499,10 +504,10 @@ namespace TaxiApp.Core.ViewModel
                 _order.Route.Add(routeItem);
             }
 
-            if (this.Map.MapRoute != null)
+            if (this._route != null)
             {
-                _order.Routemeters = (int)this.Map.MapRoute.LengthInMeters;
-                _order.Routetime = this.Map.MapRoute.EstimatedDuration;
+                _order.Routemeters = (int)this._route.LengthInMeters;
+                _order.Routetime = this._route.EstimatedDuration;
             }
 
             _order.StartDate = new DateTime(EndDate.Year, EndDate.Month, EndDate.Day, EndTime.Hours, EndTime.Minutes, EndTime.Seconds);

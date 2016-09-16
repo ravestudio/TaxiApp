@@ -113,10 +113,12 @@
     <Compile Include="Messages\CleanupMessage.cs" />
     <Compile Include="Messages\FillRoutePointMessage.cs" />
     <Compile Include="Messages\FoundLocationsMessage.cs" />
+    <Compile Include="Messages\LoadOrderListMessage.cs" />
     <Compile Include="Messages\LocationChangedMessage.cs" />
     <Compile Include="Messages\LoginUserMessage.cs" />
     <Compile Include="Messages\MessageStatus.cs" />
     <Compile Include="Messages\OrderDeletedMessage.cs" />
+    <Compile Include="Messages\OrderListloadedMessage.cs" />
     <Compile Include="Messages\ReadPhoneNumberResultMessage.cs" />
     <Compile Include="Messages\RegisterUserMessage.cs" />
     <Compile Include="Messages\RouteChangedMessage.cs" />

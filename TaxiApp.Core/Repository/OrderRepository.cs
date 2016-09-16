@@ -18,6 +18,25 @@ namespace TaxiApp.Core.Repository
             base.Create(order);
         }
 
+        public Task<string> CreateOrder(TaxiApp.Core.Entities.Order order)
+        {
+            string url = string.Format("{0}{1}", this.ServerURL, "api/passenger_setorder/");
+
+            TaxiApp.Core.Entities.IUser user = TaxiApp.Core.Session.Instance.GetUser();
+
+            var postData = order.ConverToKeyValue();
+
+            //var postData = new List<KeyValuePair<string, string>>();
+
+            postData.Add(new KeyValuePair<string, string>("idpassenger", user.Id.ToString()));
+            postData.Add(new KeyValuePair<string, string>("token", user.token));
+            postData.Add(new KeyValuePair<string, string>("idcompany", "1"));
+
+            TaxiApp.Core.WebApiClient client = new TaxiApp.Core.WebApiClient();
+
+            return client.GetData(url, postData);
+        }
+
         public async Task<IList<Entities.Order>> GetUserOrders(Entities.IUser user)
         {
             IList<Entities.Order> orderList = new List<Entities.Order>();
