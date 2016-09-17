@@ -52,6 +52,7 @@ namespace TaxiApp.ViewModel
             });
 
             SimpleIoc.Default.Register<EditOrderViewModel>();
+            SimpleIoc.Default.Register<MyOrderListViewModel>();
 
             SimpleIoc.Default.Register<MainViewModel>(() =>
             {
@@ -113,6 +114,7 @@ namespace TaxiApp.ViewModel
             var navigationService = new TaxiApp.Core.ViewModel.NavigationService(frameStrategy);
 
             navigationService.Configure("EditOrder", typeof(Views.EditOrderPage));
+            navigationService.Configure("OrderList", typeof(Views.OrderListPage));
 
             return navigationService;
         }
@@ -130,6 +132,14 @@ namespace TaxiApp.ViewModel
             get
             {
                 return ServiceLocator.Current.GetInstance<EditOrderViewModel>();
+            }
+        }
+
+        public MyOrderListViewModel MyOrderListViewModel
+        {
+            get
+            {
+                return ServiceLocator.Current.GetInstance<MyOrderListViewModel>();
             }
         }
 

@@ -73,36 +73,30 @@ namespace TaxiApp.Core.ViewModel
 
             Messenger.Default.Register<OrderDeletedMessage>(this, (msg) => {
                 var order = this.OrderList.Where(o => o.Id == msg.OrderId).SingleOrDefault();
-                this.Page.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+
+                this.OrderList.Remove(order);
+                
+            });
+
+            Messenger.Default.Register<OrderListloadedMessage>(this, (msg) =>
+            {
+                this.OrderList.Clear();
+                foreach (Core.Entities.Order order in msg.orderList)
                 {
-                    this.OrderList.Remove(order);
-                });
+                    this.OrderList.Add(order);
+                }
             });
 
 
         }
 
-        public async void LoadMyOrders()
+        public void LoadMyOrders()
         {
-            IList<Core.Entities.Order> orderList = await this.GetUserOrders();
-
-            //Windows.Foundation.IAsyncAction action =
-            //    this.Page.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
-            //    {
-            //        this.OrderList.Clear();
-            //        foreach (Core.Entities.Order order in orderList)
-            //        {
-            //            this.OrderList.Add(order);
-            //        }
-            //    });
-
-            this.OrderList.Clear();
-            foreach (Core.Entities.Order order in orderList)
+            Messenger.Default.Send<LoadOrderListMessage>(new LoadOrderListMessage()
             {
-                this.OrderList.Add(order);
-            }
-
+            });
         }
+
 
     }
 }

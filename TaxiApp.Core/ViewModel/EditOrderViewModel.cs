@@ -136,7 +136,6 @@ namespace TaxiApp.Core.ViewModel
                   Order = order
                 });
                 
-                this.LoadMyOrders();
             });
             
             
@@ -305,18 +304,7 @@ namespace TaxiApp.Core.ViewModel
             
         }
 
-        public async Task<IList<TaxiApp.Core.Entities.Order>> GetUserOrders()
-        {
-            TaxiApp.Core.WebApiClient client = new TaxiApp.Core.WebApiClient();       
 
-            TaxiApp.Core.Entities.IUser user = TaxiApp.Core.Session.Instance.GetUser();
-
-            TaxiApp.Core.Repository.OrderRepository orderRepository = new Core.Repository.OrderRepository(client);
-
-            IList<TaxiApp.Core.Entities.Order> orderList = await orderRepository.GetUserOrders(user);
-
-            return orderList;
-        }
 
 
         public void UpdatePoints()

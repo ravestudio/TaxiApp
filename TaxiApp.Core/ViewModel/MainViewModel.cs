@@ -15,7 +15,7 @@ namespace TaxiApp.Core.ViewModel
 
         public RelayCommand ClickMenuCmd { get; set; }
         public RelayCommand ContextChangedCmd { get; set; }
-
+        public RelayCommand ShowMyOrderListCmd { get; set; }
 
         private TaxiApp.Core.Managers.IMenu _menu = null;
         private INavigationService _appNavigationServie = null;
@@ -30,6 +30,11 @@ namespace TaxiApp.Core.ViewModel
             this.ClickMenuCmd = new RelayCommand(() =>
             {
                 this._menu.Open();
+            });
+
+            this.ShowMyOrderListCmd = new RelayCommand(() =>
+            {
+                this._childNavigationServie.NavigateTo("OrderList");
             });
 
             this.ContextChangedCmd = new RelayCommand(() =>
