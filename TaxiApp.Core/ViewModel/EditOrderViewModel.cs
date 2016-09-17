@@ -27,13 +27,13 @@ namespace TaxiApp.Core.ViewModel
         public RelayCommand<object> ClickOrderItem { get; set; }
         
         public RelayCommand SelectServicesCmd { get; set; }
-        public RelayCommand CancelOrderCmd { get; set; }
+        
         public RelayCommand CreateOrderCmd { get; set; }
-        public RelayCommand ShowOrderDetailCmd { get; set; }
+        
         public Command.ShowMenuCommand ShowMenuCmd { get; set; }
         public Command.NavigateToOrderListCommand NavToOrderListCmd { get; set; }
         public Command.NavigateToMainPageCommand NavToMainPageCmd { get; set; }
-        public RelayCommand<object> SelectMyOrderCmd { get; set; }
+        
         public RelayCommand clickMenuBtn { get; set; }
 
         
@@ -52,8 +52,6 @@ namespace TaxiApp.Core.ViewModel
         public bool LocationReady { get; set; }
 
         public Dictionary<string, Action<TaxiApp.Core.DataModel.Order.OrderItem>> Actions = null;
-
-        public ObservableCollection<Core.Entities.Order> OrderList { get; set; }
 
         
         private ObservableCollection<OrderItem> _orderItemList = null;
@@ -111,7 +109,7 @@ namespace TaxiApp.Core.ViewModel
             this.SelectedServices = new List<OrderOption>();
 
             
-            this.OrderList = new ObservableCollection<Core.Entities.Order>();
+            
 
             this.ClickOrderItem = new RelayCommand<object>((parameter) =>
             {
@@ -128,28 +126,7 @@ namespace TaxiApp.Core.ViewModel
                 //this.SelectedServices =
                 //this.ServicePicker.SelectedItems.Cast<Core.DataModel.Order.OrderOption>().ToList();
             });
-            
-            this.CancelOrderCmd = new RelayCommand(() =>
-            {
-                Core.Entities.Order order = this.OrderList.SingleOrDefault(o => o.Selected == true);
-
-                var dlg = new Windows.UI.Popups.MessageDialog("Отменить заказ?");
-
-                dlg.Commands.Add(new Windows.UI.Popups.UICommand("Accept"));
-                dlg.Commands.Add(new Windows.UI.Popups.UICommand("Cancel"));
-
-                Task<Windows.UI.Popups.IUICommand> dlgTask = dlg.ShowAsync().AsTask();
-
-                dlgTask.ContinueWith((dialogResult) =>
-                {
-                    if (dialogResult.Result.Label == "Accept")
-                    {
-                        Messenger.Default.Send<DeleteOrderMessage>(new DeleteOrderMessage() { 
-                            OrderId = order.Id
-                        });
-                    }
-                });
-            });
+           
             
             this.CreateOrderCmd = new RelayCommand(() =>
             {
@@ -162,41 +139,12 @@ namespace TaxiApp.Core.ViewModel
                 this.LoadMyOrders();
             });
             
-            this.ShowOrderDetailCmd = new RelayCommand(() =>
-            {
-                Core.Entities.Order order = this.OrderList.SingleOrDefault(o => o.Selected == true);
-
-                Messenger.Default.Send<SelectOrderMessage>(new SelectOrderMessage() { 
-                  Order = order
-                });
-
-                Frame rootFrame = Window.Current.Content as Frame;
-                //rootFrame.Navigate(typeof(Views.OrderDetailPage));
-            });
             
             this.ShowMenuCmd = new Command.ShowMenuCommand(this);
             this.NavToOrderListCmd = new Command.NavigateToOrderListCommand();
             this.NavToMainPageCmd = new Command.NavigateToMainPageCommand();
             
-            this.SelectMyOrderCmd = new RelayCommand<object>((parameter) =>
-            {
-                Windows.UI.Xaml.Controls.ItemClickEventArgs e = (Windows.UI.Xaml.Controls.ItemClickEventArgs)parameter;
-                Core.Entities.Order SelectedOrder = (Core.Entities.Order)e.ClickedItem;
-                
-                foreach(Core.Entities.Order order in this.OrderList)
-                {
-                    order.Selected = false;
-                }
-                SelectedOrder.Selected = true;
-            });
 
-            Messenger.Default.Register<OrderDeletedMessage>(this, (msg) => {
-                    var order = this.OrderList.Where(o => o.Id == msg.OrderId).SingleOrDefault();
-                    this.Page.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
-                    {
-                        this.OrderList.Remove(order);
-                    });
-            });
             
             Messenger.Default.Register<LocationChangedMessage>(this, (msg) => {
                 this.LocationReady = msg.Ready;
@@ -370,27 +318,6 @@ namespace TaxiApp.Core.ViewModel
             return orderList;
         }
 
-        public async void LoadMyOrders()
-        {
-            IList<Core.Entities.Order> orderList = await this.GetUserOrders();
-
-            //Windows.Foundation.IAsyncAction action =
-            //    this.Page.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
-            //    {
-            //        this.OrderList.Clear();
-            //        foreach (Core.Entities.Order order in orderList)
-            //        {
-            //            this.OrderList.Add(order);
-            //        }
-            //    });
-
-            this.OrderList.Clear();
-            foreach (Core.Entities.Order order in orderList)
-            {
-                this.OrderList.Add(order);
-            }
-
-        }
 
         public void UpdatePoints()
         {

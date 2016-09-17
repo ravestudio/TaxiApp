@@ -150,6 +150,7 @@
     <Compile Include="ViewModel\InitializationFrameStrategy.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\MapViewModel.cs" />
+    <Compile Include="ViewModel\MyOrderListViewModel.cs" />
     <Compile Include="ViewModel\NavigationService.cs" />
     <Compile Include="ViewModel\TaxiViewModel.cs" />
     <Compile Include="WebApiClient.cs" />
