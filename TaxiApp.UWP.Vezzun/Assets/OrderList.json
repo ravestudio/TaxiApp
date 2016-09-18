@@ -1,0 +1,27 @@
+﻿[
+	{
+		"idorder":209,
+		"startdate":"2016-09-18 13:39:34",
+		"enddate":"2016-09-18 13:38:00",
+		"status":0,
+		"idcompany":1,
+		"service":0,
+		"carclass":0,
+		"iddriver":0,
+		"ordersumm":0,
+		"routemeters":7888,
+		"routetime":11,
+		"passengersnum":1,
+		"clientphone":"79659755758",
+		"description":"",
+		"routes":[
+			{"address":"\u0443\u043b\u0438\u0446\u0430 \u041b\u0435\u043d\u0438\u043d\u0430, 300, \u042e\u0436\u043d\u043e-\u0421\u0430\u0445\u0430\u043b\u0438\u043d\u0441\u043a \u0420\u043e\u0441\u0441\u0438\u044f",
+			"coords":"46.9439049158245, 142.732482869178",
+			"priority":0},
+			
+			{"address":"\u0443\u043b\u0438\u0446\u0430 \u0414\u0440\u0443\u0436\u0431\u044b, 28, \u042e\u0436\u043d\u043e-\u0421\u0430\u0445\u0430\u043b\u0438\u043d\u0441\u043a \u0420\u043e\u0441\u0441\u0438\u044f",
+			"coords":"47.0130424574018, 142.714813230559",
+			"priority":0}
+		]
+	}
+]

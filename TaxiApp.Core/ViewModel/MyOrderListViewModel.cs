@@ -21,7 +21,49 @@ namespace TaxiApp.Core.ViewModel
 
         public MyOrderListViewModel()
         {
+
             this.OrderList = new ObservableCollection<Core.Entities.Order>();
+
+            if (this.IsInDesignMode)
+            {
+                var order = new Entities.Order()
+                {
+                    Id = 10,
+                    Ordersumm = 450,
+                    Routemeters = 7500
+                };
+
+                order.Route.Add(new Entities.OrderRouteItem()
+                {
+                    Address = "Жуковского 33"
+                });
+
+                order.Route.Add(new Entities.OrderRouteItem()
+                {
+                    Address = "Маркса 89"
+                });
+
+                this.OrderList.Add(order);
+
+                order = new Entities.Order()
+                {
+                    Id = 15,
+                    Ordersumm = 200,
+                    Routemeters = 3000
+                };
+
+                order.Route.Add(new Entities.OrderRouteItem()
+                {
+                    Address = "Ленина 20"
+                });
+
+                order.Route.Add(new Entities.OrderRouteItem()
+                {
+                    Address = "Лермонтова 15"
+                });
+
+                this.OrderList.Add(order);
+            }
 
             this.CancelOrderCmd = new RelayCommand(() =>
             {
@@ -55,8 +97,6 @@ namespace TaxiApp.Core.ViewModel
                     Order = order
                 });
 
-                //Frame rootFrame = Window.Current.Content as Frame;
-                //rootFrame.Navigate(typeof(Views.OrderDetailPage));
             });
 
             this.SelectMyOrderCmd = new RelayCommand<object>((parameter) =>
@@ -71,11 +111,12 @@ namespace TaxiApp.Core.ViewModel
                 SelectedOrder.Selected = true;
             });
 
-            Messenger.Default.Register<OrderDeletedMessage>(this, (msg) => {
+            Messenger.Default.Register<OrderDeletedMessage>(this, (msg) =>
+            {
                 var order = this.OrderList.Where(o => o.Id == msg.OrderId).SingleOrDefault();
 
                 this.OrderList.Remove(order);
-                
+
             });
 
             Messenger.Default.Register<OrderListloadedMessage>(this, (msg) =>

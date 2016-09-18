@@ -25,7 +25,7 @@ namespace TaxiApp.ViewModel
 
             //if (ViewModelBase.IsInDesignModeStatic)
             //{
-            //    SimpleIoc.Default.Register<IDataService, Design.DesignDataService>();
+            //    SimpleIoc.Default.Register<MyOrderListViewModel>();
             //}
             //else
             //{

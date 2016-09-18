@@ -36,6 +36,7 @@
 
                     <Button FontFamily="Segoe MDL2 Assets" Content="&#xE700;" Background="Transparent" Command="{Binding ClickMenuCmd}"></Button>
 
+                    <Button Content="Home" HorizontalContentAlignment="Left" Background="Transparent" HorizontalAlignment="Stretch" Command="{Binding HomeCmd}"></Button>
                     <Button Content="My Orders" HorizontalContentAlignment="Left" Background="Transparent" HorizontalAlignment="Stretch" Command="{Binding ShowMyOrderListCmd}"></Button>
                     <Button Content="Settings" HorizontalContentAlignment="Left" Background="Transparent" HorizontalAlignment="Stretch"></Button>
 
