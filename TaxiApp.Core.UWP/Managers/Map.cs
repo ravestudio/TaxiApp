@@ -97,5 +97,12 @@ namespace TaxiApp.Core.UWP.Managers
             mapControl.Children.Add(obj);
         }
 
+        public void Clear()
+        {
+            MapControl mapControl = GetMapControl();
+
+            mapControl.Children.Clear();
+            mapControl.Routes.Clear();
+        }
     }
 }

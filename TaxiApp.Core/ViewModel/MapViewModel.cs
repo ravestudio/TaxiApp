@@ -16,6 +16,7 @@ using TaxiApp.Core.DataModel;
 using TaxiApp.Core.DataModel.Order;
 using TaxiApp.Core.Managers;
 using TaxiApp.Core.Messages;
+using Windows.Devices.Geolocation;
 using Windows.UI.Xaml.Controls;
 
 namespace TaxiApp.Core.ViewModel
@@ -40,8 +41,9 @@ namespace TaxiApp.Core.ViewModel
         public string SearchText { get; set; }
 
         private OrderPoint _currentPoint = null;
-
         private LocationItem _templocationItem = null;
+        private IEnumerable<Geopoint> _geopoints = null;
+        private Geopoint selectedPoint = null;
 
         private INavigationService _appNavigationServie = null;
 
@@ -88,7 +90,9 @@ namespace TaxiApp.Core.ViewModel
 
                 if (msg.route != null)
                 {
-                    this._painter.ShowRoute(msg.route);
+                    this._geopoints = msg.points;
+                    this.mapRoute = msg.route;
+                    this.Refresh();
                 }
             });
 
@@ -127,7 +131,8 @@ namespace TaxiApp.Core.ViewModel
                 });
 
                 this._templocationItem = locationItem;
-                this._painter.ShowMarker(locationItem.Location);
+                this.selectedPoint = locationItem.Location.GetGeopoint();
+                
                 //Frame rootFrame = Window.Current.Content as Frame;
 
                 //this.UpdatePoints();
@@ -143,7 +148,27 @@ namespace TaxiApp.Core.ViewModel
 
         public void Refresh()
         {
+            _painter.Clear();
+
+            if (this.mapRoute != null)
+            {
+                _painter.ShowRoute(this.mapRoute);
+            }
+
             _painter.ShowMyPossitionAsync();
+
+            if (this._geopoints == null)
+            {
+                _painter.ShowMarker(this.selectedPoint);
+            }
+            else
+            {
+                foreach(Geopoint p in this._geopoints)
+                {
+                    _painter.ShowMarker(p);
+                }
+            }
+  
         }
 
         public override void Cleanup()

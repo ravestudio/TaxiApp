@@ -27,14 +27,19 @@ namespace TaxiApp.Core.Managers
             _mapImpl.ShowMyPossition(myGeopoint);
         }
 
-        public void ShowMarker(ILocation location)
+        public void ShowMarker(Geopoint point)
         {
-            _mapImpl.ShowMarker(location.GetGeopoint());
+            _mapImpl.ShowMarker(point);
         }
 
         public void ShowRoute(IRoute route)
         {
             _mapImpl.ShowRoute(route);
+        }
+
+        public void Clear()
+        {
+            _mapImpl.Clear();
         }
     }
 }

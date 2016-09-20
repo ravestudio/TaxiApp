@@ -123,6 +123,7 @@ namespace TaxiApp.Core.DataModel.Order
 
                 Messenger.Default.Send<RouteChangedMessage>(new RouteChangedMessage()
                 {
+                    points = geopoints,
                     route = route
                 });
             });
