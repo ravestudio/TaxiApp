@@ -7,11 +7,34 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     DataContext="{Binding MainViewModel, Source={StaticResource Locator}}"
-    
     xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
     xmlns:core="using:Microsoft.Xaml.Interactions.Core"
-    
+    Background="Black"
     >
+    <Page.Resources>
+        <Style x:Key="menuViewItemStyle" TargetType="ListViewItem">
+            <Setter Property="FontFamily" Value="{ThemeResource ContentControlThemeFontFamily}"/>
+            <Setter Property="FontSize" Value="{ThemeResource ControlContentThemeFontSize}"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="{ThemeResource SystemControlForegroundBaseHighBrush}"/>
+            <Setter Property="TabNavigation" Value="Local"/>
+            <Setter Property="IsHoldingEnabled" Value="True"/>
+            <Setter Property="Padding" Value="12,0,12,0"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="MinWidth" Value="{ThemeResource ListViewItemMinWidth}"/>
+            <Setter Property="MinHeight" Value="{ThemeResource ListViewItemMinHeight}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ListViewItem">
+                        <ContentPresenter HorizontalContentAlignment="Left" VerticalContentAlignment="Center" Padding="10,0,0,0">
+
+                        </ContentPresenter>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Page.Resources>
 
     <interactivity:Interaction.Behaviors>
         <core:EventTriggerBehavior EventName="DataContextChanged">
@@ -19,45 +42,55 @@
         </core:EventTriggerBehavior>
     </interactivity:Interaction.Behaviors>
 
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="60"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
 
-    <SplitView
-        IsPaneOpen="True"
-        CompactPaneLength="0"
-        OpenPaneLength="200"
-        DisplayMode="CompactOverlay"
-        x:Name="panel_splitter"
-        Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <SplitView.Pane>
-            <Grid>
+        <local:PageTitleControl Grid.Row="0"></local:PageTitleControl>
+
+        <SplitView
+            Grid.Row="1"
+            IsPaneOpen="True"
+            CompactPaneLength="0"
+            OpenPaneLength="250"
+            DisplayMode="CompactOverlay"
+            x:Name="panel_splitter"
+            >
+            <SplitView.Background>
+                <ImageBrush Stretch="Fill" ImageSource="ms-appx:///Assets/city_veins_2-wallpaper-2880x1800.jpg"/>
+            </SplitView.Background>
+            
+            <SplitView.Pane>
                 <StackPanel
                         Orientation="Vertical"
                         VerticalAlignment="Top"
                         HorizontalAlignment="Stretch">
-
-                    <Button FontFamily="Segoe MDL2 Assets" Content="&#xE700;" Background="Transparent" Command="{Binding ClickMenuCmd}"></Button>
-
+                    <StackPanel.Background>
+                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                            <GradientStop Color="Black" Offset="0"/>
+                            <GradientStop Color="#FF3E20C5" Offset="1"/>
+                        </LinearGradientBrush>
+                    </StackPanel.Background>
                     <Button Content="Home" HorizontalContentAlignment="Left" Background="Transparent" HorizontalAlignment="Stretch" Command="{Binding HomeCmd}"></Button>
                     <Button Content="My Orders" HorizontalContentAlignment="Left" Background="Transparent" HorizontalAlignment="Stretch" Command="{Binding ShowMyOrderListCmd}"></Button>
                     <Button Content="Settings" HorizontalContentAlignment="Left" Background="Transparent" HorizontalAlignment="Stretch"></Button>
 
-                </StackPanel>
-            </Grid>
-        </SplitView.Pane>
+                    <ListView
+                        SelectedIndex="0" ItemContainerStyle="{StaticResource menuViewItemStyle}">
+                        <ListViewItem>Профиль</ListViewItem>
+                        <ListViewItem>Мои заказы</ListViewItem>
+                    </ListView>
 
-        <SplitView.Content>
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="60"/>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
-                
-                <local:PageTitleControl Grid.Row="0"></local:PageTitleControl>
+                </StackPanel>
+            </SplitView.Pane>
+
+            <SplitView.Content>
+
                 <Frame x:Name="mainFrame" Grid.Row="1">
                 </Frame>
-            </Grid>
-        </SplitView.Content>
-
-
-    </SplitView>
-
+            </SplitView.Content>
+        </SplitView>
+    </Grid>
 </Page>

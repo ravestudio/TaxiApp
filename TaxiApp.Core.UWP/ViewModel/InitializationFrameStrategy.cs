@@ -19,8 +19,7 @@ namespace TaxiApp.Core.UWP.ViewModel
 
             if (split != null)
             {
-                Grid grid = split.Content as Grid;
-                frame = TaxiApp.Core.Managers.ChildFinder.FindChild<Frame>(grid, "mainFrame");
+                frame = split.Content as Frame;
             }
 
             return frame;
