@@ -53,9 +53,9 @@ namespace TaxiApp.Core.UWP.Managers
             AddMapIcon(myGeopoint, fence);
         }
 
-        public void ShowMarker(Geopoint geopoint)
+        public void ShowMarker(Geopoint geopoint, int type)
         {
-            AddOrderPoint(geopoint);
+            AddOrderPoint(geopoint, type);
         }
 
         public void ShowRoute(IRoute route)
@@ -75,11 +75,24 @@ namespace TaxiApp.Core.UWP.Managers
 
         }
 
-        private void AddOrderPoint(Geopoint point)
+        private void AddOrderPoint(Geopoint point, int type)
         {
+            Uri uri = null;
+
+            if (type == 0)
+            {
+                uri = new Uri("ms-appx:///Assets/marker_next.png");
+            }
+
+            if (type == 1)
+            {
+                uri = new Uri("ms-appx:///Assets/mfinish.png");
+            }
+
             var icon = new Windows.UI.Xaml.Controls.Image()
             {
-                Source = new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///Assets/marker_next.png")),
+                
+                Source = new Windows.UI.Xaml.Media.Imaging.BitmapImage(uri),
                 Width = 50,
                 Height = 50
             };

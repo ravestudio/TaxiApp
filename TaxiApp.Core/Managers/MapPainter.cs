@@ -27,9 +27,9 @@ namespace TaxiApp.Core.Managers
             _mapImpl.ShowMyPossition(myGeopoint);
         }
 
-        public void ShowMarker(Geopoint point)
+        public void ShowMarker(Geopoint point, int type)
         {
-            _mapImpl.ShowMarker(point);
+            _mapImpl.ShowMarker(point, type);
         }
 
         public void ShowRoute(IRoute route)

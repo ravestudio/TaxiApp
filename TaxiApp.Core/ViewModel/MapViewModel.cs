@@ -88,12 +88,16 @@ namespace TaxiApp.Core.ViewModel
 
             Messenger.Default.Register<RouteChangedMessage>(this, (msg) => {
 
+                this._geopoints = msg.points;
+
                 if (msg.route != null)
                 {
-                    this._geopoints = msg.points;
+                    
                     this.mapRoute = msg.route;
-                    this.Refresh();
+                    
                 }
+
+                this.Refresh();
             });
 
             this.SuggestTextChangedCmd = new RelayCommand<SuggestTextChangedArgs>((args) =>
@@ -157,15 +161,17 @@ namespace TaxiApp.Core.ViewModel
 
             _painter.ShowMyPossitionAsync();
 
-            if (this._geopoints == null)
+            if (this._geopoints.Count() == 1)
             {
-                _painter.ShowMarker(this.selectedPoint);
+                _painter.ShowMarker(this._geopoints.First(), 0);
             }
             else
             {
+                int c = 1;
                 foreach(Geopoint p in this._geopoints)
                 {
-                    _painter.ShowMarker(p);
+                    _painter.ShowMarker(p, c == _geopoints.Count()? 0:1);
+                    c++;
                 }
             }
   
