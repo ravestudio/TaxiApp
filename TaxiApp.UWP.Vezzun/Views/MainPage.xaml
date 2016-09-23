@@ -42,7 +42,7 @@
         </core:EventTriggerBehavior>
     </interactivity:Interaction.Behaviors>
 
-    <Grid>
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <Grid.RowDefinitions>
             <RowDefinition Height="60"/>
             <RowDefinition Height="*"/>
@@ -58,21 +58,13 @@
             DisplayMode="CompactOverlay"
             x:Name="panel_splitter"
             >
-            <SplitView.Background>
-                <ImageBrush Stretch="Fill" ImageSource="ms-appx:///Assets/city_veins_2-wallpaper-2880x1800.jpg"/>
-            </SplitView.Background>
-            
+
             <SplitView.Pane>
                 <StackPanel
                         Orientation="Vertical"
                         VerticalAlignment="Top"
                         HorizontalAlignment="Stretch">
-                    <StackPanel.Background>
-                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                            <GradientStop Color="Black" Offset="0"/>
-                            <GradientStop Color="#FF3E20C5" Offset="1"/>
-                        </LinearGradientBrush>
-                    </StackPanel.Background>
+
                     <Button Content="Home" HorizontalContentAlignment="Left" Background="Transparent" HorizontalAlignment="Stretch" Command="{Binding HomeCmd}"></Button>
                     <Button Content="My Orders" HorizontalContentAlignment="Left" Background="Transparent" HorizontalAlignment="Stretch" Command="{Binding ShowMyOrderListCmd}"></Button>
                     <Button Content="Settings" HorizontalContentAlignment="Left" Background="Transparent" HorizontalAlignment="Stretch"></Button>
