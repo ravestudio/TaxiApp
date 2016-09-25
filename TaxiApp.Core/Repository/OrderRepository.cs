@@ -37,8 +37,10 @@ namespace TaxiApp.Core.Repository
             return client.GetData(url, postData);
         }
 
-        public async Task<IList<Entities.Order>> GetUserOrders(Entities.IUser user)
+        public Task<IList<Entities.Order>> GetUserOrders(Entities.IUser user)
         {
+            TaskCompletionSource<IList<Entities.Order>> TCS = new TaskCompletionSource<IList<Entities.Order>>();
+
             IList<Entities.Order> orderList = new List<Entities.Order>();
 
             var postData = new List<KeyValuePair<string, string>>();
@@ -49,34 +51,38 @@ namespace TaxiApp.Core.Repository
 
             string url = string.Format("{0}{1}", this.ServerURL, "api/passenger_getmyorders/");
 
-            string data = await this._apiClient.GetData(url, postData);
-
-            var jsonObj = Windows.Data.Json.JsonValue.Parse(data).GetObject();
-
-            var resp = jsonObj["response"].GetObject();
-            var orders = resp["orders"];
-
-
-            if (orders.ValueType == Windows.Data.Json.JsonValueType.Array)
+            this._apiClient.GetData(url, postData).ContinueWith(t =>
             {
-                var orderArray = orders.GetArray();
+                string data = t.Result;
 
-                for (int i = 0; i < orderArray.Count; i++)
+                var jsonObj = Windows.Data.Json.JsonValue.Parse(data).GetObject();
+
+                var resp = jsonObj["response"].GetObject();
+                var orders = resp["orders"];
+
+
+                if (orders.ValueType == Windows.Data.Json.JsonValueType.Array)
                 {
-                    var ordderValue = orderArray[i];
-                    Entities.Order order = this.GetObject(ordderValue);
-                    orderList.Add(order);
+                    var orderArray = orders.GetArray();
+
+                    for (int i = 0; i < orderArray.Count; i++)
+                    {
+                        var ordderValue = orderArray[i];
+                        Entities.Order order = this.GetObject(ordderValue);
+                        orderList.Add(order);
+                    }
                 }
-            }
 
+                TCS.SetResult(orderList);
+            });
 
-            return orderList;
+            return TCS.Task;
         }
 
-        public async Task<bool> DeleteOrder(int OrderId)
+        public Task<bool> DeleteOrder(int OrderId)
         {
 
-            bool ret = false;
+            TaskCompletionSource<bool> TCS = new TaskCompletionSource<bool>();
 
             TaxiApp.Core.Entities.IUser user = TaxiApp.Core.Session.Instance.GetUser();
 
@@ -88,11 +94,12 @@ namespace TaxiApp.Core.Repository
             postData.Add(new KeyValuePair<string, string>("token", user.token));
             postData.Add(new KeyValuePair<string, string>("idorder", OrderId.ToString()));
 
-            string data = await this._apiClient.GetData(url, postData);
+            this._apiClient.GetData(url, postData).ContinueWith(t =>
+            {
+                TCS.SetResult(t.Result == "{\"error\":0}");
+            });
 
-            ret = data == "{\"error\":0}";
-
-            return ret;
+            return TCS.Task;
         }
     }
 }

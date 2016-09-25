@@ -65,7 +65,7 @@ namespace TaxiApp.Core.ViewModel
                 this.OrderList.Add(order);
             }
 
-            this.CancelOrderCmd = new RelayCommand(() =>
+            this.CancelOrderCmd = new RelayCommand(async () =>
             {
                 Core.Entities.Order order = this.OrderList.SingleOrDefault(o => o.Selected == true);
 
@@ -74,18 +74,16 @@ namespace TaxiApp.Core.ViewModel
                 dlg.Commands.Add(new Windows.UI.Popups.UICommand("Accept"));
                 dlg.Commands.Add(new Windows.UI.Popups.UICommand("Cancel"));
 
-                Task<Windows.UI.Popups.IUICommand> dlgTask = dlg.ShowAsync().AsTask();
+                var dialogResult = await dlg.ShowAsync();
 
-                dlgTask.ContinueWith((dialogResult) =>
+                if (dialogResult.Label == "Accept")
                 {
-                    if (dialogResult.Result.Label == "Accept")
+                    Messenger.Default.Send<DeleteOrderMessage>(new DeleteOrderMessage()
                     {
-                        Messenger.Default.Send<DeleteOrderMessage>(new DeleteOrderMessage()
-                        {
-                            OrderId = order.Id
-                        });
-                    }
-                });
+                        OrderId = order.Id
+                    });
+                }
+                
             });
 
             this.ShowOrderDetailCmd = new RelayCommand(() =>

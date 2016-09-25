@@ -20,7 +20,9 @@
                 ItemsSource="{Binding OrderList}"
                 
                     SelectionMode="Single"
-                    IsItemClickEnabled="True">
+                    IsItemClickEnabled="True"
+                    Style="{StaticResource ListViewStyle1}"
+            >
 
             <i:Interaction.Behaviors>
                 <core:EventTriggerBehavior EventName="ItemClick">
