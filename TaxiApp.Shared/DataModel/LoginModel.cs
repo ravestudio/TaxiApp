@@ -28,15 +28,14 @@ namespace TaxiApp.DataModel
             this.ReadData();
             
              Messenger.Default.Register<RegisterUserMessage>(this, async (msg) => {
+
+                 this._backgroundTaskManager.Register("SMSReceiver");
+
                  UserRegistrationResultMessage result = await this.RegisterUser(msg.PhoneNumber);
 
                  Messenger.Default.Send<UserRegistrationResultMessage>(result);
 
-                 if (result.Status == MessageStatus.Success)
-                 {
-                     this._backgroundTaskManager.Register("SMSReceiver");
-
-                 }
+                 
                  
              });
              

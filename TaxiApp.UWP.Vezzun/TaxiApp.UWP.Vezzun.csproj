@@ -158,6 +158,10 @@
     </SDKReference>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\TaxiApp.BackgroundTasks.UWP\TaxiApp.BackgroundTasks.UWP.csproj">
+      <Project>{12307bc0-eac7-4942-9f4a-8401ec12c81e}</Project>
+      <Name>TaxiApp.BackgroundTasks.UWP</Name>
+    </ProjectReference>
     <ProjectReference Include="..\TaxiApp.Core.UWP\TaxiApp.Core.UWP.csproj">
       <Project>{c7e2e890-f7e6-4b9a-98fe-524047dd5f6d}</Project>
       <Name>TaxiApp.Core.UWP</Name>
