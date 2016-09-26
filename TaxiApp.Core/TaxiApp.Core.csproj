@@ -100,7 +100,9 @@
     <Compile Include="Entities\User.cs" />
     <Compile Include="ILocation.cs" />
     <Compile Include="IRoute.cs" />
+    <Compile Include="Managers\BackgroundTaskManager.cs" />
     <Compile Include="Managers\ChildFinder.cs" />
+    <Compile Include="Managers\IBackgroundService.cs" />
     <Compile Include="Managers\ILocationService.cs" />
     <Compile Include="Managers\IMap.cs" />
     <Compile Include="Managers\IMenu.cs" />
@@ -178,7 +180,6 @@
       <Private>True</Private>
     </Reference>
   </ItemGroup>
-  <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '12.0' ">
     <VisualStudioVersion>12.0</VisualStudioVersion>
   </PropertyGroup>

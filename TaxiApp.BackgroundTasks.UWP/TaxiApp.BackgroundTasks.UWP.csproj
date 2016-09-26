@@ -4,18 +4,19 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{C7E2E890-F7E6-4B9A-98FE-524047DD5F6D}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <ProjectGuid>{12307BC0-EAC7-4942-9F4A-8401EC12C81E}</ProjectGuid>
+    <OutputType>winmdobj</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>TaxiApp.Core.UWP</RootNamespace>
-    <AssemblyName>TaxiApp.Core.UWP</AssemblyName>
+    <RootNamespace>TaxiApp.BackgroundTasks.UWP</RootNamespace>
+    <AssemblyName>TaxiApp.BackgroundTasks.UWP</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
-    <TargetPlatformVersion>10.0.10586.0</TargetPlatformVersion>
-    <TargetPlatformMinVersion>10.0.10240.0</TargetPlatformMinVersion>
+    <TargetPlatformVersion>10.0.14393.0</TargetPlatformVersion>
+    <TargetPlatformMinVersion>10.0.10586.0</TargetPlatformMinVersion>
     <MinimumVisualStudioVersion>14</MinimumVisualStudioVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{A5A43C5B-DE2A-4C0C-9213-0A381AF9435A};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <AllowCrossPlatformRetargeting>false</AllowCrossPlatformRetargeting>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -107,28 +108,8 @@
     <None Include="project.json" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Common\SuggestionChosenParameterConverter.cs" />
-    <Compile Include="Common\SuggestTextChangedParameterConverter.cs" />
-    <Compile Include="Location.cs" />
-    <Compile Include="Managers\BackgroundService.cs" />
-    <Compile Include="Managers\LocationService.cs" />
-    <Compile Include="Managers\Map.cs" />
-    <Compile Include="Managers\Menu.cs" />
-    <Compile Include="Managers\SuggestBox.cs" />
+    <Compile Include="SmsReceiver.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Route.cs" />
-    <Compile Include="ViewModel\InitializationFrameStrategy.cs" />
-    <EmbeddedResource Include="Properties\TaxiApp.Core.UWP.rd.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\TaxiApp.BackgroundTasks.UWP\TaxiApp.BackgroundTasks.UWP.csproj">
-      <Project>{12307bc0-eac7-4942-9f4a-8401ec12c81e}</Project>
-      <Name>TaxiApp.BackgroundTasks.UWP</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\TaxiApp.Core\TaxiApp.Core.csproj">
-      <Project>{83ff1520-2c7b-4b54-9ab4-12639f2403f2}</Project>
-      <Name>TaxiApp.Core</Name>
-    </ProjectReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>

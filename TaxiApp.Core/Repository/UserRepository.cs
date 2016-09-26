@@ -25,7 +25,8 @@ namespace TaxiApp.Core.Repository
             postData.Add(new KeyValuePair<string, string>("licenseaccepted", "1"));
 
 
-            object pin = Windows.Storage.ApplicationData.Current.LocalSettings.Values["pin"];
+            //object pin = Windows.Storage.ApplicationData.Current.LocalSettings.Values["pin"];
+            object pin = null;
             if (pin != null)
             {
                 TCS.SetResult("success");

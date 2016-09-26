@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
 using TaxiApp.Core.Messages;
 using TaxiApp.Core.Repository;
 using TaxiApp.Core.Managers;
-
+using Windows.ApplicationModel.Background;
 using GalaSoft.MvvmLight.Messaging;
+
 
 namespace TaxiApp.DataModel
 {
@@ -17,11 +17,13 @@ namespace TaxiApp.DataModel
         
         private UserRepository _userRepository = null;
         private SystemManager _systemManager = null;
+        private BackgroundTaskManager _backgroundTaskManager = null;
 
-        public LoginModel(TaxiApp.Core.Repository.UserRepository userRepository, SystemManager systemManager)
+        public LoginModel(TaxiApp.Core.Repository.UserRepository userRepository, SystemManager systemManager, BackgroundTaskManager backgroundTaskManager)
         {
             this._userRepository = userRepository;
             this._systemManager = systemManager;
+            this._backgroundTaskManager = backgroundTaskManager;
 
             this.ReadData();
             
@@ -29,6 +31,12 @@ namespace TaxiApp.DataModel
                  UserRegistrationResultMessage result = await this.RegisterUser(msg.PhoneNumber);
 
                  Messenger.Default.Send<UserRegistrationResultMessage>(result);
+
+                 if (result.Status == MessageStatus.Success)
+                 {
+                     this._backgroundTaskManager.Register("SMSReceiver");
+
+                 }
                  
              });
              
