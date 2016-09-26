@@ -17,11 +17,10 @@
 
         <ListView
                 
-                ItemsSource="{Binding OrderList}"
-                
-                    SelectionMode="Single"
-                    IsItemClickEnabled="True"
-                    Style="{StaticResource ListViewStyle1}"
+            ItemsSource="{Binding OrderList}"
+            SelectionMode="Single"
+            IsItemClickEnabled="True"
+            ItemContainerStyle="{StaticResource taxiListViewItemStyle}"
             >
 
             <i:Interaction.Behaviors>
