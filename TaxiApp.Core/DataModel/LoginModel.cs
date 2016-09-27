@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 using TaxiApp.Core.Messages;
@@ -17,11 +18,13 @@ namespace TaxiApp.Core.DataModel
         
         private UserRepository _userRepository = null;
         private SystemManager _systemManager = null;
+        private SMSManager _smsManager = null;
 
-        public LoginModel(TaxiApp.Core.Repository.UserRepository userRepository, SystemManager systemManager)
+        public LoginModel(TaxiApp.Core.Repository.UserRepository userRepository, SystemManager systemManager, SMSManager smsManager)
         {
             this._userRepository = userRepository;
             this._systemManager = systemManager;
+            this._smsManager = smsManager;
 
             this.ReadData();
             
@@ -38,6 +41,24 @@ namespace TaxiApp.Core.DataModel
                  Messenger.Default.Send<UserAutorizationResultMessage>(result);
 
              });
+
+            Messenger.Default.Register<WaitSMSMessage>(this, async (msg) => {
+                string smsBody = await this._smsManager.GetMessage();
+
+                Regex rgx = new Regex(@"^TAXI PIN (?<PIN>\d{4})$");
+
+                CaughtSMSResultMessage message = new CaughtSMSResultMessage() { Status = MessageStatus.Faulted };
+
+
+                if (!string.IsNullOrEmpty(smsBody) && rgx.IsMatch(smsBody))
+                {
+                    Match match = rgx.Match(smsBody);
+                    message.PIN = match.Groups["PIN"].Value;
+                    message.Status = MessageStatus.Success;
+                }
+
+                Messenger.Default.Send<CaughtSMSResultMessage>(message);
+            });
         }
 
         public void SaveNumber(string phoneNumber)

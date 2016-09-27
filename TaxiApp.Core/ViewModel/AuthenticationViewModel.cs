@@ -11,13 +11,28 @@ using GalaSoft.MvvmLight.Views;
 
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using GalaSoft.MvvmLight;
 
 namespace TaxiApp.Core.ViewModel
 {
-    public class AuthenticationViewModel : TaxiViewModel
+    public class AuthenticationViewModel : ViewModelBase
     {
         public string PhoneNumber { get; set; }
         public string PIN { get; set; }
+
+        private bool _waitingSMS = false;
+        public bool WaitingSMS
+        {
+            get
+            {
+                return _waitingSMS;
+            }
+            set
+            {
+                _waitingSMS = value;
+                this.RaisePropertyChanged("WaitingSMS");
+            }
+        }
 
         public RelayCommand LoginCmd { get; set; }
         public RelayCommand RegisterCmd { get; set; }
@@ -36,6 +51,10 @@ namespace TaxiApp.Core.ViewModel
 
             this.registrationActions.Add(MessageStatus.Success, () =>
             {
+                Messenger.Default.Send<WaitSMSMessage>(new WaitSMSMessage());
+
+                this.WaitingSMS = true;
+
                 this._navigationService.NavigateTo("Authentication");
                 
             });
@@ -83,6 +102,17 @@ namespace TaxiApp.Core.ViewModel
             {
                 this.PhoneNumber = msg.PhoneNumber;
                 this.PIN = msg.PIN;
+            });
+
+            Messenger.Default.Register<CaughtSMSResultMessage>(this, (msg) =>
+            {
+                this.WaitingSMS = false;
+
+                if (msg.Status == MessageStatus.Success)
+                {
+                    this.PIN = msg.PIN;
+                    this.RaisePropertyChanged("PIN");
+                }
             });
             
         }

@@ -40,6 +40,7 @@
         <!--TODO: Содержимое должно размещаться в следующей сетке-->
         <Grid Grid.Row="1" x:Name="ContentRoot" Margin="19,0,19,0">
             <Grid HorizontalAlignment="Stretch" VerticalAlignment="Top">
+                <ProgressRing IsActive="{Binding WaitingSMS}" HorizontalAlignment="Center" Margin="0,70,0,0" VerticalAlignment="Top" AutomationProperties.Level="-1"/>
                 <StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="0,150,0,10">
 
                     <TextBox  Name="pin" Header="Введите проверочный код (СМС) или дождитесь СМС-сообщения" Text="{Binding PIN, Mode=TwoWay}" HorizontalAlignment="Center"  Margin="0,10,0,0" Width="234" />
@@ -48,5 +49,6 @@
             </Grid>
 
         </Grid>
+        
     </Grid>
 </Page>

@@ -103,6 +103,7 @@
     <Compile Include="Managers\BackgroundTaskManager.cs" />
     <Compile Include="Managers\ChildFinder.cs" />
     <Compile Include="Managers\IBackgroundService.cs" />
+    <Compile Include="Managers\IChatService.cs" />
     <Compile Include="Managers\ILocationService.cs" />
     <Compile Include="Managers\IMap.cs" />
     <Compile Include="Managers\IMenu.cs" />
@@ -112,6 +113,7 @@
     <Compile Include="Managers\MapPainter.cs" />
     <Compile Include="Managers\SMSManager.cs" />
     <Compile Include="Managers\SystemManager.cs" />
+    <Compile Include="Messages\CaughtSMSResultMessage.cs" />
     <Compile Include="Messages\CleanupMessage.cs" />
     <Compile Include="Messages\FillRoutePointMessage.cs" />
     <Compile Include="Messages\FoundLocationsMessage.cs" />
@@ -131,6 +133,7 @@
     <Compile Include="Messages\DeleteOrderMessage.cs" />
     <Compile Include="Messages\UserAutorizationResultMessage.cs" />
     <Compile Include="Messages\UserRegistrationResultMessage.cs" />
+    <Compile Include="Messages\WaitSMSMessage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\DriverRepository.cs" />
     <Compile Include="Repository\OrderRepository.cs" />

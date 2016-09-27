@@ -10,16 +10,16 @@ namespace TaxiApp.Core.Managers
 {
     public class SMSManager
     {
-        //public void Enumerate()
-        //{
-        //    ChatMessageManager.RequestStoreAsync().AsTask<ChatMessageStore>()
-        //        .ContinueWith(t =>
-        //        {
-        //            ChatMessageStore store = t.Result;
+        private IChatService _chatService = null;
 
-        //        });
+        public SMSManager(IChatService chatService)
+        {
+            this._chatService = chatService;
+        }
 
-
-        //}
+        public Task<string> GetMessage()
+        {
+            return this._chatService.GetMessage();
+        }
     }
 }
