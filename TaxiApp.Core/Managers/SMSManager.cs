@@ -17,9 +17,9 @@ namespace TaxiApp.Core.Managers
             this._chatService = chatService;
         }
 
-        public Task<string> GetMessage()
-        {
-            return this._chatService.GetMessage();
-        }
+        //public Task<string> GetMessage()
+        //{
+        //    return this._chatService.GetMessage();
+        //}
     }
 }

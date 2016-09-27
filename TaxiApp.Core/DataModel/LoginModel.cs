@@ -18,13 +18,13 @@ namespace TaxiApp.Core.DataModel
         
         private UserRepository _userRepository = null;
         private SystemManager _systemManager = null;
-        private SMSManager _smsManager = null;
+        private IChatService _chatService = null;
 
-        public LoginModel(TaxiApp.Core.Repository.UserRepository userRepository, SystemManager systemManager, SMSManager smsManager)
+        public LoginModel(TaxiApp.Core.Repository.UserRepository userRepository, SystemManager systemManager, IChatService chatService)
         {
             this._userRepository = userRepository;
             this._systemManager = systemManager;
-            this._smsManager = smsManager;
+            this._chatService = chatService;
 
             this.ReadData();
             
@@ -43,12 +43,16 @@ namespace TaxiApp.Core.DataModel
              });
 
             Messenger.Default.Register<WaitSMSMessage>(this, async (msg) => {
-                string smsBody = await this._smsManager.GetMessage();
 
                 Regex rgx = new Regex(@"^TAXI PIN (?<PIN>\d{4})$");
-
                 CaughtSMSResultMessage message = new CaughtSMSResultMessage() { Status = MessageStatus.Faulted };
 
+                string smsBody = null;
+
+                using (ISMSStorage storage = await this._chatService.GetStorage())
+                {
+                    smsBody = await storage.GetMessage();
+                }
 
                 if (!string.IsNullOrEmpty(smsBody) && rgx.IsMatch(smsBody))
                 {

@@ -8,6 +8,11 @@ namespace TaxiApp.Core.Managers
 {
     public interface IChatService
     {
+        Task<ISMSStorage> GetStorage();
+    }
+
+    public interface ISMSStorage : IDisposable
+    {
         Task<string> GetMessage();
     }
 }
