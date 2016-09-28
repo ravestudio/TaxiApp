@@ -39,7 +39,7 @@ namespace TaxiApp.ViewModel
             SimpleIoc.Default.Register<DriverRepository>();
             SimpleIoc.Default.Register<OrderRepository>();
             SimpleIoc.Default.Register<SystemManager>();
-            //SimpleIoc.Default.Register<SMSManager>();
+            SimpleIoc.Default.Register<SMSManager>();
             SimpleIoc.Default.Register<MapPainter>();
             SimpleIoc.Default.Register<ILocationService, Core.UWP.Managers.LocationService>();
             SimpleIoc.Default.Register<IChatService, Core.UWP.Managers.ChatService>();

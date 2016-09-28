@@ -18,51 +18,46 @@ namespace TaxiApp.Core.DataModel
         
         private UserRepository _userRepository = null;
         private SystemManager _systemManager = null;
-        private IChatService _chatService = null;
+        private SMSManager _SMSManager = null;
 
-        public LoginModel(TaxiApp.Core.Repository.UserRepository userRepository, SystemManager systemManager, IChatService chatService)
+        public LoginModel(TaxiApp.Core.Repository.UserRepository userRepository, SystemManager systemManager, SMSManager SMSManager)
         {
             this._userRepository = userRepository;
             this._systemManager = systemManager;
-            this._chatService = chatService;
+            this._SMSManager = SMSManager;
 
             this.ReadData();
             
              Messenger.Default.Register<RegisterUserMessage>(this, async (msg) => {
-                 UserRegistrationResultMessage result = await this.RegisterUser(msg.PhoneNumber);
+                 UserRegistrationResultMessage result = null;
 
-                 Messenger.Default.Send<UserRegistrationResultMessage>(result);
-                 
+                 CaughtSMSResultMessage message = new CaughtSMSResultMessage() { Status = MessageStatus.Faulted };
+
+                 string pin = null;
+
+                 using (ISMSStorage storage = await this._SMSManager.GetStorage())
+                 {
+                     result = await this.RegisterUser(msg.PhoneNumber);
+                     var pinTask = this._SMSManager.CatchPIN(storage);
+                     Messenger.Default.Send<UserRegistrationResultMessage>(result);
+
+                     pin = await pinTask;
+                 }
+
+                 if (!string.IsNullOrEmpty(pin))
+                 {
+                     message.PIN = pin;
+                     message.Status = MessageStatus.Success;
+                 }
+
+                 Messenger.Default.Send<CaughtSMSResultMessage>(message);
              });
              
             Messenger.Default.Register<LoginUserMessage>(this, async (msg) => {
-                 UserAutorizationResultMessage result = await this.Login(msg.PhoneNumber, msg.PIN);
-                 
-                 Messenger.Default.Send<UserAutorizationResultMessage>(result);
-
-             });
-
-            Messenger.Default.Register<WaitSMSMessage>(this, async (msg) => {
-
-                Regex rgx = new Regex(@"^TAXI PIN (?<PIN>\d{4})$");
-                CaughtSMSResultMessage message = new CaughtSMSResultMessage() { Status = MessageStatus.Faulted };
-
-                string smsBody = null;
-
-                using (ISMSStorage storage = await this._chatService.GetStorage())
-                {
-                    smsBody = await storage.GetMessage();
-                }
-
-                if (!string.IsNullOrEmpty(smsBody) && rgx.IsMatch(smsBody))
-                {
-                    Match match = rgx.Match(smsBody);
-                    message.PIN = match.Groups["PIN"].Value;
-                    message.Status = MessageStatus.Success;
-                }
-
-                Messenger.Default.Send<CaughtSMSResultMessage>(message);
+                UserAutorizationResultMessage result = await this.Login(msg.PhoneNumber, msg.PIN);
+                Messenger.Default.Send<UserAutorizationResultMessage>(result);
             });
+
         }
 
         public void SaveNumber(string phoneNumber)

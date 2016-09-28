@@ -51,7 +51,7 @@ namespace TaxiApp.Core.ViewModel
 
             this.registrationActions.Add(MessageStatus.Success, () =>
             {
-                Messenger.Default.Send<WaitSMSMessage>(new WaitSMSMessage());
+                //Messenger.Default.Send<WaitSMSMessage>(new WaitSMSMessage());
 
                 this.WaitingSMS = true;
 

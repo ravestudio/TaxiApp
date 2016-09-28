@@ -30,10 +30,15 @@ namespace TaxiApp.Core.UWP.Managers
         private ChatMessageStore _store = null;
 
         private bool disposed = false;
+        private bool completed = false;
+
+        TaskCompletionSource<string> TCS = null;
 
         public SMSStorage(ChatMessageStore store)
         {
             _store = store;
+
+            TCS = new TaskCompletionSource<string>();
 
         }
 
@@ -47,8 +52,6 @@ namespace TaxiApp.Core.UWP.Managers
 
         public Task<string> GetMessage()
         {
-            TaskCompletionSource<string> TCS = new TaskCompletionSource<string>();
-
             handler = (sender, args) => {
 
                 if (args.Kind == ChatStoreChangedEventKind.MessageCreated)
@@ -59,13 +62,24 @@ namespace TaxiApp.Core.UWP.Managers
 
                     ChatMessage msg = msgList.FirstOrDefault();
 
-                    TCS.SetResult(msg == null ? null : msg.Body);
+                    SetResult(msg);
                 }
             };
 
             _store.StoreChanged += handler;
 
+            Task.Delay(10000).ContinueWith(t => { SetResult(null); });
+
             return TCS.Task;
+        }
+
+        private void SetResult(ChatMessage msg)
+        {
+            if (!completed)
+            {
+                completed = true;
+                TCS.SetResult(msg == null ? null : msg.Body);
+            }
         }
 
         protected virtual void Dispose(bool disposing)
