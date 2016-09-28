@@ -97,10 +97,26 @@ namespace TaxiApp
                 // configuring the new page by passing required information as a navigation
                 // parameter
 
-                System.Threading.Tasks.Task waitTask = System.Threading.Tasks.Task.Delay(1000);
-                waitTask.Wait();
+                var startPage = typeof(Views.RegistrationPage);
 
-                if (!rootFrame.Navigate(typeof(Views.RegistrationPage), e.Arguments))
+                var locator = (ViewModel.ViewModelLocator)Application.Current.Resources["Locator"];
+
+                var loginModel = locator.LoginModel;
+
+                if (!(string.IsNullOrEmpty(loginModel.PhoneNumber) || string.IsNullOrEmpty(loginModel.Pin)))
+                {
+                    var res = loginModel.Login(loginModel.PhoneNumber, loginModel.Pin).Result;
+
+                    if (res.Status == Core.Messages.MessageStatus.Success)
+                    {
+                        startPage = typeof(Views.MainPage);
+                    }
+                }
+
+                //System.Threading.Tasks.Task waitTask = System.Threading.Tasks.Task.Delay(1000);
+                //waitTask.Wait();
+
+                if (!rootFrame.Navigate(startPage, e.Arguments))
                 {
                     throw new Exception("Failed to create initial page");
                 }

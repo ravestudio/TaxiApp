@@ -20,6 +20,9 @@ namespace TaxiApp.Core.DataModel
         private SystemManager _systemManager = null;
         private SMSManager _SMSManager = null;
 
+        public string PhoneNumber { get; set; }
+        public string Pin { get; set; }
+
         public LoginModel(TaxiApp.Core.Repository.UserRepository userRepository, SystemManager systemManager, SMSManager SMSManager)
         {
             this._userRepository = userRepository;
@@ -79,12 +82,14 @@ namespace TaxiApp.Core.DataModel
 
             if (phone != null)
             {
-                msg.PhoneNumber = Windows.Storage.ApplicationData.Current.LocalSettings.Values["PhoneNumber"].ToString();
+                this.PhoneNumber = Windows.Storage.ApplicationData.Current.LocalSettings.Values["PhoneNumber"].ToString();
+                msg.PhoneNumber = this.PhoneNumber;
             }
 
             if (pin != null)
             {
-                msg.PIN = Windows.Storage.ApplicationData.Current.LocalSettings.Values["pin"].ToString();
+                this.Pin = Windows.Storage.ApplicationData.Current.LocalSettings.Values["pin"].ToString();
+                msg.PIN = this.Pin;
             }
 
             if (!(string.IsNullOrEmpty(msg.PhoneNumber) || string.IsNullOrEmpty(msg.PIN)))
@@ -121,7 +126,7 @@ namespace TaxiApp.Core.DataModel
             return tcs.Task;
         }
         
-        private Task<UserAutorizationResultMessage> Login(string PhoneNumber, string PIN)
+        public Task<UserAutorizationResultMessage> Login(string PhoneNumber, string PIN)
         {
             var tcs = new TaskCompletionSource<UserAutorizationResultMessage>();
             

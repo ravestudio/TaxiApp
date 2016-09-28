@@ -14,6 +14,7 @@ using GalaSoft.MvvmLight.Command;
 using Windows.UI.Xaml.Controls;
 using GalaSoft.MvvmLight.Messaging;
 using TaxiApp.Core.Messages;
+using TaxiApp.Core.DataModel;
 
 namespace TaxiApp.ViewModel
 {
@@ -161,6 +162,13 @@ namespace TaxiApp.ViewModel
             }
         }
 
+        public LoginModel LoginModel
+        {
+            get
+            {
+                return ServiceLocator.Current.GetInstance<LoginModel>();
+            }
+        }
         /// <summary>
         /// Cleans up all the resources.
         /// </summary>
