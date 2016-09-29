@@ -103,8 +103,22 @@ namespace TaxiApp.Core.Repository
 
             this._apiClient.GetData(url, postData).ContinueWith(t =>
                 {
-                    string data = t.Result;
-                    TCS.SetResult("OK");
+
+                    var value = Windows.Data.Json.JsonValue.Parse(t.Result);
+
+                    int error = this.GetErrorInfo(value);
+
+                    if (error != 0)
+                    {
+                        TCS.SetException(new Exception());
+                    }
+
+                    if (error == 0)
+                    {
+
+                        TCS.SetResult("success");
+                    }
+
                 });
 
             return TCS.Task;

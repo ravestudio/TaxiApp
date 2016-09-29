@@ -126,6 +126,8 @@
     <Compile Include="Messages\ReadPhoneNumberResultMessage.cs" />
     <Compile Include="Messages\RegisterUserMessage.cs" />
     <Compile Include="Messages\RouteChangedMessage.cs" />
+    <Compile Include="Messages\SavePersonalInfoMessage.cs" />
+    <Compile Include="Messages\SavePersonalInfoResultMessage.cs" />
     <Compile Include="Messages\SearchLocationMessage.cs" />
     <Compile Include="Messages\SelectLocationMessage.cs" />
     <Compile Include="Messages\CreateOrderMessage.cs" />
