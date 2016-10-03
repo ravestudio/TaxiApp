@@ -22,11 +22,16 @@ namespace TaxiApp.Core.ViewModel
         private INavigationService _appNavigationServie = null;
         private INavigationService _childNavigationServie = null;
 
+        public string PersonName { get; set; }
+        public string PersonePhone { get; set; }
+
         public MainViewModel(TaxiApp.Core.Managers.IMenu menu, INavigationService appNavigationService, INavigationService childNavigationService)
         {
             this._menu = menu;
             this._appNavigationServie = appNavigationService;
             this._childNavigationServie = childNavigationService;
+
+            InitPersonalInfo();
 
             this.ClickMenuCmd = new RelayCommand(() =>
             {
@@ -54,6 +59,14 @@ namespace TaxiApp.Core.ViewModel
 
             });
 
+        }
+
+        private void InitPersonalInfo()
+        {
+            Entities.IUser user = TaxiApp.Core.Session.Instance.GetUser();
+
+            this.PersonName = string.Format("{0} {1}", user.Name, user.Lastname);
+            this.PersonePhone = user.PhoneNumber;
         }
     }
 }

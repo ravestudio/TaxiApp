@@ -38,7 +38,7 @@ namespace TaxiApp.Core.ViewModel
         public RelayCommand RegisterCmd { get; set; }
 
         private IDictionary<MessageStatus, Action> registrationActions = null;
-        private IDictionary<MessageStatus, Action> autorizationActions = null;
+        private IDictionary<Func<UserAutorizationResultMessage, bool>, Action> autorizationActions = null;
 
         private INavigationService _navigationService = null;
 
@@ -47,7 +47,7 @@ namespace TaxiApp.Core.ViewModel
             this._navigationService = NavigationService;
 
             this.registrationActions = new Dictionary<MessageStatus, Action>();
-            this.autorizationActions = new Dictionary<MessageStatus, Action>();
+            this.autorizationActions = new Dictionary<Func<UserAutorizationResultMessage, bool>, Action>();
 
             this.registrationActions.Add(MessageStatus.Success, () =>
             {
@@ -65,12 +65,17 @@ namespace TaxiApp.Core.ViewModel
                 dlg.ShowAsync();
             });
 
-            this.autorizationActions.Add(MessageStatus.Success, () =>
+            this.autorizationActions.Add(m => { return m.Status == MessageStatus.Success && !m.HasPersonalInfo; }, () =>
+            {
+                this._navigationService.NavigateTo("EditProfile");
+            });
+
+            this.autorizationActions.Add(m => { return m.Status == MessageStatus.Success && m.HasPersonalInfo; }, () =>
             {
                 this._navigationService.NavigateTo("Main");
             });
 
-            this.autorizationActions.Add(MessageStatus.Faulted, () =>
+            this.autorizationActions.Add(m => { return m.Status == MessageStatus.Faulted; }, () =>
             {
                 this._navigationService.NavigateTo("Registration");
             });
@@ -95,7 +100,7 @@ namespace TaxiApp.Core.ViewModel
             });
             
             Messenger.Default.Register<UserAutorizationResultMessage>(this, (msg) => {
-                this.autorizationActions[msg.Status].Invoke();
+                this.autorizationActions.Single(a => a.Key.Invoke(msg)).Value.Invoke();
             });
 
             Messenger.Default.Register<ReadPhoneNumberResultMessage>(this, (msg) =>

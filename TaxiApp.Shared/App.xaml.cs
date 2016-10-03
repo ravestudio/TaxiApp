@@ -109,7 +109,11 @@ namespace TaxiApp
 
                     if (res.Status == Core.Messages.MessageStatus.Success)
                     {
-                        startPage = typeof(Views.MainPage);
+                        loginModel.ReadPersonalInfo().Wait();
+
+                        Core.Entities.IUser user = TaxiApp.Core.Session.Instance.GetUser();
+
+                        startPage = string.IsNullOrEmpty(user.Name)? typeof(Views.EditUserProfilePage) : typeof(Views.MainPage);
                     }
                 }
 

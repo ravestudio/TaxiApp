@@ -11,6 +11,7 @@ namespace TaxiApp.Core.Messages
     /// </summary>
     public class UserAutorizationResultMessage
     {
+        public bool HasPersonalInfo { get; set; }
         public MessageStatus Status { get; set; }
     }
 }

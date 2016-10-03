@@ -54,6 +54,11 @@ namespace TaxiApp.ViewModel
                 return new AuthenticationViewModel(ServiceLocator.Current.GetInstance<INavigationService>("base"));
             });
 
+            SimpleIoc.Default.Register<EditUserProfileViewModel>(() =>
+            {
+                return new EditUserProfileViewModel(ServiceLocator.Current.GetInstance<INavigationService>("base"));
+            });
+
             SimpleIoc.Default.Register<EditOrderViewModel>();
             SimpleIoc.Default.Register<MyOrderListViewModel>();
 
@@ -103,6 +108,7 @@ namespace TaxiApp.ViewModel
 
             navigationService.Configure("Registration", typeof(Views.RegistrationPage));
             navigationService.Configure("Authentication", typeof(Views.AuthenticationPage));
+            navigationService.Configure("EditProfile", typeof(Views.EditUserProfilePage));
 
             navigationService.Configure("AddPoint", typeof(Views.AddPointPage));
             navigationService.Configure("Main", typeof(Views.MainPage));
@@ -127,6 +133,14 @@ namespace TaxiApp.ViewModel
             get
             {
                 return ServiceLocator.Current.GetInstance<AuthenticationViewModel>();
+            }
+        }
+
+        public EditUserProfileViewModel EditUserProfileViewModel
+        {
+            get
+            {
+                return ServiceLocator.Current.GetInstance<EditUserProfileViewModel>();
             }
         }
 

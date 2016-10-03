@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TaxiApp.Core.Entities;
 
 namespace TaxiApp.Core.Repository
 {
@@ -56,9 +57,9 @@ namespace TaxiApp.Core.Repository
 
         }
 
-        public Task GetMyInfo()
+        public Task<IUser> GetMyInfo()
         {
-            Task resultTask = null;
+            TaskCompletionSource<IUser> tcs = new TaskCompletionSource<IUser>();
 
             string url = string.Format("{0}{1}", this.ServerURL, "api/passenger_getmyinfo/");
 
@@ -69,22 +70,26 @@ namespace TaxiApp.Core.Repository
             postData.Add(new KeyValuePair<string, string>("idpassenger", user.Id.ToString()));
             postData.Add(new KeyValuePair<string, string>("token", user.token.ToString()));
 
-            resultTask = this._apiClient.GetData(url, postData).ContinueWith(t =>
+            this._apiClient.GetData(url, postData).ContinueWith(t =>
                 {
+                    IUser personalInfo = new User();
+
                     string data = t.Result;
 
                     var jsonObj = Windows.Data.Json.JsonValue.Parse(data).GetObject();
 
-                    user.Name = jsonObj["response"].GetObject()["name"].GetString();
-                    user.Surname = jsonObj["response"].GetObject()["surname"].GetString();
-                    user.Lastname = jsonObj["response"].GetObject()["lastname"].GetString();
-                    user.Email = jsonObj["response"].GetObject()["email"].GetString();
+                    personalInfo.Name = jsonObj["response"].GetObject()["name"].GetString();
+                    personalInfo.Surname = jsonObj["response"].GetObject()["surname"].GetString();
+                    personalInfo.Lastname = jsonObj["response"].GetObject()["lastname"].GetString();
+                    personalInfo.Email = jsonObj["response"].GetObject()["email"].GetString();
+
+                    tcs.SetResult(personalInfo);
                 });
 
-            return resultTask;
+            return tcs.Task;
         }
 
-        public Task<string> SaveMyInfo()
+        public Task<string> SavePersonalInfo(IUser personalInfo)
         {
             System.Threading.Tasks.TaskCompletionSource<string> TCS = new TaskCompletionSource<string>();
 
@@ -96,10 +101,10 @@ namespace TaxiApp.Core.Repository
 
             postData.Add(new KeyValuePair<string, string>("idpassenger", user.Id.ToString()));
             postData.Add(new KeyValuePair<string, string>("token", user.token.ToString()));
-            postData.Add(new KeyValuePair<string, string>("name", user.Name.ToString()));
-            postData.Add(new KeyValuePair<string, string>("surname", user.Surname.ToString()));
-            postData.Add(new KeyValuePair<string, string>("lastname", user.Lastname.ToString()));
-            postData.Add(new KeyValuePair<string, string>("email", user.Email.ToString()));
+            postData.Add(new KeyValuePair<string, string>("name", personalInfo.Name));
+            postData.Add(new KeyValuePair<string, string>("surname", personalInfo.Surname));
+            postData.Add(new KeyValuePair<string, string>("lastname", personalInfo.Lastname));
+            postData.Add(new KeyValuePair<string, string>("email", personalInfo.Email));
 
             this._apiClient.GetData(url, postData).ContinueWith(t =>
                 {

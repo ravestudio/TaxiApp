@@ -10,6 +10,7 @@ using TaxiApp.Core.Repository;
 using TaxiApp.Core.Managers;
 
 using GalaSoft.MvvmLight.Messaging;
+using TaxiApp.Core.Entities;
 
 namespace TaxiApp.Core.DataModel
 {
@@ -58,7 +59,26 @@ namespace TaxiApp.Core.DataModel
              
             Messenger.Default.Register<LoginUserMessage>(this, async (msg) => {
                 UserAutorizationResultMessage result = await this.Login(msg.PhoneNumber, msg.PIN);
+
+                if (result.Status == MessageStatus.Success)
+                {
+                    await this.ReadPersonalInfo();
+
+                    Entities.IUser user = TaxiApp.Core.Session.Instance.GetUser();
+
+                    result.HasPersonalInfo = !string.IsNullOrEmpty(user.Name);
+
+                }
+
                 Messenger.Default.Send<UserAutorizationResultMessage>(result);
+            });
+
+            Messenger.Default.Register<SavePersonalInfoMessage>(this, async (msg) => {
+
+                var result = await this.SavePersonalInfo(msg.PersonalInfo);
+
+                Messenger.Default.Send<SavePersonalInfoResultMessage>(result);
+
             });
 
         }
@@ -102,7 +122,22 @@ namespace TaxiApp.Core.DataModel
         {
             Windows.Storage.ApplicationData.Current.LocalSettings.Values.Clear();
         }
-        
+
+        public Task ReadPersonalInfo()
+        {
+            Entities.IUser user = TaxiApp.Core.Session.Instance.GetUser();
+
+            return _userRepository.GetMyInfo().ContinueWith(t =>
+            {
+                IUser PersonalInfo = t.Result;
+
+                user.Name = PersonalInfo.Name;
+                user.Surname = PersonalInfo.Surname;
+                user.Lastname = PersonalInfo.Lastname;
+                user.Email = PersonalInfo.Email;
+            });
+        }
+
         private Task<UserRegistrationResultMessage> RegisterUser(string phoneNumber)
         {
             var tcs = new TaskCompletionSource<UserRegistrationResultMessage>();
@@ -136,6 +171,8 @@ namespace TaxiApp.Core.DataModel
             
             task.ContinueWith(t =>
             {
+                t.Result.PhoneNumber = PhoneNumber;
+
                 TaxiApp.Core.Session.Instance.SetUSer(t.Result);
                 
                 SavePIN(PIN);
@@ -153,6 +190,33 @@ namespace TaxiApp.Core.DataModel
             
             return tcs.Task;
         }
-        
+
+        public Task<SavePersonalInfoResultMessage> SavePersonalInfo(IUser personalInfo)
+        {
+            var tcs = new TaskCompletionSource<SavePersonalInfoResultMessage>();
+
+            var task = this._userRepository.SavePersonalInfo(personalInfo);
+
+            task.ContinueWith(t =>
+            {
+                TaxiApp.Core.Entities.IUser user = TaxiApp.Core.Session.Instance.GetUser();
+                user.Name = personalInfo.Name;
+                user.Surname = personalInfo.Surname;
+                user.Lastname = personalInfo.Lastname;
+                user.Email = personalInfo.Email;
+
+                tcs.SetResult(new SavePersonalInfoResultMessage() { Status = MessageStatus.Success });
+            }, TaskContinuationOptions.OnlyOnRanToCompletion);
+
+            task.ContinueWith(t =>
+            {
+
+                tcs.SetResult(new SavePersonalInfoResultMessage() { Status = MessageStatus.Faulted });
+
+            }, TaskContinuationOptions.OnlyOnFaulted);
+
+            return tcs.Task;
+        }
+
     }
 }

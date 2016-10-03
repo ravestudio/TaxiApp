@@ -54,14 +54,14 @@ namespace TaxiApp.ViewModel
             return this.sendRatingViewModel;
         }
 
-        public EditUserProfileViewModel GetEditUserProfileViewModel()
-        {
-            if (this.editUserProfileViewModel == null)
-            {
-                this.editUserProfileViewModel = new EditUserProfileViewModel();
-            }
+        //public EditUserProfileViewModel GetEditUserProfileViewModel()
+        //{
+        //    if (this.editUserProfileViewModel == null)
+        //    {
+        //        this.editUserProfileViewModel = new EditUserProfileViewModel();
+        //    }
 
-            return this.editUserProfileViewModel;
-        }
+        //    return this.editUserProfileViewModel;
+        //}
     }
 }

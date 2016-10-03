@@ -13,6 +13,7 @@ namespace TaxiApp.Core.Entities
         string Surname { get; set; }
         string Lastname { get; set; }
         string Email { get; set; }
+        string PhoneNumber { get; set; }
 
         string token { get; set; }
         string pin { get; set; }
@@ -24,6 +25,7 @@ namespace TaxiApp.Core.Entities
         public string Surname { get; set; }
         public string Lastname { get; set; }
         public string Email { get; set; }
+        public string PhoneNumber { get; set; }
 
         public string token { get; set; }
         public string pin { get; set; }

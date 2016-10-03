@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GalaSoft.MvvmLight;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,73 +9,60 @@ using TaxiApp.Core.ViewModel;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
+using GalaSoft.MvvmLight.Messaging;
+using GalaSoft.MvvmLight.Command;
+using TaxiApp.Core.Messages;
+using TaxiApp.Core.Entities;
+using GalaSoft.MvvmLight.Views;
+
 namespace TaxiApp.ViewModel
 {
-    public class EditUserProfileViewModel : TaxiViewModel
+    public class EditUserProfileViewModel : ViewModelBase
     {
-        public TaxiApp.Core.DataModel.UserInfo UserInfo { get; set; }
+        public string Name { get; set; }
+        public string Surname { get; set; }
+        public string Lastname { get; set; }
+        public string Email { get; set; }
 
-        public SaveInfoCommand SaveCmd { get; set; }
+        public RelayCommand SaveCmd { get; set; }
 
-        public EditUserProfileViewModel()
+        private IDictionary<MessageStatus, Action> actions = null;
+
+        private INavigationService _navigationService = null;
+
+        public EditUserProfileViewModel(INavigationService NavigationService)
         {
-            this.UserInfo = new Core.DataModel.UserInfo();
-            this.SaveCmd = new SaveInfoCommand();
+            this.actions = new Dictionary<MessageStatus, Action>();
 
-            this.UserInfo.ModelChanged += OnModelLoaded;
-        }
 
-        private void OnModelLoaded()
-        {
-            NotifyPropertyChanged("UserInfo.Name");
-            NotifyPropertyChanged("Surname");
-            NotifyPropertyChanged("Lastname");
-            NotifyPropertyChanged("Email");
-        }
-
-        public override void Init(Page Page)
-        {
-            base.Init(Page);
-
-            this.UserInfo.dispatcher = Page.Dispatcher;
-        }
-    }
-
-    public class SaveInfoCommand : System.Windows.Input.ICommand
-    {
-        public bool CanExecute(object parameter)
-        {
-            return true;
-        }
-
-        public event EventHandler CanExecuteChanged;
-
-        public void Execute(object parameter)
-        {
-            EditUserProfileViewModel viewModel = ViewModelFactory.Instance.GetEditUserProfileViewModel();
-            TaxiApp.Core.Entities.IUser user = TaxiApp.Core.Session.Instance.GetUser();
-            user.Name = viewModel.UserInfo.Name;
-            user.Surname = viewModel.UserInfo.Surname;
-            user.Lastname = viewModel.UserInfo.Lastname;
-            user.Email = viewModel.UserInfo.Email;
-
-            TaxiApp.Core.WebApiClient client = new TaxiApp.Core.WebApiClient();
-            TaxiApp.Core.Repository.UserRepository userRepository = new Core.Repository.UserRepository(client);
-
-            userRepository.SaveMyInfo().ContinueWith(t =>
+            this.actions.Add(MessageStatus.Success, () =>
             {
-                string msg = t.Result;
+                this._navigationService.NavigateTo("Main");
+            });
 
-                Windows.Foundation.IAsyncAction action =
-                viewModel.Page.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+            this.SaveCmd = new RelayCommand(() =>
+            {
+                IUser personalInfo = new User()
                 {
-                    int thread = Environment.CurrentManagedThreadId;
+                    Name = Name,
+                    Surname = Surname,
+                    Lastname = Lastname,
+                    Email = Email
+                };
 
-                    Frame frame = viewModel.Page.Frame;
+                Messenger.Default.Send<SavePersonalInfoMessage>(new SavePersonalInfoMessage()
+                {
+                    PersonalInfo = personalInfo
+                });
 
-                    //frame.Navigate(typeof(Views.MainPage));
+                Messenger.Default.Register<SavePersonalInfoResultMessage>(this, (msg) => {
+                    this.actions[msg.Status].Invoke();
                 });
             });
+
+
         }
+
     }
+
 }
