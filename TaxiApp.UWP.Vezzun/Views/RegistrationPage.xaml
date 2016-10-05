@@ -10,17 +10,9 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
     <Page.BottomAppBar>
         <CommandBar>
-
             <CommandBar.PrimaryCommands>
-                
-                <AppBarButton Icon="Accept" Label="appbarbutton" Command="{Binding RegisterCmd}"/>
-
-                
+                <AppBarButton Icon="Accept" Label="Register" Command="{Binding RegisterCmd}"/>
             </CommandBar.PrimaryCommands>
-            <CommandBar.SecondaryCommands>
-                <AppBarButton Icon="Add" Label="xxx"></AppBarButton>
-                <AppBarButton Icon="Add" Label="xxx"></AppBarButton>
-            </CommandBar.SecondaryCommands>
         </CommandBar>
     </Page.BottomAppBar>
 
@@ -40,7 +32,12 @@
             <StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="0,70,0,10">
 
                 <!--<Image Source="ms-appx:///Assets/Vezzun_logo.png" Stretch="Fill"/>-->
-                <TextBox Name="phone" HorizontalAlignment="Center" Header="Для регистрации в системе введите номер телефона" Text="{Binding PhoneNumber, Mode=TwoWay}" Margin="0,40,0,0" Width="270"/>
+                <TextBox Name="phone"
+                         HorizontalAlignment="Center"
+                         Header="Для регистрации в системе введите номер телефона"
+                         Text="{Binding PhoneNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                         
+                         Margin="0,40,0,0" Width="270"/>
 
             </StackPanel>
 
