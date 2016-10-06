@@ -81,6 +81,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Common\DateTimeToDateTimeOffsetConverter.cs" />
+    <Compile Include="Common\MenuItemTemplateSelector.cs" />
     <Compile Include="Common\SuggestionChosenArgs.cs" />
     <Compile Include="Common\SuggestTextChangedArgs.cs" />
     <Compile Include="DataModel\LoginModel.cs" />
@@ -159,7 +160,6 @@
     <Compile Include="ViewModel\MapViewModel.cs" />
     <Compile Include="ViewModel\MyOrderListViewModel.cs" />
     <Compile Include="ViewModel\NavigationService.cs" />
-    <Compile Include="ViewModel\TaxiViewModel.cs" />
     <Compile Include="WebApiClient.cs" />
   </ItemGroup>
   <ItemGroup>

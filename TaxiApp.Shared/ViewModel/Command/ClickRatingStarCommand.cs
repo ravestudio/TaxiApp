@@ -35,7 +35,7 @@ namespace TaxiApp.ViewModel.Command
                     s.Activate();
                 }
 
-                _viewModel.NotifyPropertyChanged("CarRating");
+                _viewModel.RaisePropertyChanged("CarRating");
             }
 
             if (star.Rating == "DRIVER")
@@ -45,7 +45,7 @@ namespace TaxiApp.ViewModel.Command
                     s.Activate();
                 }
 
-                _viewModel.NotifyPropertyChanged("DriverRating");
+                _viewModel.RaisePropertyChanged("DriverRating");
             }
 
         }

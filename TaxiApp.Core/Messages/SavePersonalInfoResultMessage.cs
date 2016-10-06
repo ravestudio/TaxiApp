@@ -11,6 +11,7 @@ namespace TaxiApp.Core.Messages
     /// </summary>
     public class SavePersonalInfoResultMessage
     {
+        public bool Edit { get; set; }
         public MessageStatus Status { get; set; }
     }
 }

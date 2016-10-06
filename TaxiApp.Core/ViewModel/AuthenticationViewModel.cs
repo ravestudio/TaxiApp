@@ -67,7 +67,7 @@ namespace TaxiApp.Core.ViewModel
 
             this.autorizationActions.Add(m => { return m.Status == MessageStatus.Success && !m.HasPersonalInfo; }, () =>
             {
-                this._navigationService.NavigateTo("EditProfile");
+                this._navigationService.NavigateTo("EditProfile", "registration");
             });
 
             this.autorizationActions.Add(m => { return m.Status == MessageStatus.Success && m.HasPersonalInfo; }, () =>

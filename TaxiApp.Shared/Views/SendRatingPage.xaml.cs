@@ -33,7 +33,7 @@ namespace TaxiApp.Views
         {
             this.InitializeComponent();
 
-            sendRatingViewModel.Init(this);
+            //sendRatingViewModel.Init(this);
 
             this.navigationHelper = new NavigationHelper(this);
             this.navigationHelper.LoadState += this.NavigationHelper_LoadState;

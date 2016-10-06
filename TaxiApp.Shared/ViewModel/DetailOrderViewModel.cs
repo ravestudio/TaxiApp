@@ -7,10 +7,11 @@ using System.Threading.Tasks;
 using TaxiApp.Core.ViewModel;
 using TaxiApp.Core.DataModel;
 using TaxiApp.Core.DataModel.Order;
+using GalaSoft.MvvmLight;
 
 namespace TaxiApp.ViewModel
 {
-    public class DetailOrderViewModel : TaxiViewModel
+    public class DetailOrderViewModel : ViewModelBase
     {
         public OrderModel OrderModel { get; set; }
 
@@ -31,7 +32,8 @@ namespace TaxiApp.ViewModel
             set
             {
                 this._driver = value;
-                NotifyPropertyChanged("DriverInfo");
+
+                this.RaisePropertyChanged("DriverInfo");
             }
         }
 
@@ -54,7 +56,7 @@ namespace TaxiApp.ViewModel
             set
             {
                 this._carClass = value;
-                NotifyPropertyChanged("CarClass");
+                this.RaisePropertyChanged("CarClass");
             }
         }
 
@@ -76,31 +78,31 @@ namespace TaxiApp.ViewModel
 
         }
 
-        public override void Init(Windows.UI.Xaml.Controls.Page Page)
-        {
+        //public override void Init(Windows.UI.Xaml.Controls.Page Page)
+        //{
 
-            base.Init(Page);
+        //    base.Init(Page);
 
-            this.DriverInfo = null;
+        //    this.DriverInfo = null;
 
-            this._order = this.OrderModel.Detailed;
+        //    this._order = this.OrderModel.Detailed;
 
-            this.FillServices(_order.Servieces);
+        //    this.FillServices(_order.Servieces);
 
-            this.CarClass = this.OrderModel.OrderCarList.Single(c => c.id == this._order.Carclass).Name;
+        //    this.CarClass = this.OrderModel.OrderCarList.Single(c => c.id == this._order.Carclass).Name;
 
 
-            if (_order.DriverId > 0)
-            {
-                Task<TaxiApp.Core.Entities.Driver> task = this.OrderModel.GetDriver(_order.DriverId);
+        //    if (_order.DriverId > 0)
+        //    {
+        //        Task<TaxiApp.Core.Entities.Driver> task = this.OrderModel.GetDriver(_order.DriverId);
 
-                task.ContinueWith((t) =>
-                    {
-                        this.DriverInfo = t.Result;
-                    });
-            }
+        //        task.ContinueWith((t) =>
+        //            {
+        //                this.DriverInfo = t.Result;
+        //            });
+        //    }
 
-        }
+        //}
 
         private void FillServices(byte services)
         {
@@ -115,7 +117,7 @@ namespace TaxiApp.ViewModel
                 }
             }
 
-            NotifyPropertyChanged("Services");
+            this.RaisePropertyChanged("Services");
         }
     }
 }

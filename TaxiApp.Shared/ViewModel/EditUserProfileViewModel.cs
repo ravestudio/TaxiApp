@@ -26,18 +26,29 @@ namespace TaxiApp.ViewModel
 
         public RelayCommand SaveCmd { get; set; }
 
-        private IDictionary<MessageStatus, Action> actions = null;
+        private IDictionary<Func<SavePersonalInfoResultMessage, bool>, Action> actions = null;
 
-        private INavigationService _navigationService = null;
+        private INavigationService _appNavigationService = null;
+        private INavigationService _childNavigationService = null;
 
-        public EditUserProfileViewModel(INavigationService NavigationService)
+        private bool _edit = false;
+
+        public EditUserProfileViewModel(INavigationService appNavigationService, INavigationService childNavigationService)
         {
-            this.actions = new Dictionary<MessageStatus, Action>();
+            this._appNavigationService = appNavigationService;
+            this._childNavigationService = childNavigationService;
+
+            this.actions = new Dictionary<Func<SavePersonalInfoResultMessage, bool>, Action>();
 
 
-            this.actions.Add(MessageStatus.Success, () =>
+            this.actions.Add(m => { return m.Status == MessageStatus.Success && !m.Edit; }, () =>
             {
-                this._navigationService.NavigateTo("Main");
+                this._appNavigationService.NavigateTo("Main");
+            });
+
+            this.actions.Add(m => { return m.Status == MessageStatus.Success && m.Edit; }, () =>
+            {
+                this._childNavigationService.NavigateTo("EditOrder");
             });
 
             this.SaveCmd = new RelayCommand(() =>
@@ -52,14 +63,27 @@ namespace TaxiApp.ViewModel
 
                 Messenger.Default.Send<SavePersonalInfoMessage>(new SavePersonalInfoMessage()
                 {
-                    PersonalInfo = personalInfo
+                    PersonalInfo = personalInfo,
+                    Edit = this._edit
                 });
 
                 Messenger.Default.Register<SavePersonalInfoResultMessage>(this, (msg) => {
-                    this.actions[msg.Status].Invoke();
+                    this.actions.Single(a => a.Key.Invoke(msg)).Value.Invoke();
                 });
             });
 
+
+        }
+
+        public void LoadInfo(bool edit)
+        {
+            this._edit = edit;
+            IUser user = TaxiApp.Core.Session.Instance.GetUser();
+
+            this.Name = user.Name;
+            this.Surname = user.Surname;
+            this.Lastname = user.Lastname;
+            this.Email = user.Email;
 
         }
 

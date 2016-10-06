@@ -56,7 +56,8 @@ namespace TaxiApp.ViewModel
 
             SimpleIoc.Default.Register<EditUserProfileViewModel>(() =>
             {
-                return new EditUserProfileViewModel(ServiceLocator.Current.GetInstance<INavigationService>("base"));
+                return new EditUserProfileViewModel(ServiceLocator.Current.GetInstance<INavigationService>("base"),
+                        ServiceLocator.Current.GetInstance<INavigationService>("split"));
             });
 
             SimpleIoc.Default.Register<EditOrderViewModel>();
@@ -124,6 +125,7 @@ namespace TaxiApp.ViewModel
 
             navigationService.Configure("EditOrder", typeof(Views.EditOrderPage));
             navigationService.Configure("OrderList", typeof(Views.OrderListPage));
+            navigationService.Configure("EditProfile", typeof(Views.EditUserProfilePage));
 
             return navigationService;
         }

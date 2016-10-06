@@ -8,10 +8,11 @@ using System.Threading.Tasks;
 using TaxiApp.Core.ViewModel;
 using TaxiApp.Core.DataModel;
 using TaxiApp.Core.DataModel.Order;
+using GalaSoft.MvvmLight;
 
 namespace TaxiApp.ViewModel
 {
-    public class SendRatingViewModel : TaxiViewModel
+    public class SendRatingViewModel : ViewModelBase
     {
         public OrderModel OrderModel { get; set; }
 
@@ -33,7 +34,7 @@ namespace TaxiApp.ViewModel
             set
             {
                 this._driver = value;
-                NotifyPropertyChanged("DriverInfo");
+                this.RaisePropertyChanged("DriverInfo");
             }
         }
 
@@ -75,24 +76,24 @@ namespace TaxiApp.ViewModel
             }
         }
 
-        public override void Init(Windows.UI.Xaml.Controls.Page Page)
-        {
-            base.Init(Page);
+        //public override void Init(Windows.UI.Xaml.Controls.Page Page)
+        //{
+        //    base.Init(Page);
 
-            this.DriverInfo = null;
+        //    this.DriverInfo = null;
 
-            this._order = this.OrderModel.Detailed;
+        //    this._order = this.OrderModel.Detailed;
 
-            if (_order.DriverId > 0)
-            {
-                Task<TaxiApp.Core.Entities.Driver> task = this.OrderModel.GetDriver(_order.DriverId);
+        //    if (_order.DriverId > 0)
+        //    {
+        //        Task<TaxiApp.Core.Entities.Driver> task = this.OrderModel.GetDriver(_order.DriverId);
 
-                task.ContinueWith((t) =>
-                {
-                    this.DriverInfo = t.Result;
-                });
-            }
-        }
+        //        task.ContinueWith((t) =>
+        //        {
+        //            this.DriverInfo = t.Result;
+        //        });
+        //    }
+        //}
     }
 
     public class RatingStar

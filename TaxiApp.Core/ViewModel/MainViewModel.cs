@@ -7,6 +7,7 @@ using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Views;
 using GalaSoft.MvvmLight.Messaging;
 using TaxiApp.Core.Messages;
+using TaxiApp.Core.Managers;
 
 namespace TaxiApp.Core.ViewModel
 {
@@ -15,8 +16,8 @@ namespace TaxiApp.Core.ViewModel
 
         public RelayCommand ClickMenuCmd { get; set; }
         public RelayCommand ContextChangedCmd { get; set; }
-        public RelayCommand ShowMyOrderListCmd { get; set; }
-        public RelayCommand HomeCmd { get; set; }
+
+        public RelayCommand<object> MenuSelectionChanged { get; set; }
 
         private TaxiApp.Core.Managers.IMenu _menu = null;
         private INavigationService _appNavigationServie = null;
@@ -25,27 +26,43 @@ namespace TaxiApp.Core.ViewModel
         public string PersonName { get; set; }
         public string PersonePhone { get; set; }
 
+        public IList<IMenuItem> MenuItems { get { return this._menu.GetMenuItems(); } }
+        private IDictionary<string, Action> _menuActions = null;
+
         public MainViewModel(TaxiApp.Core.Managers.IMenu menu, INavigationService appNavigationService, INavigationService childNavigationService)
         {
             this._menu = menu;
             this._appNavigationServie = appNavigationService;
             this._childNavigationServie = childNavigationService;
 
-            InitPersonalInfo();
+            _menuActions = new Dictionary<string, Action>();
+            _menuActions.Add("home", () =>
+            {
+                this._childNavigationServie.NavigateTo("EditOrder");
+            });
+
+            _menuActions.Add("OrderList", () =>
+            {
+                this._childNavigationServie.NavigateTo("OrderList");
+            });
+
+            _menuActions.Add("personal", () =>
+            {
+                this._childNavigationServie.NavigateTo("EditProfile");
+
+            });
 
             this.ClickMenuCmd = new RelayCommand(() =>
             {
                 this._menu.Open();
             });
+            
 
-            this.ShowMyOrderListCmd = new RelayCommand(() =>
+            this.MenuSelectionChanged = new RelayCommand<object>((obj) =>
             {
-                this._childNavigationServie.NavigateTo("OrderList");
-            });
+                var menu_item = (IMenuItem)obj;
 
-            this.HomeCmd = new RelayCommand(() =>
-            {
-                this._childNavigationServie.NavigateTo("EditOrder");
+                _menuActions[menu_item.Key].Invoke();
             });
 
             this.ContextChangedCmd = new RelayCommand(() =>
@@ -61,12 +78,5 @@ namespace TaxiApp.Core.ViewModel
 
         }
 
-        private void InitPersonalInfo()
-        {
-            Entities.IUser user = TaxiApp.Core.Session.Instance.GetUser();
-
-            this.PersonName = string.Format("{0} {1}", user.Name, user.Lastname);
-            this.PersonePhone = user.PhoneNumber;
-        }
     }
 }

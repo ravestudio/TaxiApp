@@ -15,6 +15,7 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using TaxiApp.ViewModel;
 
 // The Basic Page item template is documented at http://go.microsoft.com/fwlink/?LinkID=390556
 
@@ -31,5 +32,14 @@ namespace TaxiApp.Views
             this.InitializeComponent();
         }
 
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            string pr = (string)e.Parameter;
+
+            ((EditUserProfileViewModel)this.DataContext).LoadInfo(pr != "registration");
+        }
+
     }
+
+    
 }

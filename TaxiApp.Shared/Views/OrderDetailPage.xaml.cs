@@ -32,7 +32,7 @@ namespace TaxiApp.Views
         {
             this.InitializeComponent();
 
-            detailOrderViewModel.Init(this);
+            //detailOrderViewModel.Init(this);
 
             this.navigationHelper = new NavigationHelper(this);
             this.navigationHelper.LoadState += this.NavigationHelper_LoadState;

@@ -8,6 +8,7 @@ namespace TaxiApp.Core.Messages
 {
     public class SavePersonalInfoMessage
     {
+        public bool Edit { get; set; }
         public Entities.IUser PersonalInfo { get; set; }
     }
 }

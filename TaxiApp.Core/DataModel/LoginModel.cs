@@ -77,6 +77,8 @@ namespace TaxiApp.Core.DataModel
 
                 var result = await this.SavePersonalInfo(msg.PersonalInfo);
 
+                result.Edit = msg.Edit;
+
                 Messenger.Default.Send<SavePersonalInfoResultMessage>(result);
 
             });

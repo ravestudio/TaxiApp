@@ -16,10 +16,11 @@ using GalaSoft.MvvmLight.Views;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using TaxiApp.Core;
+using GalaSoft.MvvmLight;
 
 namespace TaxiApp.Core.ViewModel
 {
-    public class EditOrderViewModel : TaxiViewModel
+    public class EditOrderViewModel : ViewModelBase
     {
         public OrderModel OrderModel { get; set; }
         public SearchModel SearchModel { get; set; }
@@ -147,7 +148,7 @@ namespace TaxiApp.Core.ViewModel
             
             Messenger.Default.Register<LocationChangedMessage>(this, (msg) => {
                 this.LocationReady = msg.Ready;
-                this.NotifyPropertyChanged("LocationReady");
+                //this.RaisePropertyChanged("LocationReady");
             });
 
             Messenger.Default.Register<RouteChangedMessage>(this, (msg) => {
@@ -155,7 +156,7 @@ namespace TaxiApp.Core.ViewModel
                 this._route = msg.route;
             });
 
-            this.LayoutRootList = new Dictionary<Type, Windows.UI.Xaml.Controls.Grid>();
+            //this.LayoutRootList = new Dictionary<Type, Windows.UI.Xaml.Controls.Grid>();
 
             this.MenuState = false;
 
@@ -262,94 +263,53 @@ namespace TaxiApp.Core.ViewModel
             
         }
 
-        public override void Init(Page page)
-        {
-            base.Init(page);
+        //public override void Init(Page page)
+        //{
+        //    base.Init(page);
 
-            this.MenuState = false;
+        //    this.MenuState = false;
 
-            if (this.LayoutRootList.Keys.Contains(page.GetType()))
-            {
-                this.LayoutRootList.Remove(page.GetType());
-            }
-            this.LayoutRootList.Add(page.GetType(), (Windows.UI.Xaml.Controls.Grid)page.FindName("LayoutRoot"));
+        //    //if (this.LayoutRootList.Keys.Contains(page.GetType()))
+        //    //{
+        //    //    this.LayoutRootList.Remove(page.GetType());
+        //    //}
+        //    //this.LayoutRootList.Add(page.GetType(), (Windows.UI.Xaml.Controls.Grid)page.FindName("LayoutRoot"));
 
-            //if (page is TaxiApp.Views.MainPage)
-            //{
-            //    //this.ServicePicker = (ListPickerFlyout)page.Resources["ServiceFlyout"];
-            //    //this.CarPicker = (ListPickerFlyout)page.Resources["CarFlyout"];
-            //    //this.DatePicker = (DatePickerFlyout)page.Resources["DateFlyout"];
-            //    //this.TimePicker = (TimePickerFlyout)page.Resources["TimeFlyout"];
+        //    //if (page is TaxiApp.Views.MainPage)
+        //    //{
+        //    //    //this.ServicePicker = (ListPickerFlyout)page.Resources["ServiceFlyout"];
+        //    //    //this.CarPicker = (ListPickerFlyout)page.Resources["CarFlyout"];
+        //    //    //this.DatePicker = (DatePickerFlyout)page.Resources["DateFlyout"];
+        //    //    //this.TimePicker = (TimePickerFlyout)page.Resources["TimeFlyout"];
 
                 
 
-            //    //this.LayoutRootList.Add(page.GetType(), (Windows.UI.Xaml.Controls.Grid)page.FindName("LayoutRoot"));
+        //    //    //this.LayoutRootList.Add(page.GetType(), (Windows.UI.Xaml.Controls.Grid)page.FindName("LayoutRoot"));
 
-            //    //this.LayoutRoot = (Windows.UI.Xaml.Controls.Grid)page.FindName("LayoutRoot");
+        //    //    //this.LayoutRoot = (Windows.UI.Xaml.Controls.Grid)page.FindName("LayoutRoot");
 
-            //    foreach(OrderOption service in this.SelectedServices)
-            //    {
-            //        //this.ServicePicker.SelectedItems.Add(service);
-            //    }
-            //}
+        //    //    foreach(OrderOption service in this.SelectedServices)
+        //    //    {
+        //    //        //this.ServicePicker.SelectedItems.Add(service);
+        //    //    }
+        //    //}
 
 
-            //if (page is TaxiApp.Views.AddPointPage)
-            //{
-            //    this.Map.RouteMapControl = (Windows.UI.Xaml.Controls.Maps.MapControl)page.FindName("RouteMapControl");
-            //}
+        //    //if (page is TaxiApp.Views.AddPointPage)
+        //    //{
+        //    //    this.Map.RouteMapControl = (Windows.UI.Xaml.Controls.Maps.MapControl)page.FindName("RouteMapControl");
+        //    //}
 
-            //this.OrderModel.Dispatcher = page.Dispatcher;
+        //    //this.OrderModel.Dispatcher = page.Dispatcher;
 
             
-        }
+        //}
 
 
 
 
         public void UpdatePoints()
         {
-
-            IEnumerable<Geopoint> geopoints = this._orderItemList.OfType<OrderPoint>().Where(p => p.IsDataReady())
-                .OrderBy(p => p.Priority)
-                .Select(p => new Geopoint(new BasicGeoposition()
-                {
-                    Latitude = p.Location.Latitude,
-                    Longitude = p.Location.Longitude
-                }));
-
-            Task<Core.IRoute> FindRouteTask = this.OrderModel.FindRoute(geopoints);
-
-            FindRouteTask.ContinueWith(t =>
-            {
-                if (t.Status == TaskStatus.RanToCompletion)
-                {
-
-                    //this.Map.MapRoute = t.Result;
-
-                    Windows.Foundation.IAsyncAction action =
-                    this.Page.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
-                    {
-                        var dlg = new Windows.UI.Popups.MessageDialog("Маршрут найден");
-                        dlg.ShowAsync();
-
-                        TaxiApp.Core.Entities.Order order = null;
-                        order = this.GetEntity();
-
-                        this.OrderModel.GetPriceInfo(order, this.PriceInfo);
-                    });
-                }
-                else
-                {
-
-                    Windows.Foundation.IAsyncAction action =
-                    this.Page.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
-                    {
-                        var dlg = new Windows.UI.Popups.MessageDialog("Ошибка при поиске маршрута");
-                        dlg.ShowAsync();
-                    });
-                }
-            });
 
             if (this._orderItemList.OfType<OrderPoint>().Count() == this._orderItemList.OfType<OrderPoint>().Where(p => p.IsDataReady()).Count())
             {
