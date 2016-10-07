@@ -109,6 +109,7 @@
   <ItemGroup>
     <Compile Include="Common\SuggestionChosenParameterConverter.cs" />
     <Compile Include="Common\SuggestTextChangedParameterConverter.cs" />
+    <Compile Include="Controls\ListPickerFlyout.cs" />
     <Compile Include="Location.cs" />
     <Compile Include="Managers\BackgroundService.cs" />
     <Compile Include="Managers\ChatService.cs" />
