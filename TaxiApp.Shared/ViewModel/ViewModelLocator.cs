@@ -83,6 +83,7 @@ namespace TaxiApp.ViewModel
             SimpleIoc.Default.Register<ISuggestBox, TaxiApp.Core.UWP.Managers.SuggestBox>();
             SimpleIoc.Default.Register<IMap, TaxiApp.Core.UWP.Managers.Map>();
             SimpleIoc.Default.Register<IMenu, TaxiApp.Core.UWP.Managers.Menu>();
+            SimpleIoc.Default.Register<IEditOrderControls, TaxiApp.Core.UWP.Managers.EditOrderControls>();
             SimpleIoc.Default.Register<IInitializationFrameStrategy>(() => { return new TaxiApp.Core.ViewModel.InitializationFrameStrategy(); }, "base");
             SimpleIoc.Default.Register<IInitializationFrameStrategy>(() => { return new TaxiApp.Core.UWP.ViewModel.InitializationFrameStrategy(); }, "split");
             SimpleIoc.Default.Register<INavigationService>(GetBaseNavigationService, "base");

@@ -105,6 +105,7 @@
     <Compile Include="Managers\ChildFinder.cs" />
     <Compile Include="Managers\IBackgroundService.cs" />
     <Compile Include="Managers\IChatService.cs" />
+    <Compile Include="Managers\IEditOrderControls.cs" />
     <Compile Include="Managers\ILocationService.cs" />
     <Compile Include="Managers\IMap.cs" />
     <Compile Include="Managers\IMenu.cs" />

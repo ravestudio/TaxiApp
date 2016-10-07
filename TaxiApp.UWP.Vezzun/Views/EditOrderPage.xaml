@@ -9,9 +9,15 @@
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:core="using:Microsoft.Xaml.Interactions.Core"
     DataContext="{Binding EditOrderViewModel, Source={StaticResource Locator}}"
+    x:Name="editOrderPage"
     >
 
     <Page.Resources>
+
+        <Flyout x:Key="ServiceFlyout">
+            <Grid Width="100" Height="100"></Grid>
+
+        </Flyout>
 
 
         <DataTemplate x:Key="OrderItemTemplate">

@@ -17,6 +17,7 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using TaxiApp.Core;
 using GalaSoft.MvvmLight;
+using TaxiApp.Core.Managers;
 
 namespace TaxiApp.Core.ViewModel
 {
@@ -60,7 +61,8 @@ namespace TaxiApp.Core.ViewModel
         private TaxiApp.Core.Entities.Order _order = null;
 
         private IRoute _route = null;
-        
+
+        private IEditOrderControls _editOrderControls = null;
 
         public ObservableCollection<OrderItem> OrderItemList
         {
@@ -100,8 +102,10 @@ namespace TaxiApp.Core.ViewModel
             }
         }
 
-        public EditOrderViewModel()
+        public EditOrderViewModel(IEditOrderControls editOrderControls)
         {
+            this._editOrderControls = editOrderControls;
+
             this.PriceInfo = new OrderPriceInfo();
 
             this._EndDate = DateTime.Now;
@@ -225,7 +229,7 @@ namespace TaxiApp.Core.ViewModel
 
             this.Actions.Add("Services", (item) =>
             {
-                //viewModel.ServicePicker.ShowAt(viewModel.Page);
+                this._editOrderControls.OpenServicePicker();
 
             });
 

@@ -112,6 +112,7 @@
     <Compile Include="Location.cs" />
     <Compile Include="Managers\BackgroundService.cs" />
     <Compile Include="Managers\ChatService.cs" />
+    <Compile Include="Managers\EditOrderControls.cs" />
     <Compile Include="Managers\LocationService.cs" />
     <Compile Include="Managers\Map.cs" />
     <Compile Include="Managers\Menu.cs" />
