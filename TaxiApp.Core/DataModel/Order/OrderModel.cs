@@ -21,8 +21,8 @@ namespace TaxiApp.Core.DataModel.Order
 
         public SocketHandler SocketOnMessage;
 
-        private IList<OrderOption> _orderServiceList = null;
-        private IList<OrderOption> _orderCarList = null;
+        public IList<OrderOption> _orderServiceList = null;
+        public IList<OrderOption> _orderCarList = null;
 
         private TaxiApp.Core.SocketClient SocketClient = new Core.SocketClient();
         private TaxiApp.Core.Socket.SocketManager socketMG = null;

@@ -11,11 +11,13 @@ namespace TaxiApp.Core.UWP.Controls
     {
         public ListPickerFlyout()
         {
-            this.Content = new Grid()
+            StackPanel panel = new StackPanel()
             {
-                Width = 100,
-                Height = 200
+                HorizontalAlignment = Windows.UI.Xaml.HorizontalAlignment.Stretch,
+                VerticalAlignment = Windows.UI.Xaml.VerticalAlignment.Stretch
             };
+
+            //panel.ch
         }
     }
 }

@@ -15,10 +15,19 @@
 
     <Page.Resources>
 
-        <ctrl:ListPickerFlyout x:Key="ServiceFlyout">
+        <!--<ctrl:ListPickerFlyout x:Key="ServiceFlyout">
             
 
-        </ctrl:ListPickerFlyout>
+        </ctrl:ListPickerFlyout>-->
+
+        <Flyout x:Key="ServiceFlyout" >
+
+                <StackPanel Height="800">
+                <ListView ItemsSource="{Binding OrderModel.OrderServiceList, Source={StaticResource Locator}}"></ListView>
+                <Button Content="Accept"></Button>
+                </StackPanel>
+
+        </Flyout>
 
 
         <DataTemplate x:Key="OrderItemTemplate">

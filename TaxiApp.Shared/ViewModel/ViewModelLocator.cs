@@ -15,6 +15,7 @@ using Windows.UI.Xaml.Controls;
 using GalaSoft.MvvmLight.Messaging;
 using TaxiApp.Core.Messages;
 using TaxiApp.Core.DataModel;
+using TaxiApp.Core.DataModel.Order;
 
 namespace TaxiApp.ViewModel
 {
@@ -45,9 +46,9 @@ namespace TaxiApp.ViewModel
             SimpleIoc.Default.Register<ILocationService, Core.UWP.Managers.LocationService>();
             SimpleIoc.Default.Register<IChatService, Core.UWP.Managers.ChatService>();
             SimpleIoc.Default.Register<LocationManager>();
-            SimpleIoc.Default.Register<Core.DataModel.LoginModel>(true);
-            SimpleIoc.Default.Register<Core.DataModel.SearchModel>(true);
-            SimpleIoc.Default.Register<Core.DataModel.Order.OrderModel>(true);
+            SimpleIoc.Default.Register<LoginModel>(true);
+            SimpleIoc.Default.Register<SearchModel>(true);
+            SimpleIoc.Default.Register<OrderModel>(true);
 
             SimpleIoc.Default.Register<AuthenticationViewModel>(() =>
             {
@@ -184,6 +185,14 @@ namespace TaxiApp.ViewModel
             get
             {
                 return ServiceLocator.Current.GetInstance<LoginModel>();
+            }
+        }
+
+        public OrderModel OrderModel
+        {
+            get
+            {
+                return ServiceLocator.Current.GetInstance<OrderModel>();
             }
         }
         /// <summary>
