@@ -20,10 +20,20 @@
 
         </ctrl:ListPickerFlyout>-->
 
-        <Flyout x:Key="ServiceFlyout" >
+        <Flyout x:Key="ServiceFlyout" Placement="Full">
 
-                <StackPanel Height="800">
-                <ListView ItemsSource="{Binding OrderModel.OrderServiceList, Source={StaticResource Locator}}"></ListView>
+                <StackPanel>
+                <ListBox ItemsSource="{Binding OrderModel.OrderServiceList, Source={StaticResource Locator}}">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <CheckBox Width="50"></CheckBox>
+                                <TextBlock Text="{Binding Name}"></TextBlock>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                    
+                </ListBox>
                 <Button Content="Accept"></Button>
                 </StackPanel>
 
