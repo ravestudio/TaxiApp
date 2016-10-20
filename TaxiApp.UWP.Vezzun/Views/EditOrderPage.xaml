@@ -22,20 +22,29 @@
 
         <Flyout x:Key="ServiceFlyout" Placement="Full">
 
-                <StackPanel>
-                <ListBox ItemsSource="{Binding OrderModel.OrderServiceList, Source={StaticResource Locator}}">
-                    <ListBox.ItemTemplate>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="100"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <ListView Grid.Row="0" VerticalAlignment="Stretch" ItemsSource="{Binding OrderModel.OrderServiceList, Source={StaticResource Locator}}">
+                    <ListView.ItemTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal">
-                                <CheckBox Width="50"></CheckBox>
-                                <TextBlock Text="{Binding Name}"></TextBlock>
+                                <CheckBox MinWidth="30" HorizontalAlignment="Left"></CheckBox>
+                                <TextBlock Text="{Binding Name}" HorizontalAlignment="Left"></TextBlock>
                             </StackPanel>
                         </DataTemplate>
-                    </ListBox.ItemTemplate>
-                    
-                </ListBox>
-                <Button Content="Accept"></Button>
+                    </ListView.ItemTemplate>
+
+                </ListView>
+
+                <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Stretch" Background="Red">
+                    <Button Content="Accept"></Button>
+                    <Button Content="Cancel" Margin="10,0,0,0"></Button>
                 </StackPanel>
+            </Grid>
 
         </Flyout>
 

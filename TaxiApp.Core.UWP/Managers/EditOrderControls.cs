@@ -11,28 +11,32 @@ namespace TaxiApp.Core.UWP.Managers
 {
     public class EditOrderControls : IEditOrderControls
     {
-        private Flyout _servicePicker = null;
+        
         private Page _page = null;
 
         public void OpenServicePicker()
         {
-            this.GetServicePicker().ShowAt(_page);
+            Flyout picker = this.GetServicePicker();
+
+            ((Grid)picker.Content).RowDefinitions[0].Height = new GridLength(_page.ActualHeight - 30, GridUnitType.Pixel);
+
+            picker.ShowAt(_page);
         }
 
         private Flyout GetServicePicker()
         {
-            if (_servicePicker == null)
-            {
-                SplitView split = TaxiApp.Core.Managers.ChildFinder.FindChild<SplitView>(Window.Current.Content, "panel_splitter");
-                var frame = (Frame)split.Content;
+            Flyout servicePicker = null;
 
-                //var frame = (Frame)Window.Current.Content;
-                _page = (Page)frame.Content;
+            SplitView split = TaxiApp.Core.Managers.ChildFinder.FindChild<SplitView>(Window.Current.Content, "panel_splitter");
+            var frame = (Frame)split.Content;
 
-                _servicePicker = (Flyout)_page.Resources["ServiceFlyout"];
-            }
+            //var frame = (Frame)Window.Current.Content;
+            _page = (Page)frame.Content;
 
-            return _servicePicker;
+            servicePicker = (Flyout)_page.Resources["ServiceFlyout"];
+
+
+            return servicePicker;
         }
     }
 }
