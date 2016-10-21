@@ -43,6 +43,9 @@ namespace TaxiApp.Core.UWP.Controls
             }
         }
 
+        public bool Selected { get; set; }
+
+
 
         private ListView view = null;
 
@@ -62,6 +65,7 @@ namespace TaxiApp.Core.UWP.Controls
             view = new ListView() { VerticalAlignment = Windows.UI.Xaml.VerticalAlignment.Stretch };
             grid.Children.Add(view);
             Grid.SetRow(view, 0);
+            view.ItemContainerStyle = Application.Current.Resources["taxiListPickerFlyoutItemStyle"] as Style;
 
             StackPanel panel = new StackPanel() { Orientation = Orientation.Horizontal, HorizontalAlignment = Windows.UI.Xaml.HorizontalAlignment.Center, VerticalAlignment = Windows.UI.Xaml.VerticalAlignment.Stretch };
             grid.Children.Add(panel);
@@ -77,6 +81,8 @@ namespace TaxiApp.Core.UWP.Controls
 
             this.FlyoutPresenterStyle.Setters.Add(new Setter(FlyoutPresenter.BorderThicknessProperty, new Thickness(0.0)));
             //this.FlyoutPresenterStyle.Setters.Add.SetValue(FlyoutPresenter.BorderThicknessProperty, new Thickness(0.0));
+
+            this.Selected = true;
 
         }
 
