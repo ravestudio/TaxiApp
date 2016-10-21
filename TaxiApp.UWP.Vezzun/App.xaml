@@ -49,7 +49,7 @@
                             </Grid.Resources>
                             <Rectangle x:Name="PressedBackground" Fill="Transparent" Control.IsTemplateFocusTarget="True"/>
                             <StackPanel Orientation="Horizontal">
-                                <CheckBox MinWidth="20" Checked="{TemplateBinding Selected}"></CheckBox>
+                                <CheckBox MinWidth="20" Checked="{x:Bind Component.Checked[1]}"></CheckBox>
                                 <ContentPresenter x:Name="ContentPresenter" ContentTemplate="{TemplateBinding ContentTemplate}" ContentTransitions="{TemplateBinding ContentTransitions}" Content="{TemplateBinding Content}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" Style="{StaticResource BodyContentPresenterStyle}" TextWrapping="NoWrap" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
                             </StackPanel>
                         </Grid>

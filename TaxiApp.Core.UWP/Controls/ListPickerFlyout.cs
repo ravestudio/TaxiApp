@@ -84,7 +84,31 @@ namespace TaxiApp.Core.UWP.Controls
 
             this.Selected = true;
 
+            this.Component = new ListPickerViewModel();
+            this.Component.Checked = new List<bool>();
+            this.Component.Checked.Add(true);
+            this.Component.Checked.Add(true);
+            this.Component.Checked.Add(true);
+
         }
 
+        public static readonly DependencyProperty ComponentProperty = DependencyProperty.Register("Component", typeof(ListPickerViewModel), typeof(ListPickerFlyout), new PropertyMetadata(null));
+
+        public ListPickerViewModel Component
+        {
+            get { return (ListPickerViewModel)GetValue(ComponentProperty); }
+            set { SetValue(ComponentProperty, value); }
+        }
+
+    }
+
+    public class ListPickerViewModel
+    {
+
+        public IList<bool> Checked
+        {
+            get;
+            set;
+        }
     }
 }
