@@ -3,13 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.UI;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Data;
+using Windows.UI.Xaml.Media;
 
 namespace TaxiApp.Core.UWP.Controls
 {
     public class ListPickerFlyout : Flyout
     {
-        public object Items
+        public object ItemsSource
         {
             get
             {
@@ -17,7 +21,12 @@ namespace TaxiApp.Core.UWP.Controls
             }
             set
             {
-                view.ItemsSource = value;
+                if (value is Windows.UI.Xaml.Data.Binding)
+                {
+                    var binding = (Windows.UI.Xaml.Data.Binding)value;
+                    BindingOperations.SetBinding(view, ListView.ItemsSourceProperty, binding);
+                }
+                //view.ItemsSource = value;
             }
         }
 
@@ -45,7 +54,7 @@ namespace TaxiApp.Core.UWP.Controls
             grid.HorizontalAlignment = Windows.UI.Xaml.HorizontalAlignment.Stretch;
             grid.VerticalAlignment = Windows.UI.Xaml.VerticalAlignment.Stretch;
 
-            grid.Background = new SolidColorBrush(Color.FromArgb(255, 48, 179, 221));
+            //grid.Background = new SolidColorBrush(Color.FromArgb(255, 48, 179, 221));
 
             grid.RowDefinitions.Add(new RowDefinition() { Height = new Windows.UI.Xaml.GridLength(1, Windows.UI.Xaml.GridUnitType.Star) });
             grid.RowDefinitions.Add(new RowDefinition() { Height = new Windows.UI.Xaml.GridLength(50, Windows.UI.Xaml.GridUnitType.Pixel) });
@@ -63,11 +72,13 @@ namespace TaxiApp.Core.UWP.Controls
 
             this.Placement = Windows.UI.Xaml.Controls.Primitives.FlyoutPlacementMode.Full;
 
+            //this.FlyoutPresenterStyle = new Style()
+            this.FlyoutPresenterStyle = new Style(typeof(FlyoutPresenter));
+
+            this.FlyoutPresenterStyle.Setters.Add(new Setter(FlyoutPresenter.BorderThicknessProperty, new Thickness(0.0)));
+            //this.FlyoutPresenterStyle.Setters.Add.SetValue(FlyoutPresenter.BorderThicknessProperty, new Thickness(0.0));
+
         }
 
-        public object load()
-        {
-            return view.ItemTemplate.LoadContent();
-        }
     }
 }

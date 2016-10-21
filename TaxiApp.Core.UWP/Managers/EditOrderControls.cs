@@ -16,16 +16,17 @@ namespace TaxiApp.Core.UWP.Managers
 
         public void OpenServicePicker()
         {
-            Flyout picker = this.GetServicePicker();
+            
+            TaxiApp.Core.UWP.Controls.ListPickerFlyout picker = this.GetServicePicker();
 
-            ((Grid)picker.Content).RowDefinitions[0].Height = new GridLength(_page.ActualHeight - 30, GridUnitType.Pixel);
+            //((Grid)picker.Content).RowDefinitions[0].Height = new GridLength(_page.ActualHeight - 30, GridUnitType.Pixel);
 
             picker.ShowAt(_page);
         }
 
-        private Flyout GetServicePicker()
+        private TaxiApp.Core.UWP.Controls.ListPickerFlyout GetServicePicker()
         {
-            Flyout servicePicker = null;
+            TaxiApp.Core.UWP.Controls.ListPickerFlyout servicePicker = null;
 
             SplitView split = TaxiApp.Core.Managers.ChildFinder.FindChild<SplitView>(Window.Current.Content, "panel_splitter");
             var frame = (Frame)split.Content;
@@ -33,7 +34,7 @@ namespace TaxiApp.Core.UWP.Managers
             //var frame = (Frame)Window.Current.Content;
             _page = (Page)frame.Content;
 
-            servicePicker = (Flyout)_page.Resources["ServiceFlyout"];
+            servicePicker = (TaxiApp.Core.UWP.Controls.ListPickerFlyout)_page.Resources["ServiceFlyout"];
 
 
             return servicePicker;

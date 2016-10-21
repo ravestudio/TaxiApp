@@ -15,12 +15,19 @@
 
     <Page.Resources>
 
-        <!--<ctrl:ListPickerFlyout x:Key="ServiceFlyout">
+        <ctrl:ListPickerFlyout x:Key="ServiceFlyout" ItemsSource="{Binding OrderModel.OrderServiceList, Source={StaticResource Locator}}">
+
+
             
+            <ctrl:ListPickerFlyout.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Name}"></TextBlock>
+                </DataTemplate>
+            </ctrl:ListPickerFlyout.ItemTemplate>
 
-        </ctrl:ListPickerFlyout>-->
+        </ctrl:ListPickerFlyout>
 
-        <Flyout x:Key="ServiceFlyout" Placement="Full">
+        <!--<Flyout x:Key="ServiceFlyout" Placement="Full">
 
             <Grid>
                 <Grid.RowDefinitions>
@@ -46,7 +53,7 @@
                 </StackPanel>
             </Grid>
 
-        </Flyout>
+        </Flyout>-->
 
 
         <DataTemplate x:Key="OrderItemTemplate">
