@@ -43,7 +43,7 @@ namespace TaxiApp.Core.UWP.Controls
             }
         }
 
-        public bool Selected { get; set; }
+        //public bool Selected { get; set; }
 
 
 
@@ -62,10 +62,10 @@ namespace TaxiApp.Core.UWP.Controls
             grid.RowDefinitions.Add(new RowDefinition() { Height = new Windows.UI.Xaml.GridLength(1, Windows.UI.Xaml.GridUnitType.Star) });
             grid.RowDefinitions.Add(new RowDefinition() { Height = new Windows.UI.Xaml.GridLength(50, Windows.UI.Xaml.GridUnitType.Pixel) });
 
-            view = new ListView() { VerticalAlignment = Windows.UI.Xaml.VerticalAlignment.Stretch };
+            view = new ListView() { VerticalAlignment = Windows.UI.Xaml.VerticalAlignment.Stretch, SelectionMode = ListViewSelectionMode.Multiple };
             grid.Children.Add(view);
             Grid.SetRow(view, 0);
-            view.ItemContainerStyle = Application.Current.Resources["taxiListPickerFlyoutItemStyle"] as Style;
+            //view.ItemContainerStyle = Application.Current.Resources["taxiListPickerFlyoutItemStyle"] as Style;
 
             StackPanel panel = new StackPanel() { Orientation = Orientation.Horizontal, HorizontalAlignment = Windows.UI.Xaml.HorizontalAlignment.Center, VerticalAlignment = Windows.UI.Xaml.VerticalAlignment.Stretch };
             grid.Children.Add(panel);
@@ -82,33 +82,10 @@ namespace TaxiApp.Core.UWP.Controls
             this.FlyoutPresenterStyle.Setters.Add(new Setter(FlyoutPresenter.BorderThicknessProperty, new Thickness(0.0)));
             //this.FlyoutPresenterStyle.Setters.Add.SetValue(FlyoutPresenter.BorderThicknessProperty, new Thickness(0.0));
 
-            this.Selected = true;
 
-            this.Component = new ListPickerViewModel();
-            this.Component.Checked = new List<bool>();
-            this.Component.Checked.Add(true);
-            this.Component.Checked.Add(true);
-            this.Component.Checked.Add(true);
-
-        }
-
-        public static readonly DependencyProperty ComponentProperty = DependencyProperty.Register("Component", typeof(ListPickerViewModel), typeof(ListPickerFlyout), new PropertyMetadata(null));
-
-        public ListPickerViewModel Component
-        {
-            get { return (ListPickerViewModel)GetValue(ComponentProperty); }
-            set { SetValue(ComponentProperty, value); }
         }
 
     }
 
-    public class ListPickerViewModel
-    {
 
-        public IList<bool> Checked
-        {
-            get;
-            set;
-        }
-    }
 }
