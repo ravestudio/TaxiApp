@@ -101,6 +101,13 @@ namespace TaxiApp.Core.DataModel.Order
                     this.Detailed = msg.Order;
                 });
 
+            Messenger.Default.Register<GetOptionsMessage>(this, (msg) => {
+                Messenger.Default.Send<GetOptionsResultMessage>(new GetOptionsResultMessage()
+                {
+                    ServiceList = this._orderServiceList
+                });
+            });
+
             Messenger.Default.Register<SelectLocationMessage>(this, async (msg) =>
             {
                 if (this.tempLocations.ContainsKey(msg.Priority))

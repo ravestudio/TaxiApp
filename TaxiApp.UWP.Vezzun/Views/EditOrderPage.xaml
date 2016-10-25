@@ -15,10 +15,8 @@
 
     <Page.Resources>
 
-        <ctrl:ListPickerFlyout x:Key="ServiceFlyout" ItemsSource="{Binding OrderModel.OrderServiceList, Source={StaticResource Locator}}">
-
-
-            
+        <ctrl:ListPickerFlyout x:Key="ServiceFlyout" ItemsSource="{Binding ServiceList}">
+    
             <ctrl:ListPickerFlyout.ItemTemplate>
                 <DataTemplate>
                     <TextBlock Text="{Binding Name}"></TextBlock>

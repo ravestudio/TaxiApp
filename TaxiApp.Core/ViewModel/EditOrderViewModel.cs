@@ -54,8 +54,9 @@ namespace TaxiApp.Core.ViewModel
         public bool LocationReady { get; set; }
 
         public Dictionary<string, Action<TaxiApp.Core.DataModel.Order.OrderItem>> Actions = null;
+        public IList<OrderOption> ServiceList { get; set; }
 
-        
+
         private ObservableCollection<OrderItem> _orderItemList = null;
 
         private TaxiApp.Core.Entities.Order _order = null;
@@ -113,8 +114,14 @@ namespace TaxiApp.Core.ViewModel
 
             this.SelectedServices = new List<OrderOption>();
 
-            
-            
+            Messenger.Default.Register<GetOptionsResultMessage>(this, (msg) =>
+            {
+                this.ServiceList = msg.ServiceList;
+            });
+
+            Messenger.Default.Send<GetOptionsMessage>(new GetOptionsMessage());
+
+
 
             this.ClickOrderItem = new RelayCommand<object>((parameter) =>
             {
@@ -135,6 +142,9 @@ namespace TaxiApp.Core.ViewModel
             
             this.CreateOrderCmd = new RelayCommand(() =>
             {
+
+                this.SelectedServices = this._editOrderControls.GetServices();
+
                 TaxiApp.Core.Entities.Order order = this.GetEntity();
                 
                 Messenger.Default.Send<CreateOrderMessage>(new CreateOrderMessage() { 
@@ -229,7 +239,7 @@ namespace TaxiApp.Core.ViewModel
 
             this.Actions.Add("Services", (item) =>
             {
-                this._editOrderControls.OpenServicePicker();
+                this._editOrderControls.OpenServicePicker(ServiceList);
 
             });
 

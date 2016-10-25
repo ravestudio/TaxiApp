@@ -119,6 +119,8 @@
     <Compile Include="Messages\CleanupMessage.cs" />
     <Compile Include="Messages\FillRoutePointMessage.cs" />
     <Compile Include="Messages\FoundLocationsMessage.cs" />
+    <Compile Include="Messages\GetOptionsMessage.cs" />
+    <Compile Include="Messages\GetOptionsResultMessage.cs" />
     <Compile Include="Messages\LoadOrderListMessage.cs" />
     <Compile Include="Messages\LocationChangedMessage.cs" />
     <Compile Include="Messages\LoginUserMessage.cs" />

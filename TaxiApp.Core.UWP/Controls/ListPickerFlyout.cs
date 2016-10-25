@@ -26,7 +26,14 @@ namespace TaxiApp.Core.UWP.Controls
                     var binding = (Windows.UI.Xaml.Data.Binding)value;
                     BindingOperations.SetBinding(view, ListView.ItemsSourceProperty, binding);
                 }
-                //view.ItemsSource = value;
+                else
+                {
+                    Binding bin = new Binding();
+                    //bin.Source = value;
+                    bin.Path = new PropertyPath("ServiceList");
+
+                    BindingOperations.SetBinding(view, ListView.ItemsSourceProperty, bin);
+                }
             }
         }
 
@@ -45,6 +52,22 @@ namespace TaxiApp.Core.UWP.Controls
 
         //public bool Selected { get; set; }
 
+        public IList<object> SelectedItems
+        {
+            get
+            {
+                return view.SelectedItems;
+            }
+            set
+            {
+                view.SelectedItems.Clear();
+
+                foreach (object obj in value)
+                {
+                    view.SelectedItems.Add(obj);
+                }
+            }
+        }
 
 
         private ListView view = null;
@@ -71,7 +94,12 @@ namespace TaxiApp.Core.UWP.Controls
             grid.Children.Add(panel);
             Grid.SetRow(panel, 1);
 
-            panel.Children.Add(new Button() { Content = "OK" });
+            Button btn = new Button() { Content = "OK" };
+            btn.Click += (sender, e) =>
+            {
+            };
+
+            panel.Children.Add(btn);
             panel.Children.Add(new Button() { Content = "Cancel" });
 
             this.Placement = Windows.UI.Xaml.Controls.Primitives.FlyoutPlacementMode.Full;
@@ -91,7 +119,6 @@ namespace TaxiApp.Core.UWP.Controls
             };
 
         }
-
 
     }
 
