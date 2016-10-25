@@ -80,10 +80,18 @@ namespace TaxiApp.Core.UWP.Controls
             this.FlyoutPresenterStyle = new Style(typeof(FlyoutPresenter));
 
             this.FlyoutPresenterStyle.Setters.Add(new Setter(FlyoutPresenter.BorderThicknessProperty, new Thickness(0.0)));
+            this.FlyoutPresenterStyle.Setters.Add(new Setter(FlyoutPresenter.MinHeightProperty, ((Frame)Window.Current.Content).ActualHeight-140));
+            this.FlyoutPresenterStyle.Setters.Add(new Setter(FlyoutPresenter.MinWidthProperty, ((Frame)Window.Current.Content).ActualWidth-60));
             //this.FlyoutPresenterStyle.Setters.Add.SetValue(FlyoutPresenter.BorderThicknessProperty, new Thickness(0.0));
 
+            this.Opening += (sender, e) =>
+            {
+                //((Grid)this.Content).Width = ((Frame)Window.Current.Content).ActualWidth;
+                //((Grid)this.Content).Height = ((Frame)Window.Current.Content).ActualHeight;
+            };
 
         }
+
 
     }
 
