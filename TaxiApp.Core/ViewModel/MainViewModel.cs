@@ -52,6 +52,11 @@ namespace TaxiApp.Core.ViewModel
 
             });
 
+            _menuActions.Add("ClearSettings", () =>
+            {
+                Messenger.Default.Send<ClearLocalSettings>(new ClearLocalSettings());
+            });
+
             this.ClickMenuCmd = new RelayCommand(() =>
             {
                 this._menu.Open();

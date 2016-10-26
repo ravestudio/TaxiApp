@@ -117,6 +117,7 @@
     <Compile Include="Managers\SystemManager.cs" />
     <Compile Include="Messages\CaughtSMSResultMessage.cs" />
     <Compile Include="Messages\CleanupMessage.cs" />
+    <Compile Include="Messages\ClearLocalSettings.cs" />
     <Compile Include="Messages\FillRoutePointMessage.cs" />
     <Compile Include="Messages\FoundLocationsMessage.cs" />
     <Compile Include="Messages\GetOptionsMessage.cs" />

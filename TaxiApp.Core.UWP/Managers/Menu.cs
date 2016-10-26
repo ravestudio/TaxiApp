@@ -34,6 +34,7 @@ namespace TaxiApp.Core.UWP.Managers
                 _itemList.Add(new MenuItem() { Key="home", Text = "Home" });
                 _itemList.Add(new MenuItem() { Key="OrderList", Text = "My Orders" });
                 _itemList.Add(new MenuItem() { Key="Setings", Text = "Settings" });
+                _itemList.Add(new MenuItem() { Key = "ClearSettings", Text = "ClearSettings" });
             }
 
             return _itemList;

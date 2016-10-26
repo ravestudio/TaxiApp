@@ -68,7 +68,7 @@ namespace TaxiApp.Core.UWP.Managers
 
             _store.StoreChanged += handler;
 
-            Task.Delay(10000).ContinueWith(t => { SetResult(null); });
+            Task.Delay(20000).ContinueWith(t => { SetResult(null); });
 
             return TCS.Task;
         }

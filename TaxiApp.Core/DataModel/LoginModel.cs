@@ -83,6 +83,10 @@ namespace TaxiApp.Core.DataModel
 
             });
 
+            Messenger.Default.Register<ClearLocalSettings>(this, (msg) => {
+                this.ClearData();
+            });
+
         }
 
         public void SaveNumber(string phoneNumber)
